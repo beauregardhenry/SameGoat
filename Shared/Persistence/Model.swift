@@ -45,6 +45,7 @@ enum HappyMamaModel {
             attr("autoApprove", .booleanAttributeType, false),
             attr("stepsRaw", .stringAttributeType),
             attr("doneStepsRaw", .stringAttributeType),
+            attr("photoRequired", .booleanAttributeType, false),
         ])
         let reward = entity(Reward.self, [
             attr("id", .UUIDAttributeType),
