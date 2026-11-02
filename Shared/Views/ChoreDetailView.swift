@@ -18,6 +18,14 @@ struct ChoreDetailView: View {
 
     private var isAssignee: Bool { chore.assignee?.id == me.id }
 
+    /// The once-a-day pass is offered for a chore due today, if today's pass is still unused.
+    private var canUseResetPass: Bool {
+        let calendar = Calendar.current
+        guard let due = chore.dueDate, due < (calendar.date(byAdding: .day, value: 1, to: calendar.startOfDay(for: Date())) ?? Date())
+        else { return false }
+        return !(me.resetUsedOn.map { calendar.isDateInToday($0) } ?? false)
+    }
+
     var body: some View {
         Form {
             starsSection
@@ -122,6 +130,12 @@ struct ChoreDetailView: View {
                     StarRow(title: String(localized: "Time"), icon: "stopwatch", stars: stars.time)
                     StarRow(title: String(localized: "Difficulty"), icon: "dumbbell", stars: stars.difficulty)
                     StarRow(title: String(localized: "Problem-solving"), icon: "puzzlepiece", stars: stars.thinking)
+                    LabeledContent {
+                        Text(String(repeating: "🥄", count: chore.spoons))
+                    } label: {
+                        Label("Energy", systemImage: "battery.50percent")
+                    }
+                    .accessibilityLabel("Energy: \(chore.spoons) spoons")
                 }
                 if let level {
                     Label {
@@ -243,7 +257,7 @@ struct ChoreDetailView: View {
 
     @ViewBuilder
     private var actionsSection: some View {
-        if chore.status == .todo && (isAssignee || chore.isUnclaimed) && !me.isParent {
+        if chore.status == .todo && ((isAssignee && me.isParent) || ((isAssignee || chore.isUnclaimed) && !me.isParent)) {
             Section {
                 if chore.isUnclaimed {
                     Button { perform { try service.claim(chore, by: me) } } label: {
@@ -257,7 +271,10 @@ struct ChoreDetailView: View {
                     }
                     .controlSize(.large)
                 }
-                Button { showingComplete = true } label: {
+                Button {
+                    // A grown-up's own chore is just done; no note or photo for anyone to check.
+                    if me.isParent { perform { try service.markComplete(chore, by: me, note: nil, photo: nil) } } else { showingComplete = true }
+                } label: {
                     Label("I'm done!", systemImage: "checkmark.circle.fill").frame(maxWidth: .infinity)
                 }
                 .buttonStyle(.borderedProminent)
@@ -267,8 +284,14 @@ struct ChoreDetailView: View {
                     Button("Let someone else do it") { perform { try service.release(chore, by: me) } }
                         .frame(maxWidth: .infinity)
                 }
+                if !me.isParent && isAssignee && canUseResetPass {
+                    Button("Not today: use my reset pass") { perform { try service.useResetPass(on: chore, by: me) } }
+                        .frame(maxWidth: .infinity)
+                }
             } footer: {
-                Text(!chore.allStepsDone
+                Text(me.isParent
+                     ? "The kids will see you got it done."
+                     : !chore.allStepsDone
                      ? "Tick off every step first."
                      : chore.autoApprove
                      ? "You'll get your points right away."

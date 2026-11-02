@@ -112,10 +112,13 @@ final class HouseholdServiceTests: XCTestCase {
         XCTAssertThrowsError(try service.createChores(draft, assignees: [kid], in: household, by: kid))
     }
 
-    func testChoresCannotBeAssignedToParents() {
+    func testParentsChoresEarnNoPoints() throws {
+        // Grown-ups can have chores so kids see that everyone helps, but they earn nothing.
         var draft = HouseholdService.ChoreDraft()
-        draft.title = "Nope"
-        XCTAssertThrowsError(try service.createChores(draft, assignees: [parent], in: household, by: parent))
+        draft.title = "Groceries"
+        draft.points = 10
+        let chore = try service.createChores(draft, assignees: [parent], in: household, by: parent)[0]
+        XCTAssertEqual(chore.points, 0)
     }
 
     func testAssigningToMultipleKidsCreatesACopyEach() throws {

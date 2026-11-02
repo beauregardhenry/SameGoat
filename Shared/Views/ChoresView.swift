@@ -8,6 +8,7 @@ struct ChoresView: View {
     @State private var showingNew = false
     @State private var showingLibrary = false
     @State private var showingProject = false
+    @State private var showingSpoons = false
 
     init(household: Household, me: Member) {
         self.household = household
@@ -40,6 +41,14 @@ struct ChoresView: View {
     private var todo: [Chore] { onHold ? [] : dueSorted(open.filter { !$0.isUnclaimed && !$0.extraCredit }) }
     private var extra: [Chore] { onHold ? [] : dueSorted(open.filter { !$0.isUnclaimed && $0.extraCredit }) }
     private var grabs: [Chore] { onHold ? [] : dueSorted(open.filter(\.isUnclaimed)) }
+    /// What the grown-ups are doing today, so kids see that everyone helps.
+    private var grownUps: [Chore] {
+        let tomorrow = Calendar.current.date(byAdding: .day, value: 1, to: Calendar.current.startOfDay(for: Date())) ?? Date()
+        return ((household.chores as? Set<Chore>) ?? [])
+            .filter { $0.assignee?.isParent == true && $0.status == .todo && ($0.dueDate ?? .distantPast) < tomorrow }
+            .sorted { ($0.assignee?.displayName ?? "", $0.displayTitle) < ($1.assignee?.displayName ?? "", $1.displayTitle) }
+    }
+
     /// Regular chores waiting while a project comes first.
     private var later: [Chore] { onHold ? dueSorted(open) : [] }
     private var done: [Chore] {
@@ -75,6 +84,15 @@ struct ChoresView: View {
                 choreSection("Up for grabs", grabs, icon: "hand.raised")
                 choreSection("Extra credit", extra, icon: "plus.circle")
                 choreSection("Waiting for approval", waiting)
+                if !grownUps.isEmpty {
+                    Section {
+                        ForEach(grownUps) { ChoreRow(chore: $0, showAssignee: true) }
+                    } header: {
+                        Label("The grown-ups today", systemImage: "person.2")
+                    } footer: {
+                        Text("Everyone in the family helps.")
+                    }
+                }
             }
             choreSection("After the project", later, icon: "pause.circle")
             choreSection("Done", done)
@@ -96,6 +114,9 @@ struct ChoresView: View {
         .navigationTitle(me.isParent ? "Chores" : "My Chores")
         .navigationDestination(for: Chore.self) { ChoreDetailView(chore: $0, me: me) }
         .toolbar {
+            ToolbarItem(placement: .secondaryAction) {
+                Button { showingSpoons = true } label: { Label("How much energy?", systemImage: "battery.50percent") }
+            }
             if me.isParent {
                 ToolbarItem(placement: .primaryAction) {
                     Button { showingProject = true } label: { Label("New Project", systemImage: "hammer") }
@@ -110,6 +131,9 @@ struct ChoresView: View {
         }
         .sheet(isPresented: $showingNew) {
             ChoreEditorView(household: household, me: me, chore: nil)
+        }
+        .sheet(isPresented: $showingSpoons) {
+            SpoonsView(me: me, household: household)
         }
         .sheet(isPresented: $showingProject) {
             ProjectEditorView(household: household, me: me)

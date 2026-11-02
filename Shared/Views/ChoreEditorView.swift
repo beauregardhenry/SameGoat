@@ -44,6 +44,7 @@ struct ChoreEditorView: View {
             draft.stretch = chore.stretch
             draft.extraCredit = chore.extraCredit
             draft.dueWithinWeek = chore.dueWithinWeek
+            draft.spoons = chore.spoonsRaw > 0 ? Int(chore.spoonsRaw) : nil
         }
         _draft = State(initialValue: draft)
         let suggested = Effort.suggestedPoints(minutes: draft.minutes, difficulty: draft.difficulty,
@@ -79,6 +80,10 @@ struct ChoreEditorView: View {
             Picker("Difficulty", selection: $draft.difficulty) {
                 Text("Not set").tag(Difficulty?.none)
                 ForEach(Difficulty.allCases) { Text($0.title).tag(Difficulty?.some($0)) }
+            }
+            Picker("Energy", selection: $draft.spoons) {
+                Text("Go by difficulty").tag(Int?.none)
+                ForEach(Spoons.range, id: \.self) { Text(String(repeating: "🥄", count: $0)).tag(Int?.some($0)) }
             }
             Picker("Problem-solving", selection: $draft.skill) {
                 Text("Not set").tag(Int?.none)
@@ -219,13 +224,16 @@ struct ChoreEditorView: View {
                     }
                     .buttonStyle(.plain)
                     .accessibilityAddTraits(draft.upForGrabs ? .isSelected : [])
-                    ForEach(household.kids) { kid in
+                    // Grown-ups are listed after the kids: their chores show the kids that everyone helps.
+                    ForEach(household.kids + household.parents) { kid in
                         Button { toggle(kid) } label: {
                             HStack {
                                 Avatar(member: kid, size: 32)
                                 VStack(alignment: .leading, spacing: 1) {
                                     Text(kid.displayName)
-                                    if let load = workload(kid) {
+                                    if kid.isParent {
+                                        Text("Grown-up: no points, and the kids can see it").font(.caption).foregroundStyle(.secondary)
+                                    } else if let load = workload(kid) {
                                         Text(load).font(.caption).foregroundStyle(.secondary)
                                     }
                                 }
@@ -310,7 +318,7 @@ struct ChoreEditorView: View {
         let clock = Calendar.current.dateComponents([.hour, .minute], from: time)
         draft.dueTime = hasDue && hasTime ? (clock.hour ?? 0) * 60 + (clock.minute ?? 0) : nil
         if selected.count < 2 { draft.takeTurns = false }
-        let ordered = draft.upForGrabs ? [] : household.kids.filter { selected.contains($0) }
+        let ordered = draft.upForGrabs ? [] : (household.kids + household.parents).filter { selected.contains($0) }
         do {
             if let chore {
                 try service.updateChore(chore, with: draft, assignees: ordered, by: me)
