@@ -170,6 +170,8 @@ final class HouseholdService: ObservableObject {
         var autoApprove = false
         /// A routine's checklist; empty for an ordinary chore.
         var steps: [String] = []
+        /// The kid has to attach a photo to turn it in.
+        var photoRequired = false
     }
 
     static let maxSteps = 12
@@ -212,6 +214,7 @@ final class HouseholdService: ObservableObject {
         chore.dueDate = draft.dueDate.map { calendar.startOfDay(for: $0) }
         chore.dueTime = draft.dueDate == nil ? nil : draft.dueTime
         chore.autoApprove = draft.autoApprove
+        chore.photoRequired = draft.photoRequired
         let oldSteps = chore.steps
         chore.steps = draft.steps
         if chore.steps != oldSteps { chore.doneSteps = [] }
@@ -238,6 +241,7 @@ final class HouseholdService: ObservableObject {
         }
         guard chore.status == .todo else { throw ServiceError.invalid("This chore was already turned in.") }
         guard chore.allStepsDone else { throw ServiceError.invalid("Tick off every step first.") }
+        guard !chore.photoRequired || photo != nil else { throw ServiceError.invalid("Add a photo to show it's done.") }
         chore.status = .pendingReview
         chore.completedAt = Date()
         chore.completionNote = note?.trimmed.nilIfEmpty
@@ -338,6 +342,7 @@ final class HouseholdService: ObservableObject {
         chore.dueDate = draft.dueDate.map { calendar.startOfDay(for: $0) }
         chore.dueTime = draft.dueDate == nil ? nil : draft.dueTime
         chore.autoApprove = draft.autoApprove
+        chore.photoRequired = draft.photoRequired
         chore.steps = draft.steps
         chore.createdAt = Date()
         chore.recurrence = draft.recurrence
@@ -361,6 +366,7 @@ final class HouseholdService: ObservableObject {
         draft.dueTime = chore.dueTime
         draft.autoApprove = chore.autoApprove
         draft.steps = chore.steps
+        draft.photoRequired = chore.photoRequired
         draft.recurrence = rule
         let copy = try newChore(from: draft, title: chore.displayTitle, assignee: kid, household: household)
         copy.sourceChoreID = chore.id

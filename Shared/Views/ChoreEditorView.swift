@@ -30,6 +30,7 @@ struct ChoreEditorView: View {
             draft.takeTurns = chore.takesTurns
             draft.autoApprove = chore.autoApprove
             draft.steps = chore.steps
+            draft.photoRequired = chore.photoRequired
         }
         _draft = State(initialValue: draft)
         _hasDue = State(initialValue: chore?.dueDate != nil)
@@ -79,6 +80,7 @@ struct ChoreEditorView: View {
                             .labelsHidden()
                     }
                     Toggle("Approve automatically", isOn: $draft.autoApprove)
+                    Toggle("Needs a photo", isOn: $draft.photoRequired)
                 } footer: {
                     Text(draft.autoApprove
                          ? "Points are awarded as soon as it's marked done. Good for small daily habits."

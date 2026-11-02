@@ -143,6 +143,9 @@ struct ChoreDetailView: View {
             if chore.autoApprove {
                 LabeledContent("Approval", value: "Automatic")
             }
+            if chore.photoRequired {
+                LabeledContent("Photo", value: "Needed to turn in")
+            }
             if chore.takesTurns {
                 LabeledContent("Taking turns", value: chore.rotation.map(\.displayName).joined(separator: " → "))
                 if chore.status != .approved, let next = chore.nextAssignee {
@@ -233,14 +236,16 @@ struct CompleteChoreSheet: View {
         NavigationStack {
             Form {
                 Section {
-                    Text("A parent will check “\(chore.displayTitle)” before you get your points.")
+                    Text(chore.autoApprove
+                         ? "You'll get your points for “\(chore.displayTitle)” right away."
+                         : "A parent will check “\(chore.displayTitle)” before you get your points.")
                         .foregroundStyle(.secondary)
                 }
                 Section("Add a note (optional)") {
                     TextField("Anything they should know?", text: $note, axis: .vertical)
                         .lineLimit(2...5)
                 }
-                Section("Show your work (optional)") {
+                Section(chore.photoRequired ? "Show your work" : "Show your work (optional)") {
                     PhotosPicker(selection: $pickerItem, matching: .images) {
                         Label(photo == nil ? "Add a photo" : "Choose a different photo", systemImage: "photo")
                     }
@@ -260,7 +265,7 @@ struct CompleteChoreSheet: View {
                         onSubmit(note, photo)
                         dismiss()
                     }
-                    .disabled(loadingPhoto)
+                    .disabled(loadingPhoto || (chore.photoRequired && photo == nil))
                 }
             }
             .onChange(of: pickerItem) { _, item in

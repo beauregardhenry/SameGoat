@@ -153,6 +153,8 @@ final class Chore: NSManagedObject, Identifiable {
     @NSManaged var stepsRaw: String?
     /// Which steps (by position) the kid has ticked, comma-separated.
     @NSManaged var doneStepsRaw: String?
+    /// The kid has to attach a photo to turn it in.
+    @NSManaged var photoRequired: Bool
     @NSManaged var household: Household?
     @NSManaged var assignee: Member?
 
