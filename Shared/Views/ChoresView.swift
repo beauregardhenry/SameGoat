@@ -176,6 +176,7 @@ struct ChoresView: View {
                             try? service.pick(option, by: me)
                         }
                         .buttonStyle(.borderedProminent)
+                        .controlSize(.small)
                     }
                 }
             }

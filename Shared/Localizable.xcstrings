@@ -1,6 +1,19 @@
 {
   "sourceLanguage": "en",
   "strings": {
+    " ": {
+      "shouldTranslate": false
+    },
+    " A stretch chore is a step up, and kids see it as a challenge.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": " Una tarea de reto es un paso más, y los niños la ven como un desafío."
+          }
+        }
+      }
+    },
     "%@": {
       "shouldTranslate": false
     },
@@ -113,6 +126,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "%@ y %@ esta semana."
+          }
+        }
+      }
+    },
+    "%@ chooses %lld (%lld picked)": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ elige %2$lld (%3$lld elegidas)"
           }
         }
       }
@@ -322,6 +345,26 @@
     },
     "%@, %@": {
       "shouldTranslate": false
+    },
+    "%@, done": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@, hecha"
+          }
+        }
+      }
+    },
+    "%@: %lld of 5 stars": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@: %2$lld de 5 estrellas"
+          }
+        }
+      }
     },
     "%@: %lld points": {
       "localizations": {
@@ -1062,6 +1105,46 @@
         }
       }
     },
+    "%lld spoons": {
+      "localizations": {
+        "en": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld spoon"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld spoons"
+                }
+              }
+            }
+          }
+        },
+        "es": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld cuchara"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld cucharas"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "%lld steps": {
       "localizations": {
         "en": {
@@ -1235,12 +1318,72 @@
         }
       }
     },
+    "A clean bathroom is healthier for everyone.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Un baño limpio es más sano para todos."
+          }
+        }
+      }
+    },
+    "A clean living room is where we all hang out.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La sala limpia es donde pasamos tiempo juntos."
+          }
+        }
+      }
+    },
+    "A clear table means dishes get done and we can relax sooner.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Con la mesa recogida, los platos se lavan y descansamos antes."
+          }
+        }
+      }
+    },
     "A household needs at least one parent.": {
       "localizations": {
         "es": {
           "stringUnit": {
             "state": "translated",
             "value": "Un hogar necesita al menos un padre o una madre."
+          }
+        }
+      }
+    },
+    "A made bed makes the whole room feel calm.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Una cama hecha hace que todo el cuarto se sienta tranquilo."
+          }
+        }
+      }
+    },
+    "A medium moment. Here's what fits.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Un momento intermedio. Esto es lo que encaja."
+          }
+        }
+      }
+    },
+    "A mowed lawn is safer to play on and looks great.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Un césped cortado es más seguro para jugar y se ve genial."
           }
         }
       }
@@ -1265,12 +1408,12 @@
         }
       }
     },
-    "A picture helps kids who can't read yet.": {
+    "A picture helps kids who can't read yet. Kids see how it helps and your tips on the chore, so you don't have to say it every time.": {
       "localizations": {
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Un dibujo ayuda a los niños que aún no leen."
+            "value": "Un dibujo ayuda a los niños que aún no leen. Los niños ven en la tarea cómo ayuda y tus consejos, así no tienes que repetirlo siempre."
           }
         }
       }
@@ -1305,6 +1448,26 @@
         }
       }
     },
+    "A smooth bedtime means more time for stories.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Una hora de dormir tranquila deja más tiempo para cuentos."
+          }
+        }
+      }
+    },
+    "A tidy room is yours to enjoy, and easier to clean.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Un cuarto ordenado es para disfrutarlo, y es más fácil de limpiar."
+          }
+        }
+      }
+    },
     "Add": {
       "localizations": {
         "es": {
@@ -1331,6 +1494,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Añadir persona"
+          }
+        }
+      }
+    },
+    "Add a chore": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Añadir una tarea"
           }
         }
       }
@@ -1395,12 +1568,32 @@
         }
       }
     },
+    "Add at least one chore to the project.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Añade al menos una tarea al proyecto."
+          }
+        }
+      }
+    },
     "Add things kids can spend points on, like movie night or extra screen time.": {
       "localizations": {
         "es": {
           "stringUnit": {
             "state": "translated",
             "value": "Añade cosas en las que los niños puedan gastar puntos, como una noche de película o más tiempo de pantalla."
+          }
+        }
+      }
+    },
+    "After the project": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Después del proyecto"
           }
         }
       }
@@ -1481,6 +1674,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Cantidad"
+          }
+        }
+      }
+    },
+    "Any day that week": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cualquier día de esa semana"
           }
         }
       }
@@ -1765,12 +1968,52 @@
         }
       }
     },
+    "Bag up things to donate": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Embolsar cosas para donar"
+          }
+        }
+      }
+    },
     "Bedtime routine": {
       "localizations": {
         "es": {
           "stringUnit": {
             "state": "translated",
             "value": "Rutina de noche"
+          }
+        }
+      }
+    },
+    "Big picture tiles instead of a list, for little ones who can't read much yet.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dibujos grandes en lugar de una lista, para los pequeños que aún leen poco."
+          }
+        }
+      }
+    },
+    "Big picture view": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vista de dibujos grandes"
+          }
+        }
+      }
+    },
+    "Big things at the back, nothing blocking the spinner.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lo grande atrás, y que nada bloquee el aspersor."
           }
         }
       }
@@ -1861,6 +2104,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Extra: %@"
+          }
+        }
+      }
+    },
+    "Bring a bag and check the weather.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lleva una bolsa y mira el tiempo."
           }
         }
       }
@@ -1975,6 +2228,16 @@
         }
       }
     },
+    "Change my mind": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cambiar de idea"
+          }
+        }
+      }
+    },
     "Changing the rate changes what everyone's current points are worth.": {
       "localizations": {
         "es": {
@@ -1995,12 +2258,42 @@
         }
       }
     },
+    "Check the water bowl too.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Revisa también el agua."
+          }
+        }
+      }
+    },
+    "Check tomorrow's schedule before you pack.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mira el horario de mañana antes de prepararla."
+          }
+        }
+      }
+    },
     "Checking iCloud…": {
       "localizations": {
         "es": {
           "stringUnit": {
             "state": "translated",
             "value": "Comprobando iCloud…"
+          }
+        }
+      }
+    },
+    "Choose %lld more": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Elige %lld más"
           }
         }
       }
@@ -2045,6 +2338,16 @@
         }
       }
     },
+    "Choose which kids get the menu.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Elige qué niños reciben el menú."
+          }
+        }
+      }
+    },
     "Choose who should do it.": {
       "localizations": {
         "es": {
@@ -2085,6 +2388,16 @@
         }
       }
     },
+    "Chores are shared out so everyone gets about the same amount of time.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Las tareas se reparten para que a todos les toque más o menos el mismo tiempo."
+          }
+        }
+      }
+    },
     "Chores can only be assigned to kids.": {
       "localizations": {
         "es": {
@@ -2105,12 +2418,92 @@
         }
       }
     },
+    "Clean": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Limpiar"
+          }
+        }
+      }
+    },
+    "Clean dishes for the next meal, for the whole family.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Platos limpios para la próxima comida, para toda la familia."
+          }
+        }
+      }
+    },
+    "Clean the bathroom": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Limpiar el baño"
+          }
+        }
+      }
+    },
     "Clean the bathroom sink": {
       "localizations": {
         "es": {
           "stringUnit": {
             "state": "translated",
             "value": "Limpiar el lavabo"
+          }
+        }
+      }
+    },
+    "Clean the garage": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Limpiar el garaje"
+          }
+        }
+      }
+    },
+    "Clean up": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Limpiar"
+          }
+        }
+      }
+    },
+    "Clear floors mean nobody trips and toys don't get lost.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Con el suelo despejado nadie tropieza y los juguetes no se pierden."
+          }
+        }
+      }
+    },
+    "Clear out your closet": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ordenar tu armario"
+          }
+        }
+      }
+    },
+    "Clear the counters": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Despejar las encimeras"
           }
         }
       }
@@ -2145,12 +2538,32 @@
         }
       }
     },
+    "Comes first": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Va primero"
+          }
+        }
+      }
+    },
     "Continue": {
       "localizations": {
         "es": {
           "stringUnit": {
             "state": "translated",
             "value": "Continuar"
+          }
+        }
+      }
+    },
+    "Cooking together means dinner sooner, and you learn a life skill.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cocinar juntos adelanta la cena, y aprendes algo para toda la vida."
           }
         }
       }
@@ -2195,6 +2608,16 @@
         }
       }
     },
+    "Count the people first, then grab that many of everything.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cuenta a las personas primero y luego toma esa cantidad de todo."
+          }
+        }
+      }
+    },
     "Create Household": {
       "localizations": {
         "es": {
@@ -2221,6 +2644,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "Fechas"
+          }
+        }
+      }
+    },
+    "Declutter": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Despejar"
+          }
+        }
+      }
+    },
+    "Deep clean": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Limpieza a fondo"
           }
         }
       }
@@ -2285,6 +2728,16 @@
         }
       }
     },
+    "Dinner is ready faster when everyone helps.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La cena está antes cuando todos ayudan."
+          }
+        }
+      }
+    },
     "Do chores 3 days in a row.": {
       "localizations": {
         "es": {
@@ -2315,6 +2768,36 @@
         }
       }
     },
+    "Do it in the same order every night.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hazlo en el mismo orden cada noche."
+          }
+        }
+      }
+    },
+    "Do it right when you change, so it's never a pile.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hazlo al cambiarte, así nunca se acumula."
+          }
+        }
+      }
+    },
+    "Do the cutlery basket first; it's the fastest.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Empieza por los cubiertos; es lo más rápido."
+          }
+        }
+      }
+    },
     "Do your own laundry": {
       "localizations": {
         "es": {
@@ -2335,12 +2818,82 @@
         }
       }
     },
+    "Donate toys you've outgrown": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Donar juguetes que ya no usas"
+          }
+        }
+      }
+    },
     "Done": {
       "localizations": {
         "es": {
           "stringUnit": {
             "state": "translated",
             "value": "Hecha"
+          }
+        }
+      }
+    },
+    "Done %lld times": {
+      "localizations": {
+        "en": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Done %lld time"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Done %lld times"
+                }
+              }
+            }
+          }
+        },
+        "es": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Hecha %lld vez"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Hecha %lld veces"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "Done by": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lista para"
+          }
+        }
+      }
+    },
+    "Done by %@": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lista para %@"
           }
         }
       }
@@ -2385,12 +2938,32 @@
         }
       }
     },
+    "Due today": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Para hoy"
+          }
+        }
+      }
+    },
     "Due today: %@": {
       "localizations": {
         "es": {
           "stringUnit": {
             "state": "translated",
             "value": "Para hoy: %@"
+          }
+        }
+      }
+    },
+    "Dust the shelves": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quitar el polvo de los estantes"
           }
         }
       }
@@ -2485,12 +3058,92 @@
         }
       }
     },
+    "Empty dishwasher, empty sink: dirty dishes have somewhere to go.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lavavajillas vacío, fregadero vacío: los platos sucios tienen adónde ir."
+          }
+        }
+      }
+    },
     "Empty the dishwasher": {
       "localizations": {
         "es": {
           "stringUnit": {
             "state": "translated",
             "value": "Vaciar el lavavajillas"
+          }
+        }
+      }
+    },
+    "End %@?": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "¿Terminar «%@»?"
+          }
+        }
+      }
+    },
+    "End project": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Terminar proyecto"
+          }
+        }
+      }
+    },
+    "Energy": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Energía"
+          }
+        }
+      }
+    },
+    "Energy: %lld spoons": {
+      "localizations": {
+        "en": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Energy: %lld spoon"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Energy: %lld spoons"
+                }
+              }
+            }
+          }
+        },
+        "es": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Energía: %lld cuchara"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Energía: %lld cucharas"
+                }
+              }
+            }
           }
         }
       }
@@ -2555,6 +3208,16 @@
         }
       }
     },
+    "Every chore is up for grabs.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cada tarea es para quien la tome."
+          }
+        }
+      }
+    },
     "Every day": {
       "localizations": {
         "es": {
@@ -2585,6 +3248,26 @@
         }
       }
     },
+    "Everyone in the family helps.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "En la familia todos ayudan."
+          }
+        }
+      }
+    },
+    "Everyone pitches in": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Todos ayudan"
+          }
+        }
+      }
+    },
     "Examples": {
       "localizations": {
         "es": {
@@ -2601,6 +3284,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Tasa de cambio"
+          }
+        }
+      }
+    },
+    "Extra credit": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Puntos extra"
+          }
+        }
+      }
+    },
+    "Extra credit is optional: it earns points but is never overdue.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Los puntos extra son opcionales: ganan puntos pero nunca se atrasan."
+          }
+        }
+      }
+    },
+    "Extra credit: optional, and it earns points": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Puntos extra: opcional, y gana puntos"
           }
         }
       }
@@ -2665,6 +3378,16 @@
         }
       }
     },
+    "Finish": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Terminar"
+          }
+        }
+      }
+    },
     "Finish 10 chores.": {
       "localizations": {
         "es": {
@@ -2711,6 +3434,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Las tareas terminadas y las recompensas pedidas aparecen aquí para que las confirmes."
+          }
+        }
+      }
+    },
+    "Finishing touches": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Últimos detalles"
           }
         }
       }
@@ -2801,6 +3534,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "Doblar la ropa"
+          }
+        }
+      }
+    },
+    "Fold while it's still warm from the dryer: fewer wrinkles.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dobla mientras está caliente de la secadora: menos arrugas."
+          }
+        }
+      }
+    },
+    "Folded clothes mean everyone can find what they need.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Con la ropa doblada, todos encuentran lo que necesitan."
           }
         }
       }
@@ -2905,6 +3658,16 @@
         }
       }
     },
+    "From scratch": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Desde cero"
+          }
+        }
+      }
+    },
     "Get dressed": {
       "localizations": {
         "es": {
@@ -2965,6 +3728,16 @@
         }
       }
     },
+    "Give the project a name.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ponle un nombre al proyecto."
+          }
+        }
+      }
+    },
     "Give the reward a name.": {
       "localizations": {
         "es": {
@@ -2985,12 +3758,52 @@
         }
       }
     },
+    "Go by difficulty": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Según la dificultad"
+          }
+        }
+      }
+    },
+    "Good for right now": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Buenas para ahora"
+          }
+        }
+      }
+    },
     "Great attitude": {
       "localizations": {
         "es": {
           "stringUnit": {
             "state": "translated",
             "value": "Muy buena actitud"
+          }
+        }
+      }
+    },
+    "Grown-up: no points, and the kids can see it": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Adulto: sin puntos, y los niños pueden verla"
+          }
+        }
+      }
+    },
+    "Guests are coming": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vienen invitados"
           }
         }
       }
@@ -3115,6 +3928,46 @@
         }
       }
     },
+    "How it helps the family": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cómo ayuda a la familia"
+          }
+        }
+      }
+    },
+    "How it helps the family (optional)": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cómo ayuda a la familia (opcional)"
+          }
+        }
+      }
+    },
+    "How much energy do you have right now?": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "¿Cuánta energía tienes ahora?"
+          }
+        }
+      }
+    },
+    "How much energy?": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "¿Cuánta energía?"
+          }
+        }
+      }
+    },
     "I couldn't find that chore.": {
       "localizations": {
         "es": {
@@ -3235,6 +4088,16 @@
         }
       }
     },
+    "Laundry can only get clean if it reaches the hamper.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La ropa solo se lava si llega al cesto."
+          }
+        }
+      }
+    },
     "Lay out tomorrow's clothes": {
       "localizations": {
         "es": {
@@ -3245,12 +4108,62 @@
         }
       }
     },
+    "Lay out your clothes the night before.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deja la ropa preparada la noche anterior."
+          }
+        }
+      }
+    },
+    "Lay them all out first, then find pairs.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Extiéndelos todos primero y luego busca las parejas."
+          }
+        }
+      }
+    },
+    "Learning": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aprendiendo"
+          }
+        }
+      }
+    },
     "Let someone else do it": {
       "localizations": {
         "es": {
           "stringUnit": {
             "state": "translated",
             "value": "Que la haga otro"
+          }
+        }
+      }
+    },
+    "Let them choose": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Que elijan"
+          }
+        }
+      }
+    },
+    "Let them choose fewer than all of them.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Que elijan menos que todas."
           }
         }
       }
@@ -3275,6 +4188,16 @@
         }
       }
     },
+    "Load donations into the car": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cargar las donaciones en el coche"
+          }
+        }
+      }
+    },
     "Load the dishwasher": {
       "localizations": {
         "es": {
@@ -3291,6 +4214,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "Versión de prueba local: los datos se quedan en este dispositivo."
+          }
+        }
+      }
+    },
+    "Lots of energy! A good time for the big ones.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "¡Mucha energía! Buen momento para las grandes."
+          }
+        }
+      }
+    },
+    "Low energy is OK. Here's what's easy.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Poca energía está bien. Esto es lo fácil."
           }
         }
       }
@@ -3345,6 +4288,16 @@
         }
       }
     },
+    "Matched socks mean faster mornings for everyone.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Calcetines emparejados, mañanas más rápidas para todos."
+          }
+        }
+      }
+    },
     "Medium": {
       "localizations": {
         "es": {
@@ -3391,6 +4344,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Rutina de la mañana"
+          }
+        }
+      }
+    },
+    "Mow in straight lines, overlapping a little each time.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Corta en líneas rectas, solapando un poco cada vez."
           }
         }
       }
@@ -3505,6 +4468,16 @@
         }
       }
     },
+    "New Project": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nuevo proyecto"
+          }
+        }
+      }
+    },
     "New Reward": {
       "localizations": {
         "es": {
@@ -3541,6 +4514,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Nuevo código de adultos"
+          }
+        }
+      }
+    },
+    "New to this": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Es nueva"
           }
         }
       }
@@ -3645,6 +4628,16 @@
         }
       }
     },
+    "No last-minute searching means a calmer morning for everyone.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sin buscar a última hora, la mañana es más tranquila para todos."
+          }
+        }
+      }
+    },
     "No picture": {
       "localizations": {
         "es": {
@@ -3685,6 +4678,16 @@
         }
       }
     },
+    "Nobody likes a smelly kitchen. This keeps it fresh for all of us.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A nadie le gusta una cocina que huele mal. Así se mantiene fresca para todos."
+          }
+        }
+      }
+    },
     "Not approved": {
       "localizations": {
         "es": {
@@ -3721,6 +4724,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Sin indicar"
+          }
+        }
+      }
+    },
+    "Not today: use my reset pass": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hoy no: usar mi pase de descanso"
           }
         }
       }
@@ -3975,6 +4988,16 @@
         }
       }
     },
+    "Our pet counts on us every single day.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nuestra mascota cuenta con nosotros todos los días."
+          }
+        }
+      }
+    },
     "Overdue": {
       "localizations": {
         "es": {
@@ -4155,12 +5178,32 @@
         }
       }
     },
+    "Pick": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Elegir"
+          }
+        }
+      }
+    },
     "Pick a book": {
       "localizations": {
         "es": {
           "stringUnit": {
             "state": "translated",
             "value": "Elegir un libro"
+          }
+        }
+      }
+    },
+    "Pick a deadline that hasn't passed yet.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Elige una fecha límite que todavía no haya pasado."
           }
         }
       }
@@ -4175,6 +5218,16 @@
         }
       }
     },
+    "Pick at least two chores to choose from.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Elige al menos dos tareas para escoger."
+          }
+        }
+      }
+    },
     "Pick dates that haven't passed yet.": {
       "localizations": {
         "es": {
@@ -4185,12 +5238,72 @@
         }
       }
     },
+    "Pick one kind of toy at a time: cars first, then blocks.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Un tipo de juguete a la vez: primero los coches, luego los bloques."
+          }
+        }
+      }
+    },
+    "Pick things up off the floor first.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Primero recoge lo que hay en el suelo."
+          }
+        }
+      }
+    },
+    "Pick up": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Recoger"
+          }
+        }
+      }
+    },
+    "Pick up toys and sticks": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Recoger juguetes y ramas"
+          }
+        }
+      }
+    },
     "Pick your profile": {
       "localizations": {
         "es": {
           "stringUnit": {
             "state": "translated",
             "value": "Elige tu perfil"
+          }
+        }
+      }
+    },
+    "Plants make our home nicer, and they need us to stay alive.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Las plantas hacen la casa más bonita, y nos necesitan para vivir."
+          }
+        }
+      }
+    },
+    "Plates first, then cutlery, then cups.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Primero los platos, luego los cubiertos, luego los vasos."
           }
         }
       }
@@ -4295,6 +5408,96 @@
         }
       }
     },
+    "Pro": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Experto"
+          }
+        }
+      }
+    },
+    "Problem-solving": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Resolver problemas"
+          }
+        }
+      }
+    },
+    "Project": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Proyecto"
+          }
+        }
+      }
+    },
+    "Project name": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nombre del proyecto"
+          }
+        }
+      }
+    },
+    "Pull the covers up first, then fluff the pillow.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Primero sube las sábanas y luego ahueca la almohada."
+          }
+        }
+      }
+    },
+    "Pull weeds": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quitar malas hierbas"
+          }
+        }
+      }
+    },
+    "Put a new bag in right away.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pon una bolsa nueva enseguida."
+          }
+        }
+      }
+    },
+    "Put away shoes and coats": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Guardar zapatos y abrigos"
+          }
+        }
+      }
+    },
+    "Put back": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Guardar"
+          }
+        }
+      }
+    },
     "Put back up for grabs": {
       "localizations": {
         "es": {
@@ -4305,12 +5508,52 @@
         }
       }
     },
+    "Put out fresh towels": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Poner toallas limpias"
+          }
+        }
+      }
+    },
+    "Put the tools back": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Guardar las herramientas"
+          }
+        }
+      }
+    },
     "Put toys away": {
       "localizations": {
         "es": {
           "stringUnit": {
             "state": "translated",
             "value": "Guardar los juguetes"
+          }
+        }
+      }
+    },
+    "Rake the leaves": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rastrillar las hojas"
+          }
+        }
+      }
+    },
+    "Read the whole recipe before you start.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lee toda la receta antes de empezar."
           }
         }
       }
@@ -4345,6 +5588,46 @@
         }
       }
     },
+    "Refresh": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Renovar"
+          }
+        }
+      }
+    },
+    "Regular chores carry on as usual alongside the project.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Las tareas habituales siguen como siempre junto al proyecto."
+          }
+        }
+      }
+    },
+    "Regular chores wait until the project is done or the date passes: no overdue chores, no reminders.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Las tareas habituales esperan hasta que termine el proyecto o pase la fecha: sin atrasos ni recordatorios."
+          }
+        }
+      }
+    },
+    "Regular chores wait until this is done.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Las tareas habituales esperan hasta que esto termine."
+          }
+        }
+      }
+    },
     "Reminder from %@": {
       "localizations": {
         "es": {
@@ -4361,6 +5644,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Recordatorio enviado"
+          }
+        }
+      }
+    },
+    "Remove": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quitar"
           }
         }
       }
@@ -4475,6 +5768,16 @@
         }
       }
     },
+    "Rest up. You've earned it.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Descansa. Te lo has ganado."
+          }
+        }
+      }
+    },
     "Review": {
       "localizations": {
         "es": {
@@ -4561,6 +5864,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Guardar"
+          }
+        }
+      }
+    },
+    "Save for a better moment": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Para un momento mejor"
           }
         }
       }
@@ -4795,12 +6108,82 @@
         }
       }
     },
+    "Sort": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ordenar"
+          }
+        }
+      }
+    },
+    "Sort as you go: paper, plastic, glass.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Separa sobre la marcha: papel, plástico, vidrio."
+          }
+        }
+      }
+    },
+    "Sort lights and darks, and empty your pockets first.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Separa lo claro de lo oscuro, y vacía los bolsillos primero."
+          }
+        }
+      }
+    },
+    "Sort what stays and what goes": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Decidir qué se queda y qué se va"
+          }
+        }
+      }
+    },
     "Spend your points": {
       "localizations": {
         "es": {
           "stringUnit": {
             "state": "translated",
             "value": "Gasta tus puntos"
+          }
+        }
+      }
+    },
+    "Spray, wait a minute, then wipe; it does the work for you.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rocía, espera un minuto y limpia; el producto hace el trabajo."
+          }
+        }
+      }
+    },
+    "Spring clean": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Limpieza de primavera"
+          }
+        }
+      }
+    },
+    "Stack plates with the scraps on top.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apila los platos con los restos arriba."
           }
         }
       }
@@ -4835,12 +6218,32 @@
         }
       }
     },
+    "Start with the floor, then the desk, then the bed.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Empieza por el suelo, luego el escritorio, luego la cama."
+          }
+        }
+      }
+    },
     "Step %lld": {
       "localizations": {
         "es": {
           "stringUnit": {
             "state": "translated",
             "value": "Paso %lld"
+          }
+        }
+      }
+    },
+    "Step %lld: %@": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Paso %1$lld: %2$@"
           }
         }
       }
@@ -4861,6 +6264,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Dejar de ahorrar para esto"
+          }
+        }
+      }
+    },
+    "Stretch": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reto"
+          }
+        }
+      }
+    },
+    "Stretch chore": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tarea de reto"
+          }
+        }
+      }
+    },
+    "Stretch chore: a step up. You've got this!": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tarea de reto: un paso más. ¡Tú puedes!"
           }
         }
       }
@@ -4911,6 +6344,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "Superayudante"
+          }
+        }
+      }
+    },
+    "Sweep the floor": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Barrer el suelo"
+          }
+        }
+      }
+    },
+    "Sweep the path": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Barrer el camino"
+          }
+        }
+      }
+    },
+    "Swipe a chore to remove it. Steps go in order: tidy before you clean.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Desliza una tarea para quitarla. Los pasos van en orden: ordenar antes de limpiar."
           }
         }
       }
@@ -4995,12 +6458,32 @@
         }
       }
     },
+    "Taking care of your own clothes is a big step toward independence.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cuidar tu propia ropa es un gran paso hacia la independencia."
+          }
+        }
+      }
+    },
     "Taking turns": {
       "localizations": {
         "es": {
           "stringUnit": {
             "state": "translated",
             "value": "Por turnos"
+          }
+        }
+      }
+    },
+    "Taking turns is for kids.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Los turnos son para los niños."
           }
         }
       }
@@ -5135,12 +6618,52 @@
         }
       }
     },
+    "The big picture view is for kids.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La vista de dibujos grandes es para los niños."
+          }
+        }
+      }
+    },
+    "The grown-ups today": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Los adultos hoy"
+          }
+        }
+      }
+    },
+    "The kids will see you got it done.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Los niños verán que lo hiciste."
+          }
+        }
+      }
+    },
     "The pause has to end after it starts.": {
       "localizations": {
         "es": {
           "stringUnit": {
             "state": "translated",
             "value": "La pausa tiene que terminar después de empezar."
+          }
+        }
+      }
+    },
+    "The reset pass is for chores due today.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "El pase de descanso es para tareas de hoy."
           }
         }
       }
@@ -5175,12 +6698,32 @@
         }
       }
     },
+    "These can't wait, so they're here whatever your energy.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Estas no pueden esperar, así que están aquí sea cual sea tu energía."
+          }
+        }
+      }
+    },
     "They": {
       "localizations": {
         "es": {
           "stringUnit": {
             "state": "translated",
             "value": "Lo"
+          }
+        }
+      }
+    },
+    "They pick %lld of %lld": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eligen %1$lld de %2$lld"
           }
         }
       }
@@ -5265,6 +6808,16 @@
         }
       }
     },
+    "This one is already picked.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Esta ya está elegida."
+          }
+        }
+      }
+    },
     "This request has no owner.": {
       "localizations": {
         "es": {
@@ -5295,12 +6848,42 @@
         }
       }
     },
+    "This week": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Esta semana"
+          }
+        }
+      }
+    },
     "Tick off every step first.": {
       "localizations": {
         "es": {
           "stringUnit": {
             "state": "translated",
             "value": "Primero marca todos los pasos."
+          }
+        }
+      }
+    },
+    "Tidy the living room": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ordenar la sala"
+          }
+        }
+      }
+    },
+    "Tidy up": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ordenar"
           }
         }
       }
@@ -5341,6 +6924,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "¡Se acabó el tiempo!"
+          }
+        }
+      }
+    },
+    "Tips": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Consejos"
+          }
+        }
+      }
+    },
+    "Tips for doing it well (optional)": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Consejos para hacerla bien (opcional)"
           }
         }
       }
@@ -5425,6 +7028,16 @@
         }
       }
     },
+    "Trash day only comes once a week; this keeps the house fresh.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La basura se recoge una vez a la semana; así la casa se mantiene fresca."
+          }
+        }
+      }
+    },
     "Treat yourself": {
       "localizations": {
         "es": {
@@ -5501,6 +7114,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Preadolescentes (10+)"
+          }
+        }
+      }
+    },
+    "Unfinished project chores are removed. Points already earned stay.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Se quitan las tareas del proyecto sin terminar. Los puntos ya ganados se quedan."
           }
         }
       }
@@ -5625,12 +7248,32 @@
         }
       }
     },
+    "Vacuum the floors": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aspirar el suelo"
+          }
+        }
+      }
+    },
     "Vacuum the living room": {
       "localizations": {
         "es": {
           "stringUnit": {
             "state": "translated",
             "value": "Aspirar la sala"
+          }
+        }
+      }
+    },
+    "Vacuum under the furniture": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aspirar debajo de los muebles"
           }
         }
       }
@@ -5685,6 +7328,36 @@
         }
       }
     },
+    "Walks keep our dog happy, healthy and calm at home.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Los paseos mantienen a nuestro perro feliz, sano y tranquilo en casa."
+          }
+        }
+      }
+    },
+    "Wash the bedding": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lavar la ropa de cama"
+          }
+        }
+      }
+    },
+    "Wash the windows": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Limpiar las ventanas"
+          }
+        }
+      }
+    },
     "Wash, dry, fold and put away.": {
       "localizations": {
         "es": {
@@ -5705,12 +7378,42 @@
         }
       }
     },
+    "Water until it just starts to come out the bottom.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Riega hasta que empiece a salir por abajo."
+          }
+        }
+      }
+    },
     "Week": {
       "localizations": {
         "es": {
           "stringUnit": {
             "state": "translated",
             "value": "Semana"
+          }
+        }
+      }
+    },
+    "Week of": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Semana del"
+          }
+        }
+      }
+    },
+    "Week of %@": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Semana del %@"
           }
         }
       }
@@ -5815,6 +7518,16 @@
         }
       }
     },
+    "What's the project?": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "¿Cuál es el proyecto?"
+          }
+        }
+      }
+    },
     "When": {
       "localizations": {
         "es": {
@@ -5835,12 +7548,32 @@
         }
       }
     },
+    "When everyone's ready on time, mornings are calm for the whole family.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cuando todos están listos a tiempo, las mañanas son tranquilas para toda la familia."
+          }
+        }
+      }
+    },
     "Which chore did you finish?": {
       "localizations": {
         "es": {
           "stringUnit": {
             "state": "translated",
             "value": "¿Qué tarea terminaste?"
+          }
+        }
+      }
+    },
+    "Who": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quién"
           }
         }
       }
@@ -5871,6 +7604,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "¿Quién usa Happy Mama?"
+          }
+        }
+      }
+    },
+    "Wipe down the kitchen": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Limpiar la cocina"
+          }
+        }
+      }
+    },
+    "Wipe the baseboards": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Limpiar los zócalos"
+          }
+        }
+      }
+    },
+    "Wipe the shelves": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Limpiar los estantes"
           }
         }
       }
@@ -5935,6 +7698,16 @@
         }
       }
     },
+    "Yard cleanup": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Limpieza del jardín"
+          }
+        }
+      }
+    },
     "Yay!": {
       "localizations": {
         "es": {
@@ -5985,6 +7758,16 @@
         }
       }
     },
+    "You can't change this choice anymore.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ya no puedes cambiar esta elección."
+          }
+        }
+      }
+    },
     "You can't make yourself a kid.": {
       "localizations": {
         "es": {
@@ -6011,6 +7794,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "No puedes restablecer tu propio acceso."
+          }
+        }
+      }
+    },
+    "You choose which ones to do this week.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tú eliges cuáles hacer esta semana."
           }
         }
       }
@@ -6245,6 +8038,26 @@
         }
       }
     },
+    "You've picked the easiest one lately. Try a harder one: more points means more free time!": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Últimamente eliges la más fácil. Prueba una más difícil: más puntos, más tiempo libre."
+          }
+        }
+      }
+    },
+    "You've used today's reset pass. You've got this!": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ya usaste el pase de descanso de hoy. ¡Tú puedes!"
+          }
+        }
+      }
+    },
     "Your Week": {
       "localizations": {
         "es": {
@@ -6400,6 +8213,16 @@
     },
     "“%@”": {
       "shouldTranslate": false
+    },
+    "🎉": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "🎉"
+          }
+        }
+      }
     },
     "🏡": {
       "shouldTranslate": false
