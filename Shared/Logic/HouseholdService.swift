@@ -172,6 +172,9 @@ final class HouseholdService: ObservableObject {
         var steps: [String] = []
         /// The kid has to attach a photo to turn it in.
         var photoRequired = false
+        /// About how long it takes, and how hard it is, for suggesting fair points.
+        var minutes: Int?
+        var difficulty: Difficulty?
     }
 
     static let maxSteps = 12
@@ -215,6 +218,8 @@ final class HouseholdService: ObservableObject {
         chore.dueTime = draft.dueDate == nil ? nil : draft.dueTime
         chore.autoApprove = draft.autoApprove
         chore.photoRequired = draft.photoRequired
+        chore.minutes = draft.minutes
+        chore.difficulty = draft.difficulty
         let oldSteps = chore.steps
         chore.steps = draft.steps
         if chore.steps != oldSteps { chore.doneSteps = [] }
@@ -322,6 +327,9 @@ final class HouseholdService: ObservableObject {
         if draft.recurrence.isRepeating, draft.dueDate == nil {
             throw ServiceError.invalid(String(localized: "Repeating chores need a due date to start from."))
         }
+        if let minutes = draft.minutes, !Effort.minuteRange.contains(minutes) {
+            throw ServiceError.invalid(String(localized: "Use between 1 and 600 minutes."))
+        }
         guard draft.steps.filter({ !$0.trimmed.isEmpty }).count <= Self.maxSteps else {
             throw ServiceError.invalid(String(localized: "A routine can have up to \(Self.maxSteps) steps."))
         }
@@ -343,6 +351,8 @@ final class HouseholdService: ObservableObject {
         chore.dueTime = draft.dueDate == nil ? nil : draft.dueTime
         chore.autoApprove = draft.autoApprove
         chore.photoRequired = draft.photoRequired
+        chore.minutes = draft.minutes
+        chore.difficulty = draft.difficulty
         chore.steps = draft.steps
         chore.createdAt = Date()
         chore.recurrence = draft.recurrence
@@ -371,6 +381,8 @@ final class HouseholdService: ObservableObject {
         draft.autoApprove = chore.autoApprove
         draft.steps = chore.steps
         draft.photoRequired = chore.photoRequired
+        draft.minutes = chore.minutes
+        draft.difficulty = chore.difficulty
         draft.recurrence = rule
         let copy = try newChore(from: draft, title: chore.displayTitle, assignee: kid, household: household)
         copy.sourceChoreID = chore.id
@@ -541,6 +553,16 @@ final class HouseholdService: ObservableObject {
             household.pausedFrom = nil
             household.pausedUntil = nil
         }
+        try save()
+    }
+
+    // MARK: Effort
+
+    /// How many points every 5 minutes of a chore suggests, before difficulty.
+    func setEffortRate(_ rate: Int, for household: Household, by me: Member) throws {
+        try requireParent(me)
+        guard Effort.rateRange.contains(rate) else { throw ServiceError.invalid(String(localized: "Use between 1 and 20 points.")) }
+        household.effortRate = Int16(rate)
         try save()
     }
 

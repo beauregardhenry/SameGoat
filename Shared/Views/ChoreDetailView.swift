@@ -127,6 +127,9 @@ struct ChoreDetailView: View {
                 Text(notes)
             }
             LabeledContent("Worth") { PointsBadge(points: Int(chore.points)) }
+            if let effort = chore.effortLabel {
+                LabeledContent("Effort", value: effort)
+            }
             if let assignee = chore.assignee {
                 LabeledContent("Assigned to") {
                     HStack(spacing: 6) { Text(assignee.displayEmoji); Text(assignee.displayName) }

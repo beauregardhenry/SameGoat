@@ -85,8 +85,9 @@ struct ChoreLibraryView: View {
                     .foregroundStyle(on ? Theme.accent : Color.secondary)
                 VStack(alignment: .leading, spacing: 2) {
                     Text(template.title)
-                    Text([template.repeats == .none ? "One-off" : template.repeats.title,
-                          template.steps.isEmpty ? nil : "\(template.steps.count) steps"]
+                    Text([template.repeats == .none ? String(localized: "One-off") : template.repeats.title,
+                          template.steps.isEmpty ? nil : String(localized: "\(template.steps.count) steps"),
+                          Effort.label(minutes: template.minutes, difficulty: template.difficulty)]
                         .compactMap { $0 }.joined(separator: " · "))
                         .font(.caption).foregroundStyle(.secondary)
                 }

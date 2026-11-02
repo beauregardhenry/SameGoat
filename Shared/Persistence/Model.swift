@@ -15,6 +15,7 @@ enum HappyMamaModel {
             attr("currencyCode", .stringAttributeType),
             attr("pausedFrom", .dateAttributeType),
             attr("pausedUntil", .dateAttributeType),
+            attr("effortRate", .integer16AttributeType, 1),
         ])
         let member = entity(Member.self, [
             attr("id", .UUIDAttributeType),
@@ -50,6 +51,8 @@ enum HappyMamaModel {
             attr("stepsRaw", .stringAttributeType),
             attr("doneStepsRaw", .stringAttributeType),
             attr("photoRequired", .booleanAttributeType, false),
+            attr("minutesRaw", .integer16AttributeType, 0),
+            attr("difficultyRaw", .stringAttributeType),
         ])
         let reward = entity(Reward.self, [
             attr("id", .UUIDAttributeType),

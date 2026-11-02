@@ -14,6 +14,8 @@ enum WeeklyRecap {
         /// Points earned this week (chores and bonuses; spending doesn't count against it).
         let points: Int
         let choresDone: Int
+        /// Roughly how long this week's finished chores took, from their time estimates.
+        let minutes: Int
         let streak: Int
         /// Oldest first, ending with this week.
         let history: [Week]
@@ -40,9 +42,10 @@ enum WeeklyRecap {
             }
             let done = ((kid.assignedChores as? Set<Chore>) ?? []).filter {
                 $0.status == .approved && $0.completedAt.map { weekStart(for: $0, calendar: calendar) } == thisWeek
-            }.count
+            }
             return KidWeek(id: id, name: kid.displayName, emoji: kid.displayEmoji,
-                           points: history.last?.points ?? 0, choresDone: done,
+                           points: history.last?.points ?? 0, choresDone: done.count,
+                           minutes: done.reduce(0) { $0 + ($1.minutes ?? 0) },
                            streak: kid.streak(now: now, calendar: calendar), history: history)
         }
     }

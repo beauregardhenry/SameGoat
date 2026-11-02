@@ -224,6 +224,9 @@ struct ChoreRow: View {
                 }
                 .font(.subheadline)
                 .foregroundStyle(.secondary)
+                if let effort = chore.effortLabel, chore.status == .todo {
+                    Label(effort, systemImage: "stopwatch").font(.caption).foregroundStyle(.secondary)
+                }
                 if chore.isRoutine && chore.status == .todo {
                     Text("\(chore.doneSteps.count) of \(chore.steps.count) steps")
                         .font(.caption).foregroundStyle(.secondary)

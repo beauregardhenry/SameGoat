@@ -72,6 +72,13 @@ struct FamilyView: View {
                     Label(me.isParent ? "Weekly recap" : "Your week", systemImage: "chart.bar")
                 }
                 if me.isParent {
+                    NavigationLink { EffortSettingsView(household: household, me: me) } label: {
+                        LabeledContent {
+                            Text("\(household.effortRate) per 5 min")
+                        } label: {
+                            Label("Points for effort", systemImage: "stopwatch")
+                        }
+                    }
                     NavigationLink { PauseSettingsView(household: household, me: me) } label: {
                         LabeledContent {
                             Text(household.upcomingPause() != nil ? "On" : "Off")

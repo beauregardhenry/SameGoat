@@ -46,6 +46,8 @@ final class Household: NSManagedObject, Identifiable {
     /// A vacation pause, first and last day included (start-of-day dates).
     @NSManaged var pausedFrom: Date?
     @NSManaged var pausedUntil: Date?
+    /// Points suggested for every 5 minutes of a chore, before difficulty.
+    @NSManaged var effortRate: Int16
 
     var displayName: String { name ?? String(localized: "Our Household") }
     var allowanceOn: Bool { allowanceRate > 0 }
@@ -193,6 +195,19 @@ final class Chore: NSManagedObject, Identifiable {
     @NSManaged var doneStepsRaw: String?
     /// The kid has to attach a photo to turn it in.
     @NSManaged var photoRequired: Bool
+    /// About how long it takes, in minutes; 0 when not set.
+    @NSManaged var minutesRaw: Int16
+    @NSManaged var difficultyRaw: String?
+
+    var minutes: Int? {
+        get { minutesRaw > 0 ? Int(minutesRaw) : nil }
+        set { minutesRaw = Int16(newValue.map { min(max($0, 0), Effort.minuteRange.upperBound) } ?? 0) }
+    }
+    var difficulty: Difficulty? {
+        get { difficultyRaw.flatMap(Difficulty.init(rawValue:)) }
+        set { difficultyRaw = newValue?.rawValue }
+    }
+    var effortLabel: String? { Effort.label(minutes: minutes, difficulty: difficulty) }
     @NSManaged var household: Household?
     @NSManaged var assignee: Member?
 
