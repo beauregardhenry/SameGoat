@@ -198,12 +198,13 @@ final class HouseholdService: ObservableObject {
     /// Gives each kid their own copy, or with `takeTurns` one chore the kids take turns on,
     /// starting with the first of `assignees`.
     @discardableResult
-    func createChores(_ draft: ChoreDraft, assignees: [Member], in household: Household, by me: Member) throws -> [Chore] {
+    func createChores(_ draft: ChoreDraft, assignees: [Member], in household: Household, by me: Member,
+                      saving: Bool = true) throws -> [Chore] {
         try requireParent(me)
         if draft.upForGrabs {
             let title = try validated(draft, assignees: [])
             let chore = try newChore(from: draft, title: title, assignee: nil, household: household)
-            try save()
+            if saving { try save() }
             return [chore]
         }
         guard let first = assignees.first else { throw ServiceError.invalid(String(localized: "Choose who should do it.")) }
@@ -211,13 +212,13 @@ final class HouseholdService: ObservableObject {
         if draft.takeTurns {
             let chore = try newChore(from: draft, title: title, assignee: first, household: household)
             chore.rotationIDs = assignees.compactMap(\.id)
-            try save()
+            if saving { try save() }
             return [chore]
         }
         let created = try assignees.map { kid in
             try newChore(from: draft, title: title, assignee: kid, household: household)
         }
-        try save()
+        if saving { try save() }
         return created
     }
 
@@ -376,6 +377,7 @@ final class HouseholdService: ObservableObject {
         entry.choreID = chore.id
 
         try scheduleNextOccurrence(after: chore)
+        finishProjectIfDone(for: chore)
     }
 
     /// A parent sends the chore back to the kid with a note. No points are awarded.

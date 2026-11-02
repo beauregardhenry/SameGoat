@@ -62,6 +62,7 @@ final class Household: NSManagedObject, Identifiable {
     @NSManaged var rewards: NSSet?
     @NSManaged var redemptions: NSSet?
     @NSManaged var entries: NSSet?
+    @NSManaged var projects: NSSet?
     /// Allowance mode: how many points make one unit of money (one dollar, one euro). 0 is off.
     @NSManaged var allowanceRate: Int16
     @NSManaged var currencyCode: String?
@@ -73,6 +74,18 @@ final class Household: NSManagedObject, Identifiable {
 
     var displayName: String { name ?? String(localized: "Our Household") }
     var allowanceOn: Bool { allowanceRate > 0 }
+
+    /// Projects still underway, soonest due first.
+    func activeProjects(now: Date = Date(), calendar: Calendar = .current) -> [Project] {
+        ((projects as? Set<Project>) ?? [])
+            .filter { $0.isActive(now: now, calendar: calendar) }
+            .sorted { ($0.dueDate ?? .distantFuture) < ($1.dueDate ?? .distantFuture) }
+    }
+
+    /// The project that's putting regular chores on hold right now, if any.
+    func overridingProject(now: Date = Date(), calendar: Calendar = .current) -> Project? {
+        activeProjects(now: now, calendar: calendar).first(where: \.pausesRegular)
+    }
 
     /// True on any day of the vacation pause.
     func isPaused(on date: Date, calendar: Calendar = .current) -> Bool {
@@ -240,6 +253,18 @@ final class Chore: NSManagedObject, Identifiable {
     @NSManaged var extraCredit: Bool
     /// Due any day this week rather than on one day.
     @NSManaged var dueWithinWeek: Bool
+    /// Set for a chore that's part of a project, with the project step it belongs to.
+    @NSManaged var projectID: UUID?
+    @NSManaged var phase: Int16
+
+    var project: Project? {
+        guard let projectID else { return nil }
+        return ((household?.projects as? Set<Project>) ?? []).first { $0.id == projectID }
+    }
+    /// A regular chore set aside while a project that comes first is underway.
+    func isOnHold(now: Date = Date(), calendar: Calendar = .current) -> Bool {
+        projectID == nil && household?.overridingProject(now: now, calendar: calendar) != nil
+    }
 
     var skill: Int? {
         get { skillRaw > 0 ? Int(skillRaw) : nil }
@@ -309,6 +334,8 @@ final class Chore: NSManagedObject, Identifiable {
     var isOverdue: Bool { isOverdue() }
     func isOverdue(now: Date = Date(), calendar: Calendar = .current) -> Bool {
         guard status == .todo, !extraCredit, let due = dueAt(calendar: calendar) else { return false }
+        // Regular chores wait while a project that comes first is underway.
+        if isOnHold(now: now, calendar: calendar) { return false }
         // Nothing goes overdue during a vacation, or for being due on one.
         if let household, household.isPaused(on: now, calendar: calendar)
             || dueDate.map({ household.isPaused(on: $0, calendar: calendar) }) == true { return false }
@@ -404,4 +431,57 @@ func syncOrder<T: NSManagedObject>(_ a: T, _ b: T) -> Bool {
     let ida = (a.value(forKey: "id") as? UUID)?.uuidString ?? ""
     let idb = (b.value(forKey: "id") as? UUID)?.uuidString ?? ""
     return ida < idb
+}
+
+/// A one-off push like "Clean house for guests": a set of chores in steps, with a deadline,
+/// that can put regular chores on hold until it's done.
+@objc(Project)
+final class Project: NSManagedObject, Identifiable {
+    @NSManaged var id: UUID?
+    @NSManaged var title: String?
+    @NSManaged var emoji: String?
+    @NSManaged var dueDate: Date?
+    @NSManaged var pausesRegular: Bool
+    /// The names of its steps, in order, one per line.
+    @NSManaged var phaseNamesRaw: String?
+    @NSManaged var createdAt: Date?
+    @NSManaged var finishedAt: Date?
+    @NSManaged var household: Household?
+
+    var displayTitle: String { title ?? String(localized: "Project") }
+    var displayEmoji: String { emoji ?? "📋" }
+    var phaseNames: [String] {
+        get { (phaseNamesRaw ?? "").split(separator: "\n").map(String.init) }
+        set { phaseNamesRaw = newValue.isEmpty ? nil : newValue.joined(separator: "\n") }
+    }
+
+    var chores: [Chore] {
+        guard let id else { return [] }
+        return ((household?.chores as? Set<Chore>) ?? [])
+            .filter { $0.projectID == id }
+            .sorted { ($0.phase, $0.displayTitle) < ($1.phase, $1.displayTitle) }
+    }
+
+    /// Underway: not finished, and its deadline hasn't passed.
+    func isActive(now: Date = Date(), calendar: Calendar = .current) -> Bool {
+        guard finishedAt == nil else { return false }
+        guard let dueDate else { return true }
+        return calendar.startOfDay(for: dueDate) >= calendar.startOfDay(for: now)
+    }
+
+    /// Share of its chores that are approved, from 0 to 1.
+    var progress: Double {
+        let all = chores
+        guard !all.isEmpty else { return 0 }
+        return Double(all.filter { $0.status == .approved }.count) / Double(all.count)
+    }
+
+    func phaseName(_ phase: Int) -> String {
+        phaseNames.indices.contains(phase) ? phaseNames[phase] : String(localized: "Step \(phase + 1)")
+    }
+
+    /// The first step that still has chores to finish; later steps are best left until it's done.
+    var currentPhase: Int? {
+        chores.filter { $0.status != .approved }.map { Int($0.phase) }.min()
+    }
 }
