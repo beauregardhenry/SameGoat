@@ -22,6 +22,7 @@ struct HappyMamaApp: App {
                 .environmentObject(env.identity)
                 .environmentObject(env.service)
                 .environmentObject(env.sharedDevice)
+                .environmentObject(env.celebrations)
                 .environmentObject(PersistenceBox(env.persistence))
                 .tint(Theme.accent)
                 #if os(macOS)

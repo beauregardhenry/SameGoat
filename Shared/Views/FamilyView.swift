@@ -191,6 +191,10 @@ struct MemberDetailView: View {
                 }
             }
 
+            if !member.isParent {
+                Section("Badges") { BadgeShelf(badges: Badges.all(for: member)) }
+            }
+
             if !member.isParent && me.isParent {
                 Section {
                     Button("Give bonus points", systemImage: "star.circle.fill") { showingBonus = true }
