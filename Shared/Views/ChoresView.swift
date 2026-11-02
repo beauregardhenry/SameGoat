@@ -108,6 +108,14 @@ struct BalanceCard: View {
     @ObservedObject var member: Member
     @Environment(\.dynamicTypeSize) private var typeSize
 
+    /// "24 points ($2.40) · 4 on hold"
+    private var pointsLine: String {
+        var line = "\(member.available) points"
+        if let money = member.household?.moneyText(for: member.available) { line += " (\(money))" }
+        if member.reserved > 0 { line += " · \(member.reserved) on hold" }
+        return line
+    }
+
     var body: some View {
         let streak = member.streak()
         VStack(alignment: .leading, spacing: 12) {
@@ -115,7 +123,7 @@ struct BalanceCard: View {
                 Avatar(member: member, size: 52)
                 VStack(alignment: .leading, spacing: 2) {
                     Text("Hi, \(member.displayName)!").font(.title3.bold())
-                    Text(member.reserved > 0 ? "\(member.available) points · \(member.reserved) on hold" : "\(member.available) points")
+                    Text(pointsLine)
                         .font(.subheadline).foregroundStyle(.secondary)
                     if streak > 0 {
                         Text("🔥 \(streak)-day streak").font(.subheadline.weight(.semibold)).foregroundStyle(.orange)

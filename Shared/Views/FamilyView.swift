@@ -67,6 +67,18 @@ struct FamilyView: View {
                 }
             }
 
+            Section(me.isParent ? "Family settings" : "You") {
+                if me.isParent {
+                    NavigationLink { AllowanceSettingsView(household: household, me: me) } label: {
+                        LabeledContent {
+                            Text(household.allowanceOn ? "On" : "Off")
+                        } label: {
+                            Label("Allowance", systemImage: "dollarsign.circle")
+                        }
+                    }
+                }
+            }
+
             if me.isParent {
                 Section {
                     Toggle("Shared family device", isOn: Binding(
@@ -167,6 +179,7 @@ struct MemberDetailView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var showingEdit = false
     @State private var showingBonus = false
+    @State private var showingPayout = false
     @State private var confirmingRemove = false
     @State private var error: String?
 
@@ -198,6 +211,10 @@ struct MemberDetailView: View {
             if !member.isParent && me.isParent {
                 Section {
                     Button("Give bonus points", systemImage: "star.circle.fill") { showingBonus = true }
+                    if member.household?.allowanceOn == true {
+                        Button("Pay out", systemImage: "banknote") { showingPayout = true }
+                            .disabled(member.available <= 0)
+                    }
                 }
             }
 
@@ -244,6 +261,7 @@ struct MemberDetailView: View {
         }
         .navigationTitle(member.displayName)
         .sheet(isPresented: $showingBonus) { BonusSheet(kid: member, me: me) }
+        .sheet(isPresented: $showingPayout) { PayoutSheet(kid: member, me: me) }
         .sheet(isPresented: $showingEdit) {
             if let household = member.household { MemberEditorView(household: household, me: me, member: member) }
         }
@@ -329,6 +347,7 @@ private extension EntryKind {
         case .chore: "checkmark.circle.fill"
         case .redemption: "gift.fill"
         case .bonus: "star.circle.fill"
+        case .payout: "banknote.fill"
         }
     }
     var color: Color {
@@ -336,6 +355,7 @@ private extension EntryKind {
         case .chore: .green
         case .redemption: Theme.accent
         case .bonus: .orange
+        case .payout: .teal
         }
     }
 }
