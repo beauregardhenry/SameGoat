@@ -447,6 +447,21 @@ final class HouseholdService: ObservableObject {
         try save()
     }
 
+    // MARK: Bonus points
+
+    static let bonusRange = 1...1000
+
+    /// A parent gives points for something that wasn't a chore ("Helped your brother").
+    @discardableResult
+    func giveBonus(_ points: Int, reason: String, to kid: Member, by me: Member) throws -> PointEntry {
+        try requireParent(me)
+        guard !kid.isParent, let household = kid.household else { throw ServiceError.invalid("Bonus points are for kids.") }
+        guard Self.bonusRange.contains(points) else { throw ServiceError.invalid("Give between 1 and 1,000 points.") }
+        let entry = try addEntry(Int32(points), kind: .bonus, reason: reason.trimmed.nilIfEmpty ?? "Bonus", to: kid, in: household)
+        try save()
+        return entry
+    }
+
     // MARK: Helpers
 
     private func addEntry(_ amount: Int32, kind: EntryKind, reason: String, to kid: Member,

@@ -24,7 +24,8 @@ enum RedemptionStatus: String {
 }
 
 enum EntryKind: String {
-    case chore, redemption
+    /// `bonus` is points a parent gives with a reason, outside any chore.
+    case chore, redemption, bonus
 }
 
 @objc(Household)
@@ -255,6 +256,8 @@ final class PointEntry: NSManagedObject, Identifiable {
         switch kind {
         case .chore: choreID.map { "chore-\($0.uuidString)" } ?? "entry-\(id?.uuidString ?? "")"
         case .redemption: redemptionID.map { "redemption-\($0.uuidString)" } ?? "entry-\(id?.uuidString ?? "")"
+        // Every bonus is its own source: two parents giving one each means two bonuses.
+        case .bonus: "entry-\(id?.uuidString ?? "")"
         }
     }
 

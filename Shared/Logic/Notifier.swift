@@ -199,6 +199,13 @@ final class Notifier: NSObject, UNUserNotificationCenterDelegate {
                     title: request.status == .approved ? "Reward approved!" : "Reward not approved",
                     body: "\(request.displayEmoji) \(request.displayTitle)"))
             }
+            for entry in me.entryList where entry.kind == .bonus {
+                guard let date = entry.date, date > Date().addingTimeInterval(-86_400) else { continue }
+                result.append(Event(
+                    key: "bonus-\(entry.id?.uuidString ?? "")",
+                    title: "Bonus! +\(entry.amount) points",
+                    body: entry.reason ?? "From a parent."))
+            }
         }
         return result
     }

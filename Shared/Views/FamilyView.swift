@@ -166,6 +166,7 @@ struct MemberDetailView: View {
     @EnvironmentObject private var service: HouseholdService
     @Environment(\.dismiss) private var dismiss
     @State private var showingEdit = false
+    @State private var showingBonus = false
     @State private var confirmingRemove = false
     @State private var error: String?
 
@@ -190,6 +191,12 @@ struct MemberDetailView: View {
                 }
             }
 
+            if !member.isParent && me.isParent {
+                Section {
+                    Button("Give bonus points", systemImage: "star.circle.fill") { showingBonus = true }
+                }
+            }
+
             if !member.isParent {
                 Section("Points history") {
                     if member.entryList.isEmpty {
@@ -197,8 +204,8 @@ struct MemberDetailView: View {
                     }
                     ForEach(member.entryList) { entry in
                         HStack {
-                            Image(systemName: entry.kind == .chore ? "checkmark.circle.fill" : "gift.fill")
-                                .foregroundStyle(entry.kind == .chore ? Color.green : Theme.accent)
+                            Image(systemName: entry.kind.icon)
+                                .foregroundStyle(entry.kind.color)
                             VStack(alignment: .leading) {
                                 Text(entry.reason ?? "")
                                 if let date = entry.date {
@@ -232,6 +239,7 @@ struct MemberDetailView: View {
             }
         }
         .navigationTitle(member.displayName)
+        .sheet(isPresented: $showingBonus) { BonusSheet(kid: member, me: me) }
         .sheet(isPresented: $showingEdit) {
             if let household = member.household { MemberEditorView(household: household, me: me, member: member) }
         }
@@ -308,5 +316,83 @@ struct MemberEditorView: View {
             .errorAlert($error)
         }
         .sheetFrame(height: 460)
+    }
+}
+
+private extension EntryKind {
+    var icon: String {
+        switch self {
+        case .chore: "checkmark.circle.fill"
+        case .redemption: "gift.fill"
+        case .bonus: "star.circle.fill"
+        }
+    }
+    var color: Color {
+        switch self {
+        case .chore: .green
+        case .redemption: Theme.accent
+        case .bonus: .orange
+        }
+    }
+}
+
+/// A parent gives points for something that wasn't a chore.
+struct BonusSheet: View {
+    let kid: Member
+    let me: Member
+    @EnvironmentObject private var service: HouseholdService
+    @Environment(\.dismiss) private var dismiss
+    @State private var points = 5
+    @State private var reason = ""
+    @State private var error: String?
+
+    private static let ideas = ["Great attitude", "Helped out without asking", "Kind to a sibling", "Extra effort"]
+
+    var body: some View {
+        NavigationStack {
+            Form {
+                Section {
+                    HStack {
+                        Text("Points")
+                        Spacer()
+                        Text("\(points)").monospacedDigit()
+                        Stepper("Points", value: $points, in: HouseholdService.bonusRange).labelsHidden()
+                    }
+                }
+                Section {
+                    TextField("What for?", text: $reason)
+                    ScrollView(.horizontal, showsIndicators: false) {
+                        HStack {
+                            ForEach(Self.ideas, id: \.self) { idea in
+                                Button(idea) { reason = idea }
+                                    .buttonStyle(.bordered)
+                                    .tint(reason == idea ? Theme.accent : .secondary)
+                            }
+                        }
+                    }
+                } footer: {
+                    Text("\(kid.displayName) gets a notification with the reason.")
+                }
+            }
+            .formStyle(.grouped)
+            .navigationTitle("Bonus for \(kid.displayName)")
+            #if os(iOS)
+            .navigationBarTitleDisplayMode(.inline)
+            #endif
+            .toolbar {
+                ToolbarItem(placement: .cancellationAction) { Button("Cancel") { dismiss() } }
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("Give \(points)") {
+                        do {
+                            try service.giveBonus(points, reason: reason, to: kid, by: me)
+                            dismiss()
+                        } catch { self.error = error.localizedDescription }
+                    }
+                }
+            }
+            .errorAlert($error)
+        }
+        .sheetFrame(height: 380)
+        .presentationDetents([.medium])
     }
 }
