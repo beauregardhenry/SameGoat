@@ -358,7 +358,11 @@ final class HouseholdService: ObservableObject {
         guard rule.isRepeating, let household = chore.household, let kid = chore.nextAssignee else { return }
         // Late chores repeat from today, not from the missed date.
         let base = max(chore.dueDate ?? Date(), calendar.startOfDay(for: Date()))
-        guard let next = rule.nextDate(after: base, calendar: calendar) else { return }
+        guard var next = rule.nextDate(after: base, calendar: calendar) else { return }
+        // Skip over a vacation pause rather than piling chores up for the trip.
+        while household.isPaused(on: next, calendar: calendar), let later = rule.nextDate(after: next, calendar: calendar) {
+            next = later
+        }
         var draft = ChoreDraft()
         draft.notes = chore.notes ?? ""
         draft.points = Int(chore.points)
@@ -520,6 +524,24 @@ final class HouseholdService: ObservableObject {
         let entry = try addEntry(Int32(-points), kind: .payout, reason: "Paid \(money)", to: kid, in: household)
         try save()
         return entry
+    }
+
+    // MARK: Vacation pause
+
+    /// Pauses chores from `from` through `until` (whole days), or clears the pause with nil.
+    func setPause(from: Date?, until: Date?, for household: Household, by me: Member) throws {
+        try requireParent(me)
+        if let from, let until {
+            let start = calendar.startOfDay(for: from), end = calendar.startOfDay(for: until)
+            guard end >= start else { throw ServiceError.invalid("The pause has to end after it starts.") }
+            guard end >= calendar.startOfDay(for: Date()) else { throw ServiceError.invalid("Pick dates that haven't passed yet.") }
+            household.pausedFrom = start
+            household.pausedUntil = end
+        } else {
+            household.pausedFrom = nil
+            household.pausedUntil = nil
+        }
+        try save()
     }
 
     // MARK: Helpers

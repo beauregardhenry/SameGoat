@@ -37,7 +37,7 @@ enum Badges {
         var best = 0, run = 0
         var previous: Date?
         for day in days {
-            if let previous, calendar.date(byAdding: .day, value: 1, to: previous) == day {
+            if let previous, isNext(day, after: previous, household: kid.household, calendar: calendar) {
                 run += 1
             } else {
                 run = 1
@@ -46,5 +46,14 @@ enum Badges {
             previous = day
         }
         return best
+    }
+
+    /// The next day, or later with only vacation days in between.
+    private static func isNext(_ day: Date, after previous: Date, household: Household?, calendar: Calendar) -> Bool {
+        var next = calendar.date(byAdding: .day, value: 1, to: previous)
+        while let candidate = next, candidate < day, household?.isPaused(on: candidate, calendar: calendar) == true {
+            next = calendar.date(byAdding: .day, value: 1, to: candidate)
+        }
+        return next == day
     }
 }

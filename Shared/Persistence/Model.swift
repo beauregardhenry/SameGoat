@@ -13,6 +13,8 @@ enum HappyMamaModel {
             attr("createdAt", .dateAttributeType),
             attr("allowanceRate", .integer16AttributeType, 0),
             attr("currencyCode", .stringAttributeType),
+            attr("pausedFrom", .dateAttributeType),
+            attr("pausedUntil", .dateAttributeType),
         ])
         let member = entity(Member.self, [
             attr("id", .UUIDAttributeType),

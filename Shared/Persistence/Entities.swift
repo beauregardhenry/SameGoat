@@ -43,9 +43,25 @@ final class Household: NSManagedObject, Identifiable {
     /// Allowance mode: how many points make one unit of money (one dollar, one euro). 0 is off.
     @NSManaged var allowanceRate: Int16
     @NSManaged var currencyCode: String?
+    /// A vacation pause, first and last day included (start-of-day dates).
+    @NSManaged var pausedFrom: Date?
+    @NSManaged var pausedUntil: Date?
 
     var displayName: String { name ?? "Our Household" }
     var allowanceOn: Bool { allowanceRate > 0 }
+
+    /// True on any day of the vacation pause.
+    func isPaused(on date: Date, calendar: Calendar = .current) -> Bool {
+        guard let pausedFrom, let pausedUntil else { return false }
+        let day = calendar.startOfDay(for: date)
+        return day >= calendar.startOfDay(for: pausedFrom) && day <= calendar.startOfDay(for: pausedUntil)
+    }
+
+    /// A pause that hasn't finished yet, for the banner and settings.
+    func upcomingPause(now: Date = Date(), calendar: Calendar = .current) -> ClosedRange<Date>? {
+        guard let pausedFrom, let pausedUntil, calendar.startOfDay(for: pausedUntil) >= calendar.startOfDay(for: now) else { return nil }
+        return pausedFrom...pausedUntil
+    }
 
     /// What `points` are worth in money, or nil with allowance mode off.
     func money(for points: Int) -> Decimal? {
@@ -126,14 +142,20 @@ final class Member: NSManagedObject, Identifiable {
             guard chore.status != .todo, let done = chore.completedAt else { return nil }
             return calendar.startOfDay(for: done)
         })
+        // Vacation days neither count nor break the streak.
+        let paused = { (day: Date) in self.household?.isPaused(on: day, calendar: calendar) == true && !days.contains(day) }
         var day = calendar.startOfDay(for: now)
-        if !days.contains(day), let yesterday = calendar.date(byAdding: .day, value: -1, to: day) {
+        func back(_ date: Date) -> Date? { calendar.date(byAdding: .day, value: -1, to: date) }
+        while paused(day), let previous = back(day) { day = previous }
+        if !days.contains(day), let yesterday = back(day) {
             day = yesterday
+            while paused(day), let previous = back(day) { day = previous }
         }
         var count = 0
-        while days.contains(day), let previous = calendar.date(byAdding: .day, value: -1, to: day) {
+        while days.contains(day), let previous = back(day) {
             count += 1
             day = previous
+            while paused(day), let earlier = back(day) { day = earlier }
         }
         return count
     }
@@ -216,6 +238,9 @@ final class Chore: NSManagedObject, Identifiable {
     var isOverdue: Bool { isOverdue() }
     func isOverdue(now: Date = Date(), calendar: Calendar = .current) -> Bool {
         guard status == .todo, let due = dueAt(calendar: calendar) else { return false }
+        // Nothing goes overdue during a vacation, or for being due on one.
+        if let household, household.isPaused(on: now, calendar: calendar)
+            || dueDate.map({ household.isPaused(on: $0, calendar: calendar) }) == true { return false }
         return due <= now
     }
     var wasSentBack: Bool { status == .todo && !(reviewNote ?? "").isEmpty }

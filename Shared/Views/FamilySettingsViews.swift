@@ -113,3 +113,68 @@ struct PayoutSheet: View {
         .presentationDetents([.medium])
     }
 }
+
+/// Parents pause chores for a trip: nothing goes overdue and streaks wait.
+struct PauseSettingsView: View {
+    @ObservedObject var household: Household
+    let me: Member
+    @EnvironmentObject private var service: HouseholdService
+    @State private var from: Date
+    @State private var until: Date
+    @State private var error: String?
+
+    init(household: Household, me: Member) {
+        self.household = household
+        self.me = me
+        let today = Calendar.current.startOfDay(for: Date())
+        _from = State(initialValue: household.upcomingPause()?.lowerBound ?? today)
+        _until = State(initialValue: household.upcomingPause()?.upperBound
+                       ?? Calendar.current.date(byAdding: .day, value: 6, to: today) ?? today)
+    }
+
+    var body: some View {
+        Form {
+            Section {
+                Toggle("Pause chores", isOn: Binding(
+                    get: { household.upcomingPause() != nil },
+                    set: { save(on: $0) }))
+            } footer: {
+                Text("For a trip or a sick week. Chores due during the pause don't go overdue or send reminders, repeating chores skip ahead to after it, and nobody's streak breaks.")
+            }
+            if household.upcomingPause() != nil {
+                Section("Dates") {
+                    DatePicker("From", selection: $from, displayedComponents: .date)
+                    DatePicker("Until", selection: $until, in: from..., displayedComponents: .date)
+                }
+                .onChange(of: from) { _, _ in save(on: true) }
+                .onChange(of: until) { _, _ in save(on: true) }
+            }
+        }
+        .formStyle(.grouped)
+        .navigationTitle("Vacation Pause")
+        .errorAlert($error)
+    }
+
+    private func save(on: Bool) {
+        do {
+            try service.setPause(from: on ? from : nil, until: on ? max(from, until) : nil, for: household, by: me)
+        } catch { self.error = error.localizedDescription }
+    }
+}
+
+/// "On vacation until Sun, Nov 9" at the top of the chore list.
+struct PauseBanner: View {
+    @ObservedObject var household: Household
+
+    var body: some View {
+        if let pause = household.upcomingPause() {
+            let started = pause.lowerBound <= Date()
+            Label(started
+                  ? "On vacation until \(pause.upperBound.formatted(.dateTime.weekday(.abbreviated).month(.abbreviated).day())). Chores are paused."
+                  : "Vacation from \(pause.lowerBound.formatted(.dateTime.month(.abbreviated).day())) to \(pause.upperBound.formatted(.dateTime.month(.abbreviated).day())).",
+                  systemImage: "beach.umbrella")
+                .font(.subheadline)
+                .foregroundStyle(.teal)
+        }
+    }
+}
