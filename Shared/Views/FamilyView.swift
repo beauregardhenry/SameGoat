@@ -72,6 +72,13 @@ struct FamilyView: View {
                     Label(me.isParent ? "Weekly recap" : "Your week", systemImage: "chart.bar")
                 }
                 if me.isParent {
+                    NavigationLink { PauseSettingsView(household: household, me: me) } label: {
+                        LabeledContent {
+                            Text(household.upcomingPause() != nil ? "On" : "Off")
+                        } label: {
+                            Label("Vacation pause", systemImage: "beach.umbrella")
+                        }
+                    }
                     NavigationLink { AllowanceSettingsView(household: household, me: me) } label: {
                         LabeledContent {
                             Text(household.allowanceOn ? "On" : "Off")

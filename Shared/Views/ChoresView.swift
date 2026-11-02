@@ -42,6 +42,9 @@ struct ChoresView: View {
 
     var body: some View {
         List {
+            if household.upcomingPause() != nil {
+                Section { PauseBanner(household: household) }
+            }
             if !me.isParent {
                 Section { BalanceCard(member: me) }
                     .listRowBackground(Color.clear)
