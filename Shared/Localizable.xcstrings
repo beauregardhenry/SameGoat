@@ -1265,6 +1265,16 @@
         }
       }
     },
+    "A picture helps kids who can't read yet.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Un dibujo ayuda a los niños que aún no leen."
+          }
+        }
+      }
+    },
     "A quiet week so far. There's still time!": {
       "localizations": {
         "es": {
@@ -1395,6 +1405,16 @@
         }
       }
     },
+    "Afternoon": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tarde"
+          }
+        }
+      }
+    },
     "All caught up": {
       "localizations": {
         "es": {
@@ -1411,6 +1431,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "¡Todo hecho hoy!"
+          }
+        }
+      }
+    },
+    "All done today! 🎉": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "¡Todo hecho hoy! 🎉"
           }
         }
       }
@@ -1455,12 +1485,42 @@
         }
       }
     },
+    "Anyone": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cualquiera"
+          }
+        }
+      }
+    },
+    "Anyone (up for grabs)": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cualquiera (para quien la tome)"
+          }
+        }
+      }
+    },
     "Anything they should know?": {
       "localizations": {
         "es": {
           "stringUnit": {
             "state": "translated",
             "value": "¿Algo que deban saber?"
+          }
+        }
+      }
+    },
+    "Anytime": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cuando sea"
           }
         }
       }
@@ -1711,6 +1771,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Rutina de noche"
+          }
+        }
+      }
+    },
+    "Board": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tablero"
           }
         }
       }
@@ -2275,6 +2345,16 @@
         }
       }
     },
+    "Done!": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "¡Hecha!"
+          }
+        }
+      }
+    },
     "Due": {
       "localizations": {
         "es": {
@@ -2445,6 +2525,16 @@
         }
       }
     },
+    "Evening": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Noche"
+          }
+        }
+      }
+    },
     "Every %@": {
       "localizations": {
         "es": {
@@ -2535,6 +2625,26 @@
         }
       }
     },
+    "Family Board": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tablero familiar"
+          }
+        }
+      }
+    },
+    "Family job": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tarea de familia"
+          }
+        }
+      }
+    },
     "Family settings": {
       "localizations": {
         "es": {
@@ -2611,6 +2721,66 @@
           "stringUnit": {
             "state": "translated",
             "value": "Primera tarea"
+          }
+        }
+      }
+    },
+    "First to do it gets %d points.": {
+      "localizations": {
+        "en": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "First to do it gets %d point."
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "First to do it gets %d points."
+                }
+              }
+            }
+          }
+        },
+        "es": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Quien la haga primero gana %d punto."
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Quien la haga primero gana %d puntos."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "First to do it gets the points": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quien la haga primero se lleva los puntos"
+          }
+        }
+      }
+    },
+    "First to do it gets the points.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quien la haga primero se lleva los puntos."
           }
         }
       }
@@ -2955,6 +3125,16 @@
         }
       }
     },
+    "I'll do it": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yo la hago"
+          }
+        }
+      }
+    },
     "I'm done!": {
       "localizations": {
         "es": {
@@ -3005,6 +3185,16 @@
         }
       }
     },
+    "Keep going": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Seguir"
+          }
+        }
+      }
+    },
     "Kid": {
       "localizations": {
         "es": {
@@ -3051,6 +3241,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Preparar la ropa de mañana"
+          }
+        }
+      }
+    },
+    "Let someone else do it": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Que la haga otro"
           }
         }
       }
@@ -3115,6 +3315,26 @@
         }
       }
     },
+    "Mark “%@” done for %@?": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "¿Marcar «%1$@» como hecha por %2$@?"
+          }
+        }
+      }
+    },
+    "Marks it done": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La marca como hecha"
+          }
+        }
+      }
+    },
     "Match the socks": {
       "localizations": {
         "es": {
@@ -3151,6 +3371,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Más"
+          }
+        }
+      }
+    },
+    "Morning": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mañana"
           }
         }
       }
@@ -3405,6 +3635,26 @@
         }
       }
     },
+    "No kids yet": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Todavía no hay niños"
+          }
+        }
+      }
+    },
+    "No picture": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sin dibujo"
+          }
+        }
+      }
+    },
     "No points are awarded. They'll see your note and can try again.": {
       "localizations": {
         "es": {
@@ -3575,12 +3825,42 @@
         }
       }
     },
+    "Only a chore kids take turns on can skip a turn.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Solo se puede saltar el turno de una tarea por turnos."
+          }
+        }
+      }
+    },
+    "Only a chore someone still has to do can get a reminder.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Solo se puede recordar una tarea que alguien todavía tiene que hacer."
+          }
+        }
+      }
+    },
     "Only chores that haven't been turned in can be edited.": {
       "localizations": {
         "es": {
           "stringUnit": {
             "state": "translated",
             "value": "Solo se pueden editar las tareas que no se han entregado."
+          }
+        }
+      }
+    },
+    "Only kids claim chores.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Solo los niños pueden tomar tareas."
           }
         }
       }
@@ -3631,6 +3911,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Solo la persona asignada puede marcar la tarea como hecha."
+          }
+        }
+      }
+    },
+    "Open %@ on %@'s list to tick its steps or add a photo.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abre «%1$@» en la lista de %2$@ para marcar sus pasos o añadir una foto."
           }
         }
       }
@@ -3791,6 +4081,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Los adultos usan este código para unirse al hogar y para abrir su perfil en un dispositivo compartido."
+          }
+        }
+      }
+    },
+    "Pause": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pausar"
           }
         }
       }
@@ -3995,6 +4295,16 @@
         }
       }
     },
+    "Put back up for grabs": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Volver a dejarla libre"
+          }
+        }
+      }
+    },
     "Put toys away": {
       "localizations": {
         "es": {
@@ -4031,6 +4341,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "Canjear"
+          }
+        }
+      }
+    },
+    "Reminder from %@": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Recordatorio de %@"
+          }
+        }
+      }
+    },
+    "Reminder sent": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Recordatorio enviado"
           }
         }
       }
@@ -4111,6 +4441,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Se repite"
+          }
+        }
+      }
+    },
+    "Reset": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reiniciar"
           }
         }
       }
@@ -4305,6 +4645,16 @@
         }
       }
     },
+    "Send a reminder": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enviar un recordatorio"
+          }
+        }
+      }
+    },
     "Send back": {
       "localizations": {
         "es": {
@@ -4405,12 +4755,32 @@
         }
       }
     },
+    "Skip this turn": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Saltar este turno"
+          }
+        }
+      }
+    },
     "Someone": {
       "localizations": {
         "es": {
           "stringUnit": {
             "state": "translated",
             "value": "Alguien"
+          }
+        }
+      }
+    },
+    "Someone already took this one.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alguien ya la tomó."
           }
         }
       }
@@ -4435,12 +4805,32 @@
         }
       }
     },
+    "Start": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Empezar"
+          }
+        }
+      }
+    },
     "Start a household": {
       "localizations": {
         "es": {
           "stringUnit": {
             "state": "translated",
             "value": "Crea un hogar"
+          }
+        }
+      }
+    },
+    "Start a timer": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Poner un temporizador"
           }
         }
       }
@@ -4591,6 +4981,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Turnarse en las tareas que se repiten"
+          }
+        }
+      }
+    },
+    "Taken by %@": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La tomó %@"
           }
         }
       }
@@ -4765,6 +5165,16 @@
         }
       }
     },
+    "There's nobody else to take a turn.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No hay nadie más a quien le toque."
+          }
+        }
+      }
+    },
     "They": {
       "localizations": {
         "es": {
@@ -4791,6 +5201,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Esta tarea no tiene a nadie asignado."
+          }
+        }
+      }
+    },
+    "This chore isn't claimed.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nadie ha tomado esta tarea."
           }
         }
       }
@@ -4901,6 +5321,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "Hora"
+          }
+        }
+      }
+    },
+    "Time of day": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Momento del día"
+          }
+        }
+      }
+    },
+    "Time's up!": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "¡Se acabó el tiempo!"
           }
         }
       }
@@ -5071,6 +5511,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "Hasta"
+          }
+        }
+      }
+    },
+    "Up for grabs": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Para quien la tome"
+          }
+        }
+      }
+    },
+    "Up for grabs: %@": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Para quien la tome: %@"
           }
         }
       }
@@ -5355,6 +5815,16 @@
         }
       }
     },
+    "When": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cuándo"
+          }
+        }
+      }
+    },
     "When a parent gives you a chore, it shows up here.": {
       "localizations": {
         "es": {
@@ -5381,6 +5851,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "¿Quién eres?"
+          }
+        }
+      }
+    },
+    "Who did it?": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "¿Quién la hizo?"
           }
         }
       }
@@ -5635,6 +6115,16 @@
         }
       }
     },
+    "You just sent a reminder. Give it a few minutes.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Acabas de enviar un recordatorio. Espera unos minutos."
+          }
+        }
+      }
+    },
     "You need %lld more points for that.": {
       "localizations": {
         "en": {
@@ -5795,6 +6285,16 @@
         }
       }
     },
+    "a parent": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "un adulto"
+          }
+        }
+      }
+    },
     "and %lld more": {
       "localizations": {
         "es": {
@@ -5841,6 +6341,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Hace falta iCloud"
+          }
+        }
+      }
+    },
+    "left": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "restante"
           }
         }
       }

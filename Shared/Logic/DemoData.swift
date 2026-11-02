@@ -24,6 +24,8 @@ extension HouseholdService {
         weekly.dueTime = 19 * 60
         weekly.minutes = 10
         weekly.difficulty = .easy
+        weekly.emoji = "🗑️"
+        weekly.timeOfDay = .evening
         try createChores(weekly, assignees: [ava, ben], in: household, by: mama)
 
         let waiting = try createChores(ChoreDraft(title: "Make your bed", points: 3, dueDate: today), assignees: [ava], in: household, by: mama)
@@ -57,9 +59,21 @@ extension HouseholdService {
         morning.steps = ["Make your bed", "Get dressed", "Brush teeth", "Pack your school bag"]
         morning.minutes = 20
         morning.difficulty = .easy
+        morning.emoji = "☀️"
+        morning.timeOfDay = .morning
         let routine = try createChores(morning, assignees: [ava], in: household, by: mama)
         try toggleStep(0, of: routine[0], by: ava)
         try toggleStep(1, of: routine[0], by: ava)
+
+        // Up for grabs: whoever gets there first. And a family job, done because we live here.
+        var groceries = ChoreDraft(title: "Unload the groceries", points: 5, dueDate: today)
+        groceries.upForGrabs = true
+        groceries.emoji = "🛍️"
+        try createChores(groceries, assignees: [], in: household, by: mama)
+        var shoes = ChoreDraft(title: "Put your shoes away", points: 0)
+        shoes.emoji = "👟"
+        shoes.timeOfDay = .afternoon
+        try createChores(shoes, assignees: [ava], in: household, by: mama)
 
         try createChores(ChoreDraft(title: "Water the plants", points: 6, dueDate: day(-2)), assignees: [ben], in: household, by: mama)
         try createChores(ChoreDraft(title: "Set the table", notes: "Plates, forks and napkins.", points: 5), assignees: [household.kids[0]], in: household, by: mama)

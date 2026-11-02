@@ -35,6 +35,9 @@ struct ChoreEditorView: View {
             draft.photoRequired = chore.photoRequired
             draft.minutes = chore.minutes
             draft.difficulty = chore.difficulty
+            draft.upForGrabs = chore.upForGrabs
+            draft.timeOfDay = chore.timeOfDay
+            draft.emoji = chore.emoji
         }
         _draft = State(initialValue: draft)
         let suggested = Effort.suggestedPoints(minutes: draft.minutes, difficulty: draft.difficulty,
@@ -111,10 +114,15 @@ struct ChoreEditorView: View {
     var body: some View {
         NavigationStack {
             Form {
-                Section("Chore") {
+                Section {
                     TextField("What needs doing?", text: $draft.title)
                     TextField("Notes (optional)", text: $draft.notes, axis: .vertical)
                         .lineLimit(2...5)
+                    ChoreEmojiPicker(selection: $draft.emoji)
+                } header: {
+                    Text("Chore")
+                } footer: {
+                    Text("A picture helps kids who can't read yet.")
                 }
 
                 effortSection
@@ -172,6 +180,24 @@ struct ChoreEditorView: View {
                     if household.kids.isEmpty {
                         Text("Add a kid in the Family tab first.").foregroundStyle(.secondary)
                     }
+                    Button {
+                        draft.upForGrabs.toggle()
+                        if draft.upForGrabs { selected = []; draft.takeTurns = false }
+                    } label: {
+                        HStack {
+                            Image(systemName: "hand.raised.circle.fill").font(.title2).foregroundStyle(.orange).frame(width: 32)
+                            VStack(alignment: .leading, spacing: 1) {
+                                Text("Anyone (up for grabs)")
+                                Text("First to do it gets the points.").font(.caption).foregroundStyle(.secondary)
+                            }
+                            Spacer()
+                            Image(systemName: draft.upForGrabs ? "checkmark.circle.fill" : "circle")
+                                .foregroundStyle(draft.upForGrabs ? AnyShapeStyle(Theme.accent) : AnyShapeStyle(.tertiary))
+                        }
+                        .contentShape(Rectangle())
+                    }
+                    .buttonStyle(.plain)
+                    .accessibilityAddTraits(draft.upForGrabs ? .isSelected : [])
                     ForEach(household.kids) { kid in
                         Button { toggle(kid) } label: {
                             HStack {
@@ -194,7 +220,7 @@ struct ChoreEditorView: View {
                         .buttonStyle(.plain)
                         .accessibilityAddTraits(selected.contains(kid) ? .isSelected : [])
                     }
-                    if selected.count > 1 || draft.takeTurns {
+                    if !draft.upForGrabs && (selected.count > 1 || draft.takeTurns) {
                         Toggle("Take turns", isOn: $draft.takeTurns)
                             .onChange(of: draft.takeTurns) { _, on in
                                 // An edited chore without turns belongs to one kid again: whoever has it now.
@@ -212,6 +238,10 @@ struct ChoreEditorView: View {
                         if hasTime {
                             DatePicker("Time", selection: $time, displayedComponents: .hourAndMinute)
                         }
+                    }
+                    Picker("Time of day", selection: $draft.timeOfDay) {
+                        Text("Anytime").tag(TimeOfDay?.none)
+                        ForEach(TimeOfDay.allCases) { Label($0.title, systemImage: $0.icon).tag(TimeOfDay?.some($0)) }
                     }
                     Picker("Repeat", selection: $draft.recurrence.kind) {
                         ForEach(Recurrence.allCases) { Text($0.title).tag($0) }
@@ -241,6 +271,7 @@ struct ChoreEditorView: View {
     }
 
     private func toggle(_ kid: Member) {
+        draft.upForGrabs = false
         if isEditing && !draft.takeTurns {
             selected = [kid]
         } else if selected.contains(kid) {
@@ -255,7 +286,7 @@ struct ChoreEditorView: View {
         let clock = Calendar.current.dateComponents([.hour, .minute], from: time)
         draft.dueTime = hasDue && hasTime ? (clock.hour ?? 0) * 60 + (clock.minute ?? 0) : nil
         if selected.count < 2 { draft.takeTurns = false }
-        let ordered = household.kids.filter { selected.contains($0) }
+        let ordered = draft.upForGrabs ? [] : household.kids.filter { selected.contains($0) }
         do {
             if let chore {
                 try service.updateChore(chore, with: draft, assignees: ordered, by: me)
@@ -292,5 +323,35 @@ struct WeekdayPicker: View {
                 .accessibilityAddTraits(on ? .isSelected : [])
             }
         }
+    }
+}
+
+/// A row of chore pictures, with "none" first.
+struct ChoreEmojiPicker: View {
+    @Binding var selection: String?
+
+    var body: some View {
+        ScrollView(.horizontal, showsIndicators: false) {
+            HStack(spacing: 8) {
+                chip(nil)
+                ForEach(Theme.choreEmojis, id: \.self) { chip($0) }
+            }
+            .padding(.vertical, 2)
+        }
+    }
+
+    private func chip(_ emoji: String?) -> some View {
+        let on = selection == emoji
+        return Button { selection = emoji } label: {
+            Group {
+                if let emoji { Text(emoji).font(.title2) } else { Image(systemName: "nosign").foregroundStyle(.secondary) }
+            }
+            .frame(width: 44, height: 44)
+            .background(on ? Theme.accent.opacity(0.25) : Color.secondary.opacity(0.12), in: Circle())
+            .overlay(Circle().stroke(on ? Theme.accent : .clear, lineWidth: 2))
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel(emoji ?? String(localized: "No picture"))
+        .accessibilityAddTraits(on ? .isSelected : [])
     }
 }

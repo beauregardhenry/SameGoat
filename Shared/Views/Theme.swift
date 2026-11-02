@@ -20,6 +20,7 @@ enum Theme {
     static let kidEmojis = ["🦊", "🐼", "🐯", "🦁", "🐸", "🐵", "🐰", "🐻", "🦄", "🐙", "🐢", "🦉"]
     static let parentEmojis = ["🌻", "🌷", "🍀", "⭐️", "🌈", "☕️"]
     static let rewardEmojis = ["🎬", "🍦", "🎮", "📱", "🍕", "🎁", "🛍️", "⚽️"]
+    static let choreEmojis = ["🛏️", "🧸", "🍽️", "🧺", "🗑️", "🐶", "🐱", "🪴", "🧹", "🧽", "🦷", "🎒", "📚", "🚿", "👕", "🧦", "🍳", "🚗"]
 }
 
 struct Avatar: View {

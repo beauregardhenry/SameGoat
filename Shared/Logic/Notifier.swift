@@ -172,6 +172,19 @@ final class Notifier: NSObject, UNUserNotificationCenterDelegate {
                     category: .rewardRequest, objectID: request.id))
             }
         } else {
+            for chore in chores where chore.isUnclaimed && chore.status == .todo {
+                result.append(Event(
+                    key: "grabs-\(chore.id?.uuidString ?? "")",
+                    title: String(localized: "Up for grabs: \(chore.displayTitle)"),
+                    body: String(localized: "First to do it gets \(chore.points) points.")))
+            }
+            for chore in chores where chore.assignee?.id == me.id && chore.status == .todo {
+                guard let nudged = chore.nudgedAt else { continue }
+                result.append(Event(
+                    key: "nudge-\(chore.id?.uuidString ?? "")-\(nudged.timeIntervalSince1970)",
+                    title: String(localized: "Reminder from \(chore.nudgedByName ?? String(localized: "a parent"))"),
+                    body: [chore.emoji, chore.displayTitle].compactMap { $0 }.joined(separator: " ")))
+            }
             for chore in chores where chore.assignee?.id == me.id {
                 switch chore.status {
                 case .todo where chore.wasSentBack:
