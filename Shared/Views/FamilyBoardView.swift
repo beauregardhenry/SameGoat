@@ -98,6 +98,15 @@ struct FamilyBoardView: View {
                         }
                     }
                 }
+                // The grown-ups' columns show the kids that everyone pitches in.
+                ForEach(household.parents) { grownUp in
+                    let theirs = today(chores.filter { $0.assignee == grownUp })
+                    if !theirs.isEmpty {
+                        column(header: AnyView(KidHeader(kid: grownUp)), width: columnWidth, chores: theirs) { chore in
+                            if grownUp == me { finish(chore, by: me) }
+                        }
+                    }
+                }
                 if !pool.isEmpty {
                     column(header: AnyView(Label("Up for grabs", systemImage: "hand.raised.fill")
                         .font(.title3.bold()).foregroundStyle(.orange)), width: columnWidth,
@@ -138,10 +147,12 @@ private struct KidHeader: View {
             Avatar(member: kid, size: 44)
             VStack(alignment: .leading, spacing: 1) {
                 Text(kid.displayName).font(.title3.bold())
-                Text("\(kid.available) points").font(.subheadline).foregroundStyle(.secondary)
+                if !kid.isParent {
+                    Text("\(kid.available) points").font(.subheadline).foregroundStyle(.secondary)
+                }
             }
             Spacer()
-            if case let streak = kid.streak(), streak > 0 {
+            if !kid.isParent, case let streak = kid.streak(), streak > 0 {
                 Text(verbatim: "🔥\(streak)").font(.headline).foregroundStyle(.orange)
             }
         }

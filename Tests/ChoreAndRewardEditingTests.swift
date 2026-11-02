@@ -49,7 +49,10 @@ final class ChoreAndRewardEditingTests: ServiceTestCase {
     func testUpdateChoreValidation() throws {
         let chore = try assign()
         assertThrowsServiceError(try service.updateChore(chore, with: draft(" "), assignee: kid, by: parent))
-        assertThrowsServiceError(try service.updateChore(chore, with: draft(), assignee: parent, by: parent))
+        // Grown-ups can have chores too; they just earn nothing.
+        try service.updateChore(chore, with: draft(), assignee: parent, by: parent)
+        XCTAssertEqual(chore.points, 0)
+        try service.updateChore(chore, with: draft(), assignee: kid, by: parent)
         assertThrowsServiceError(try service.updateChore(chore, with: draft(), assignee: kid, by: kid))
 
         var repeating = draft()

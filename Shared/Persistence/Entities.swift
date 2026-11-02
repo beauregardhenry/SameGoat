@@ -131,6 +131,8 @@ final class Member: NSManagedObject, Identifiable {
     @NSManaged var createdAt: Date?
     /// The reward a kid is saving toward.
     @NSManaged var goalRewardID: UUID?
+    /// The day a kid last used their reset pass (one chore pushed to tomorrow, once a day).
+    @NSManaged var resetUsedOn: Date?
     @NSManaged var household: Household?
     @NSManaged var assignedChores: NSSet?
     @NSManaged var redemptions: NSSet?
@@ -256,6 +258,20 @@ final class Chore: NSManagedObject, Identifiable {
     /// Set for a chore that's part of a project, with the project step it belongs to.
     @NSManaged var projectID: UUID?
     @NSManaged var phase: Int16
+    /// How much energy it takes, 1 to 3 spoons; 0 means "go by the difficulty".
+    @NSManaged var spoonsRaw: Int16
+
+    var spoons: Int {
+        get {
+            if spoonsRaw > 0 { return Int(spoonsRaw) }
+            switch difficulty {
+            case .easy: return 1
+            case .hard: return 3
+            case .medium, nil: return 2
+            }
+        }
+        set { spoonsRaw = Int16(min(max(newValue, 0), Spoons.range.upperBound)) }
+    }
 
     var project: Project? {
         guard let projectID else { return nil }
