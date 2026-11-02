@@ -20,6 +20,8 @@ enum ChoreLibrary {
         let points: Int
         let repeats: Recurrence
         let age: Age
+        /// Set for a routine: the checklist the kid ticks through.
+        var steps: [String] = []
 
         var id: String { "\(age.rawValue)-\(title)" }
     }
@@ -31,9 +33,15 @@ enum ChoreLibrary {
         Template(title: "Feed the pet", notes: "With a grown-up's help.", points: 2, repeats: .daily, age: .little),
         Template(title: "Help set the table", points: 2, repeats: .daily, age: .little),
         Template(title: "Water the plants", points: 2, repeats: .weekly, age: .little),
+        Template(title: "Bedtime routine", points: 3, repeats: .daily, age: .little,
+                 steps: ["Pajamas on", "Brush teeth", "Pick a book"]),
         Template(title: "Match the socks", points: 2, repeats: .weekly, age: .little),
 
         Template(title: "Make your bed", points: 3, repeats: .daily, age: .kids),
+        Template(title: "Morning routine", points: 4, repeats: .daily, age: .kids,
+                 steps: ["Make your bed", "Get dressed", "Brush teeth", "Pack your school bag"]),
+        Template(title: "Bedtime routine", points: 4, repeats: .daily, age: .kids,
+                 steps: ["Shower or bath", "Pajamas on", "Brush teeth", "Lay out tomorrow's clothes"]),
         Template(title: "Pack your school bag", points: 2, repeats: .daily, age: .kids),
         Template(title: "Set the table", points: 3, repeats: .daily, age: .kids),
         Template(title: "Clear the table", points: 3, repeats: .daily, age: .kids),
@@ -66,6 +74,7 @@ enum ChoreLibrary {
         draft.recurrence.kind = template.repeats
         draft.dueDate = template.repeats == .none ? nil : today
         draft.takeTurns = takeTurns && template.repeats != .none
+        draft.steps = template.steps
         return draft
     }
 }

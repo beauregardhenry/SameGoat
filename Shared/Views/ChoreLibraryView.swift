@@ -85,7 +85,9 @@ struct ChoreLibraryView: View {
                     .foregroundStyle(on ? Theme.accent : Color.secondary)
                 VStack(alignment: .leading, spacing: 2) {
                     Text(template.title)
-                    Text(template.repeats == .none ? "One-off" : template.repeats.title)
+                    Text([template.repeats == .none ? "One-off" : template.repeats.title,
+                          template.steps.isEmpty ? nil : "\(template.steps.count) steps"]
+                        .compactMap { $0 }.joined(separator: " · "))
                         .font(.caption).foregroundStyle(.secondary)
                 }
                 Spacer()
