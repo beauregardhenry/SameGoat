@@ -81,6 +81,14 @@ final class HouseholdService: ObservableObject {
         try save()
     }
 
+    /// Big picture tiles instead of a list, for kids who can't read much yet.
+    func setBigPicture(_ on: Bool, for kid: Member, by me: Member) throws {
+        try requireParent(me)
+        guard !kid.isParent else { throw ServiceError.invalid(String(localized: "The big picture view is for kids.")) }
+        kid.bigPicture = on
+        try save()
+    }
+
     func removeMember(_ member: Member, by me: Member) throws {
         try requireParent(me)
         guard member.id != me.id else { throw ServiceError.invalid(String(localized: "You can't remove yourself.")) }
@@ -287,6 +295,8 @@ final class HouseholdService: ObservableObject {
             throw ServiceError.notAllowed(String(localized: "Only the person a chore is assigned to can mark it done."))
         }
         guard chore.status == .todo else { throw ServiceError.invalid(String(localized: "This chore was already turned in.")) }
+        // Doing one of the menu's options counts as choosing it.
+        if chore.isMenuOption { try pick(chore, by: me) }
         guard chore.allStepsDone else { throw ServiceError.invalid(String(localized: "Tick off every step first.")) }
         guard !chore.photoRequired || photo != nil else { throw ServiceError.invalid(String(localized: "Add a photo to show it's done.")) }
         chore.status = .pendingReview

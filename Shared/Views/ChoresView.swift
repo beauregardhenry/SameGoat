@@ -4,6 +4,7 @@ import CoreData
 struct ChoresView: View {
     let household: Household
     let me: Member
+    @EnvironmentObject private var service: HouseholdService
     @FetchRequest private var chores: FetchedResults<Chore>
     @State private var showingNew = false
     @State private var showingLibrary = false
@@ -36,7 +37,13 @@ struct ChoresView: View {
 
     private var waiting: [Chore] { chores.filter { $0.status == .pendingReview } }
     /// Open chores outside any project; projects list their own.
-    private var open: [Chore] { chores.filter { $0.status == .todo && $0.projectID == nil } }
+    private var open: [Chore] { chores.filter { $0.status == .todo && $0.projectID == nil && !$0.isMenuOption } }
+    /// Each kid's choice menus: options still on offer, grouped by menu.
+    private var menus: [[Chore]] {
+        Dictionary(grouping: chores.filter { $0.status == .todo && $0.isMenuOption }, by: { $0.menuID })
+            .values.map { $0.sorted { $0.displayTitle < $1.displayTitle } }
+            .sorted { ($0.first?.assignee?.displayName ?? "") < ($1.first?.assignee?.displayName ?? "") }
+    }
     private var onHold: Bool { household.overridingProject() != nil }
     private var todo: [Chore] { onHold ? [] : dueSorted(open.filter { !$0.isUnclaimed && !$0.extraCredit }) }
     private var extra: [Chore] { onHold ? [] : dueSorted(open.filter { !$0.isUnclaimed && $0.extraCredit }) }
@@ -58,6 +65,46 @@ struct ChoresView: View {
     }
 
     var body: some View {
+        Group {
+            if !me.isParent && me.bigPicture {
+                BigPictureView(household: household, me: me, chores: Array(chores))
+            } else {
+                list
+            }
+        }
+        .navigationTitle(me.isParent ? "Chores" : "My Chores")
+        .navigationDestination(for: Chore.self) { ChoreDetailView(chore: $0, me: me) }
+        .toolbar {
+            ToolbarItem(placement: .secondaryAction) {
+                Button { showingSpoons = true } label: { Label("How much energy?", systemImage: "battery.50percent") }
+            }
+            if me.isParent {
+                ToolbarItem(placement: .primaryAction) {
+                    Button { showingProject = true } label: { Label("New Project", systemImage: "hammer") }
+                }
+                ToolbarItem(placement: .primaryAction) {
+                    Button { showingLibrary = true } label: { Label("Chore Ideas", systemImage: "lightbulb") }
+                }
+                ToolbarItem(placement: .primaryAction) {
+                    Button { showingNew = true } label: { Label("New Chore", systemImage: "plus") }
+                }
+            }
+        }
+        .sheet(isPresented: $showingNew) {
+            ChoreEditorView(household: household, me: me, chore: nil)
+        }
+        .sheet(isPresented: $showingSpoons) {
+            SpoonsView(me: me, household: household)
+        }
+        .sheet(isPresented: $showingProject) {
+            ProjectEditorView(household: household, me: me)
+        }
+        .sheet(isPresented: $showingLibrary) {
+            ChoreLibraryView(household: household, me: me)
+        }
+    }
+
+    private var list: some View {
         List {
             if household.upcomingPause() != nil {
                 Section { PauseBanner(household: household) }
@@ -94,6 +141,9 @@ struct ChoresView: View {
                     }
                 }
             }
+            ForEach(menus, id: \.first?.objectID) { options in
+                if let first = options.first { menuSection(options, first: first) }
+            }
             choreSection("After the project", later, icon: "pause.circle")
             choreSection("Done", done)
         }
@@ -111,35 +161,38 @@ struct ChoresView: View {
                 }
             }
         }
-        .navigationTitle(me.isParent ? "Chores" : "My Chores")
-        .navigationDestination(for: Chore.self) { ChoreDetailView(chore: $0, me: me) }
-        .toolbar {
-            ToolbarItem(placement: .secondaryAction) {
-                Button { showingSpoons = true } label: { Label("How much energy?", systemImage: "battery.50percent") }
+    }
+
+    /// "Choose 2 of these": a kid picks; a parent sees what's on offer.
+    private func menuSection(_ options: [Chore], first: Chore) -> some View {
+        let needed = Int(first.menuPick)
+        let picked = ChoiceMenu.pickedCount(like: first)
+        return Section {
+            ForEach(options) { option in
+                HStack {
+                    NavigationLink(value: option) { ChoreRow(chore: option, showAssignee: me.isParent) }
+                    if !me.isParent {
+                        Button("Pick") {
+                            try? service.pick(option, by: me)
+                        }
+                        .buttonStyle(.borderedProminent)
+                    }
+                }
             }
-            if me.isParent {
-                ToolbarItem(placement: .primaryAction) {
-                    Button { showingProject = true } label: { Label("New Project", systemImage: "hammer") }
+        } header: {
+            Label {
+                if me.isParent, let kid = first.assignee {
+                    Text("\(kid.displayName) chooses \(needed) (\(picked) picked)")
+                } else {
+                    Text("Choose \(needed - picked) more")
                 }
-                ToolbarItem(placement: .primaryAction) {
-                    Button { showingLibrary = true } label: { Label("Chore Ideas", systemImage: "lightbulb") }
-                }
-                ToolbarItem(placement: .primaryAction) {
-                    Button { showingNew = true } label: { Label("New Chore", systemImage: "plus") }
-                }
+            } icon: { Image(systemName: "hand.point.up.left") }
+        } footer: {
+            if !me.isParent && ChoiceMenu.prefersEasy(me) {
+                Text("You've picked the easiest one lately. Try a harder one: more points means more free time!")
+            } else if !me.isParent {
+                Text("You choose which ones to do this week.")
             }
-        }
-        .sheet(isPresented: $showingNew) {
-            ChoreEditorView(household: household, me: me, chore: nil)
-        }
-        .sheet(isPresented: $showingSpoons) {
-            SpoonsView(me: me, household: household)
-        }
-        .sheet(isPresented: $showingProject) {
-            ProjectEditorView(household: household, me: me)
-        }
-        .sheet(isPresented: $showingLibrary) {
-            ChoreLibraryView(household: household, me: me)
         }
     }
 

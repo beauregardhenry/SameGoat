@@ -274,7 +274,8 @@ final class Notifier: NSObject, UNUserNotificationCenterDelegate {
         }
         return chores.compactMap { chore in
             guard let due = chore.dueDate, let id = chore.id else { return nil }
-            if household.isPaused(on: due, calendar: calendar) || chore.extraCredit || chore.isOnHold(now: now, calendar: calendar) {
+            if household.isPaused(on: due, calendar: calendar) || chore.extraCredit || chore.isMenuOption
+                || chore.isOnHold(now: now, calendar: calendar) {
                 return nil
             }
             if let dueAt = chore.dueAt(calendar: calendar), chore.dueTime != nil {

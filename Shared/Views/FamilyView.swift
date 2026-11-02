@@ -303,6 +303,7 @@ struct MemberEditorView: View {
     @State private var name: String
     @State private var role: Role
     @State private var emoji: String
+    @State private var bigPicture: Bool
     @State private var error: String?
 
     init(household: Household, me: Member, member: Member?) {
@@ -312,6 +313,7 @@ struct MemberEditorView: View {
         _name = State(initialValue: member?.name ?? "")
         _role = State(initialValue: member?.role ?? .kid)
         _emoji = State(initialValue: member?.displayEmoji ?? Theme.kidEmojis[household.memberList.count % Theme.kidEmojis.count])
+        _bigPicture = State(initialValue: member?.bigPicture ?? false)
     }
 
     var body: some View {
@@ -327,6 +329,13 @@ struct MemberEditorView: View {
                 Section("Avatar") {
                     EmojiPicker(selection: $emoji, options: role == .parent ? Theme.parentEmojis : Theme.kidEmojis)
                 }
+                if role == .kid {
+                    Section {
+                        Toggle("Big picture view", isOn: $bigPicture)
+                    } footer: {
+                        Text("Big picture tiles instead of a list, for little ones who can't read much yet.")
+                    }
+                }
                 Section {
                     Text(role == .parent
                          ? "Parents assign chores, approve completed work and manage rewards."
@@ -341,10 +350,12 @@ struct MemberEditorView: View {
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Save") {
                         do {
-                            if let member {
-                                try service.updateMember(member, name: name, role: role, emoji: emoji, by: me)
-                            } else {
-                                try service.addMember(name: name, role: role, emoji: emoji, to: household, by: me)
+                            let saved = try member.map {
+                                try service.updateMember($0, name: name, role: role, emoji: emoji, by: me)
+                                return $0
+                            } ?? service.addMember(name: name, role: role, emoji: emoji, to: household, by: me)
+                            if role == .kid, saved.bigPicture != bigPicture {
+                                try service.setBigPicture(bigPicture, for: saved, by: me)
                             }
                             dismiss()
                         } catch { self.error = error.localizedDescription }

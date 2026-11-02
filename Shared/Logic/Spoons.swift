@@ -17,7 +17,7 @@ enum Spoons {
     static func plan(for me: Member, spoons: Int, now: Date = Date(), calendar: Calendar = .current) -> Plan {
         let tomorrow = calendar.date(byAdding: .day, value: 1, to: calendar.startOfDay(for: now)) ?? now
         let open = ((me.assignedChores as? Set<Chore>) ?? [])
-            .filter { $0.status == .todo && !$0.isOnHold(now: now, calendar: calendar) }
+            .filter { $0.status == .todo && !$0.isMenuOption && !$0.isOnHold(now: now, calendar: calendar) }
             .sorted { ($0.dueAt(calendar: calendar) ?? .distantFuture, $0.spoons, $0.displayTitle)
                 < ($1.dueAt(calendar: calendar) ?? .distantFuture, $1.spoons, $1.displayTitle) }
         var plan = Plan()
