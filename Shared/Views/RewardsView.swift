@@ -37,6 +37,9 @@ struct RewardsView: View {
                     .listRowBackground(Color.clear)
                     .listRowInsets(EdgeInsets())
             }
+            if !me.isParent {
+                Section("Badges") { BadgeShelf(badges: Badges.all(for: me)) }
+            }
 
             Section {
                 ForEach(visibleRewards) { reward in

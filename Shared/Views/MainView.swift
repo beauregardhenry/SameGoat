@@ -57,6 +57,7 @@ struct MainView: View {
 
     var body: some View {
         layout
+            .celebrations(for: me)
             .task { AppEnvironment.shared.syncNotifications() }
             .onChange(of: me.role) { _, _ in
                 if !sections.contains(selection ?? .chores) { selection = .chores }

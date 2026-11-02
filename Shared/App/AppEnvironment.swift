@@ -12,6 +12,7 @@ final class AppEnvironment {
     let service: HouseholdService
     let notifier = Notifier()
     let sharedDevice = SharedDevice()
+    let celebrations = Celebrations()
     private var changeObserver: AnyCancellable?
     private var started = false
 
