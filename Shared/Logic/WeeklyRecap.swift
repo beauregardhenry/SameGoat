@@ -49,16 +49,15 @@ enum WeeklyRecap {
 
     /// One line to sum up the week.
     static func headline(_ weeks: [KidWeek]) -> String {
-        guard !weeks.isEmpty else { return "Add a kid to see their week." }
+        guard !weeks.isEmpty else { return String(localized: "Add a kid to see their week.") }
         let total = weeks.reduce(0) { $0 + $1.points }
-        guard total > 0 else { return "A quiet week so far. There's still time!" }
+        guard total > 0 else { return String(localized: "A quiet week so far. There's still time!") }
         let chores = weeks.reduce(0) { $0 + $1.choresDone }
-        let summary = "\(count(total, "point")) and \(count(chores, "chore")) this week."
-        return weeks.count == 1 ? summary.prefix(1).uppercased() + summary.dropFirst() : "Together: " + summary
-    }
-
-    private static func count(_ n: Int, _ noun: String) -> String {
-        "\(n) \(noun)\(n == 1 ? "" : "s")"
+        let pointsText = String(localized: "\(total) points")
+        let choresText = String(localized: "\(chores) chores")
+        return weeks.count == 1
+            ? String(localized: "\(pointsText) and \(choresText) this week.")
+            : String(localized: "Together: \(pointsText) and \(choresText) this week.")
     }
 
     /// Sunday at 6pm, when parents get a nudge to look at the week.

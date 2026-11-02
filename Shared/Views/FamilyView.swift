@@ -166,7 +166,7 @@ struct MemberRow: View {
         HStack(spacing: 12) {
             Avatar(member: member)
             VStack(alignment: .leading, spacing: 2) {
-                Text(member.displayName + (isMe ? " (you)" : "")).font(.headline)
+                Text(isMe ? "\(member.displayName) (you)" : "\(member.displayName)").font(.headline)
                 HStack(spacing: 6) {
                     Text(member.role.title)
                     if !member.isClaimed { StatusChip(text: "Not joined yet", color: .orange) }
@@ -380,7 +380,10 @@ struct BonusSheet: View {
     @State private var reason = ""
     @State private var error: String?
 
-    private static let ideas = ["Great attitude", "Helped out without asking", "Kind to a sibling", "Extra effort"]
+    private static let ideas: [String] = [
+        String(localized: "Great attitude"), String(localized: "Helped out without asking"),
+        String(localized: "Kind to a sibling"), String(localized: "Extra effort"),
+    ]
 
     var body: some View {
         NavigationStack {
@@ -398,7 +401,7 @@ struct BonusSheet: View {
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack {
                             ForEach(Self.ideas, id: \.self) { idea in
-                                Button(idea) { reason = idea }
+                                Button { reason = idea } label: { Text(verbatim: idea) }
                                     .buttonStyle(.bordered)
                                     .tint(reason == idea ? Theme.accent : .secondary)
                             }

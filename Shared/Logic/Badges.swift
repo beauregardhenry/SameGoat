@@ -17,14 +17,14 @@ enum Badges {
         let redeemed = ((kid.redemptions as? Set<Redemption>) ?? []).contains { $0.status == .approved }
         let best = bestStreak(for: kid, calendar: calendar)
         return [
-            Badge(id: "chores-1", emoji: "🌱", title: "First chore", detail: "Finish your first chore.", earned: chores >= 1),
-            Badge(id: "chores-10", emoji: "🧹", title: "Helper", detail: "Finish 10 chores.", earned: chores >= 10),
-            Badge(id: "chores-50", emoji: "🦸", title: "Superhelper", detail: "Finish 50 chores.", earned: chores >= 50),
-            Badge(id: "streak-3", emoji: "🔥", title: "On a roll", detail: "Do chores 3 days in a row.", earned: best >= 3),
-            Badge(id: "streak-7", emoji: "⚡️", title: "Week streak", detail: "Do chores 7 days in a row.", earned: best >= 7),
-            Badge(id: "streak-30", emoji: "🏆", title: "Month streak", detail: "Do chores 30 days in a row.", earned: best >= 30),
-            Badge(id: "points-100", emoji: "💯", title: "100 points", detail: "Earn 100 points in all.", earned: earned >= 100),
-            Badge(id: "redeemed-1", emoji: "🎁", title: "Treat yourself", detail: "Get your first reward.", earned: redeemed),
+            Badge(id: "chores-1", emoji: "🌱", title: String(localized: "First chore"), detail: String(localized: "Finish your first chore."), earned: chores >= 1),
+            Badge(id: "chores-10", emoji: "🧹", title: String(localized: "Helper"), detail: String(localized: "Finish 10 chores."), earned: chores >= 10),
+            Badge(id: "chores-50", emoji: "🦸", title: String(localized: "Superhelper"), detail: String(localized: "Finish 50 chores."), earned: chores >= 50),
+            Badge(id: "streak-3", emoji: "🔥", title: String(localized: "On a roll"), detail: String(localized: "Do chores 3 days in a row."), earned: best >= 3),
+            Badge(id: "streak-7", emoji: "⚡️", title: String(localized: "Week streak"), detail: String(localized: "Do chores 7 days in a row."), earned: best >= 7),
+            Badge(id: "streak-30", emoji: "🏆", title: String(localized: "Month streak"), detail: String(localized: "Do chores 30 days in a row."), earned: best >= 30),
+            Badge(id: "points-100", emoji: "💯", title: String(localized: "100 points"), detail: String(localized: "Earn 100 points in all."), earned: earned >= 100),
+            Badge(id: "redeemed-1", emoji: "🎁", title: String(localized: "Treat yourself"), detail: String(localized: "Get your first reward."), earned: redeemed),
         ]
     }
 

@@ -7,7 +7,7 @@ extension HouseholdService {
     @discardableResult
     func loadDemoHousehold(userID: String) throws -> Household {
         let household = try createHousehold(name: "The Hendersons", yourName: "Mama", emoji: Theme.parentEmojis[0], userID: userID)
-        guard let mama = household.memberList.first else { throw ServiceError.invalid("Demo household has no parent.") }
+        guard let mama = household.memberList.first else { throw ServiceError.invalid(String(localized: "Demo household has no parent.")) }
 
         let papa = try addMember(name: "Papa", role: .parent, emoji: Theme.parentEmojis[1], to: household, by: mama)
         let ava = try addMember(name: "Ava", role: .kid, emoji: Theme.kidEmojis[0], to: household, by: mama)

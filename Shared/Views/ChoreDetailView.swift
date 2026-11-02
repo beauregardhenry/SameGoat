@@ -45,7 +45,7 @@ struct ChoreDetailView: View {
                         .foregroundStyle(.green)
                     if let date = chore.reviewedAt {
                         // No reviewer means the chore approves itself.
-                        Text("\(chore.reviewedByName ?? "Automatically") · \(date.formatted(date: .abbreviated, time: .shortened))")
+                        Text("\(chore.reviewedByName ?? String(localized: "Automatically")) · \(date.formatted(date: .abbreviated, time: .shortened))")
                             .font(.subheadline).foregroundStyle(.secondary)
                     }
                 }
@@ -141,10 +141,10 @@ struct ChoreDetailView: View {
                 LabeledContent("Repeats", value: chore.recurrence.summary())
             }
             if chore.autoApprove {
-                LabeledContent("Approval", value: "Automatic")
+                LabeledContent("Approval", value: String(localized: "Automatic"))
             }
             if chore.photoRequired {
-                LabeledContent("Photo", value: "Needed to turn in")
+                LabeledContent("Photo", value: String(localized: "Needed to turn in"))
             }
             if chore.takesTurns {
                 LabeledContent("Taking turns", value: chore.rotation.map(\.displayName).joined(separator: " → "))
@@ -158,7 +158,7 @@ struct ChoreDetailView: View {
     private var turnedInSection: some View {
         Section("Turned in") {
             if let date = chore.completedAt {
-                Text("\(chore.assignee?.displayName ?? "They") finished this \(date.formatted(date: .abbreviated, time: .shortened))")
+                Text("\(chore.assignee?.displayName ?? String(localized: "They")) finished this \(date.formatted(date: .abbreviated, time: .shortened))")
                     .foregroundStyle(.secondary)
             }
             if let note = chore.completionNote { Text("“\(note)”") }
@@ -199,7 +199,7 @@ struct ChoreDetailView: View {
         if chore.status == .pendingReview && me.isParent {
             Section("Review") {
                 Stepper(value: $awardPoints, in: 0...10_000) {
-                    Text("Award \(awardPoints) point\(awardPoints == 1 ? "" : "s")")
+                    Text("Award \(awardPoints) points")
                 }
                 if awardPoints != Int(chore.points) {
                     Text("Usually \(chore.points). Adjust for partial or bonus credit.")

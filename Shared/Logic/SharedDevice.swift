@@ -40,7 +40,7 @@ final class SharedDevice: ObservableObject {
     func signIn(_ member: Member, code: String? = nil) throws {
         if member.isParent {
             if let lockedUntil, lockedUntil > now() {
-                throw ServiceError.notAllowed("Too many wrong codes. Try again in a minute.")
+                throw ServiceError.notAllowed(String(localized: "Too many wrong codes. Try again in a minute."))
             }
             guard let expected = member.household?.parentCode, code?.trimmed == expected else {
                 failedAttempts += 1
@@ -48,7 +48,7 @@ final class SharedDevice: ObservableObject {
                     lockedUntil = now().addingTimeInterval(Self.lockout)
                     failedAttempts = 0
                 }
-                throw ServiceError.notAllowed("That parent code isn't right.")
+                throw ServiceError.notAllowed(String(localized: "That parent code isn't right."))
             }
             failedAttempts = 0
             lockedUntil = nil

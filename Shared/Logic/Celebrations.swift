@@ -40,21 +40,21 @@ final class Celebrations: ObservableObject {
         var result: [Celebration] = []
         let weekAgo = now.addingTimeInterval(-7 * 86_400)
         for entry in kid.entryList.reversed() where entry.amount > 0 && (entry.date ?? .distantPast) > weekAgo {
-            let reason = entry.reason ?? "your chore"
+            let reason = entry.reason ?? String(localized: "your chore")
             result.append(Celebration(
                 id: "entry-\(entry.id?.uuidString ?? "")",
                 emoji: entry.kind == .bonus ? "🌟" : "🎉",
-                title: "+\(entry.amount) points!",
-                message: entry.kind == .bonus ? "Bonus: \(reason)" : "\(reason) was approved."))
+                title: String(localized: "+\(entry.amount) points!"),
+                message: entry.kind == .bonus ? String(localized: "Bonus: \(reason)") : String(localized: "\(reason) was approved.")))
         }
         for badge in Badges.all(for: kid, now: now, calendar: calendar) where badge.earned {
             result.append(Celebration(id: "badge-\(badge.id)", emoji: badge.emoji,
-                                      title: "New badge: \(badge.title)", message: badge.detail))
+                                      title: String(localized: "New badge: \(badge.title)"), message: badge.detail))
         }
         if let goal = kid.goal, kid.available >= Int(goal.cost), let id = goal.id {
             result.append(Celebration(id: "goal-\(id.uuidString)", emoji: goal.displayEmoji,
-                                      title: "You can get \(goal.displayTitle)!",
-                                      message: "You saved \(goal.cost) points. Ask for it in Rewards."))
+                                      title: String(localized: "You can get \(goal.displayTitle)!"),
+                                      message: String(localized: "You saved \(goal.cost) points. Ask for it in Rewards.")))
         }
         return result
     }

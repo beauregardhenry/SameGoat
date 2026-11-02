@@ -94,7 +94,7 @@ struct ChoresView: View {
     }
 
     @ViewBuilder
-    private func choreSection(_ title: String, _ list: [Chore]) -> some View {
+    private func choreSection(_ title: LocalizedStringKey, _ list: [Chore]) -> some View {
         if !list.isEmpty {
             Section(title) {
                 ForEach(list) { chore in
@@ -113,9 +113,9 @@ struct BalanceCard: View {
 
     /// "24 points ($2.40) · 4 on hold"
     private var pointsLine: String {
-        var line = "\(member.available) points"
+        var line = String(localized: "\(member.available) points")
         if let money = member.household?.moneyText(for: member.available) { line += " (\(money))" }
-        if member.reserved > 0 { line += " · \(member.reserved) on hold" }
+        if member.reserved > 0 { line += " · " + String(localized: "\(member.reserved) on hold") }
         return line
     }
 
@@ -241,9 +241,9 @@ struct ChoreRow: View {
 
     private var statusName: String {
         switch chore.status {
-        case .todo: chore.isOverdue ? "Overdue" : "To do"
-        case .pendingReview: "Waiting for approval"
-        case .approved: "Done"
+        case .todo: chore.isOverdue ? String(localized: "Overdue") : String(localized: "To do")
+        case .pendingReview: String(localized: "Waiting for approval")
+        case .approved: String(localized: "Done")
         }
     }
 

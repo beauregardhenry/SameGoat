@@ -11,6 +11,10 @@ Chores, points and rewards
 ## Category
 Primary: Lifestyle. Secondary: Productivity.
 
+## Languages
+English, Spanish. (The App Store listing itself is English for now; add a Spanish localization in
+App Store Connect when ready.)
+
 ## Age rating
 4+. No user-generated content leaves the family, no web access, no ads, no purchases.
 

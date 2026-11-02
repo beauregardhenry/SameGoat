@@ -24,35 +24,38 @@ enum AssistantReplies {
     /// Marks the chore done and says what happens next.
     static func finish(_ choreID: UUID, household: Household, me: Member, service: HouseholdService) throws -> String {
         guard let chore = ((household.chores as? Set<Chore>) ?? []).first(where: { $0.id == choreID }) else {
-            throw ServiceError.invalid("I couldn't find that chore.")
+            throw ServiceError.invalid(String(localized: "I couldn't find that chore."))
         }
         try service.markComplete(chore, by: me, note: nil, photo: nil)
         if chore.status == .approved {
-            return "Nice work! You earned \(chore.awardedPoints) \(pointsWord(Int(chore.awardedPoints))) for \(chore.displayTitle)."
+            return String(localized: "Nice work! You earned \(Int(chore.awardedPoints)) points for \(chore.displayTitle).")
         }
-        return "Nice work! \(chore.displayTitle) is waiting for a parent to check."
+        return String(localized: "Nice work! \(chore.displayTitle) is waiting for a parent to check.")
     }
 
     /// For a parent: what's waiting for them. For a kid: what they still have to do today.
+    /// Whole sentences per case, with plurals from the String Catalog, so they translate.
     static func summary(household: Household, me: Member, now: Date = Date(), calendar: Calendar = .current) -> String {
         if me.isParent {
             let chores = ((household.chores as? Set<Chore>) ?? []).filter { $0.status == .pendingReview }.count
             let requests = ((household.redemptions as? Set<Redemption>) ?? []).filter { $0.status == .requested }.count
-            let parts = [phrase(chores, "chore"), phrase(requests, "reward request")].compactMap { $0 }
-            guard !parts.isEmpty else { return "You're all caught up. Nothing is waiting for review." }
-            let verb = chores + requests == 1 ? "is" : "are"
-            let sentence = parts.joined(separator: " and ") + " \(verb) waiting for you."
-            return sentence.prefix(1).uppercased() + sentence.dropFirst()
+            switch (chores, requests) {
+            case (0, 0): return String(localized: "You're all caught up. Nothing is waiting for review.")
+            case (_, 0): return String(localized: "\(chores) chores are waiting for you.")
+            case (0, _): return String(localized: "\(requests) reward requests are waiting for you.")
+            default:
+                let choresText = String(localized: "\(chores) chores")
+                let requestsText = String(localized: "\(requests) reward requests")
+                return String(localized: "\(choresText) and \(requestsText) are waiting for you.")
+            }
         }
         guard let tomorrow = calendar.date(byAdding: .day, value: 1, to: calendar.startOfDay(for: now)) else { return "" }
         let today = openChores(for: me).filter { ($0.dueDate ?? .distantPast) < tomorrow }
+        let names = today.prefix(3).map(\.displayTitle).formatted(.list(type: .and))
         switch today.count {
-        case 0: return "You're all done for today!"
-        case 1: return "You have one chore left today: \(today[0].displayTitle)."
-        default:
-            let names = today.prefix(3).map(\.displayTitle)
-            let more = today.count > 3 ? ", and \(today.count - 3) more" : ""
-            return "You have \(today.count) chores left today: \(names.joined(separator: ", "))\(more)."
+        case 0: return String(localized: "You're all done for today!")
+        case 1...3: return String(localized: "\(today.count) chores left today: \(names).")
+        default: return String(localized: "\(today.count) chores left today, starting with \(names).")
         }
     }
 
@@ -60,29 +63,18 @@ enum AssistantReplies {
     static func points(household: Household, me: Member) -> String {
         if me.isParent {
             let kids = household.kids
-            guard !kids.isEmpty else { return "There are no kids in your household yet." }
-            return kids.map { "\($0.displayName) has \($0.available)" }.joined(separator: ", ") + "."
+            guard !kids.isEmpty else { return String(localized: "There are no kids in your household yet.") }
+            return kids.map { String(localized: "\($0.displayName): \($0.available) points") }.formatted(.list(type: .and)) + "."
         }
-        var reply = "You have \(me.available) \(pointsWord(me.available))."
-        if let money = household.moneyText(for: me.available) { reply += " That's \(money)." }
-        if me.reserved > 0 { reply += " \(me.reserved) more are on hold for a reward request." }
+        var parts = [String(localized: "You have \(me.available) points.")]
+        if let money = household.moneyText(for: me.available) { parts.append(String(localized: "That's \(money).")) }
+        if me.reserved > 0 { parts.append(String(localized: "\(me.reserved) points are on hold for a reward request.")) }
         if let goal = me.goal {
             let left = Int(goal.cost) - me.available
-            reply += left > 0
-                ? " \(left) more for \(goal.displayTitle)."
-                : " That's enough for \(goal.displayTitle)!"
+            parts.append(left > 0
+                ? String(localized: "\(left) more points for \(goal.displayTitle).")
+                : String(localized: "That's enough for \(goal.displayTitle)!"))
         }
-        return reply
-    }
-
-    private static func pointsWord(_ n: Int) -> String { n == 1 ? "point" : "points" }
-
-    /// "one chore", "3 chores", or nil for none.
-    private static func phrase(_ n: Int, _ noun: String) -> String? {
-        switch n {
-        case 0: nil
-        case 1: "one \(noun)"
-        default: "\(n) \(noun)s"
-        }
+        return parts.joined(separator: " ")
     }
 }

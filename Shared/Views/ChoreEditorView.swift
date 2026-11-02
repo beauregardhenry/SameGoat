@@ -50,10 +50,12 @@ struct ChoreEditorView: View {
     private var isEditing: Bool { chore != nil }
 
     private var turnsHint: String {
-        guard draft.takeTurns else { return "Each person gets their own copy to complete." }
-        guard draft.recurrence.isRepeating else { return "Choose how often it repeats below; it moves to the next person each time." }
-        let names = household.kids.filter { selected.contains($0) }.map(\.displayName)
-        return "One chore that moves to the next person each time it repeats: " + names.joined(separator: " → ") + "."
+        guard draft.takeTurns else { return String(localized: "Each person gets their own copy to complete.") }
+        guard draft.recurrence.isRepeating else {
+            return String(localized: "Choose how often it repeats below; it moves to the next person each time.")
+        }
+        let names = household.kids.filter { selected.contains($0) }.map(\.displayName).joined(separator: " → ")
+        return String(localized: "One chore that moves to the next person each time it repeats: \(names).")
     }
 
     var body: some View {

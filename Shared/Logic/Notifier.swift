@@ -72,13 +72,14 @@ final class Notifier: NSObject, UNUserNotificationCenterDelegate {
         let locked: UNNotificationActionOptions = [.authenticationRequired]
         return [
             UNNotificationCategory(identifier: Category.choreReview.rawValue, actions: [
-                UNNotificationAction(identifier: Action.approveChore.rawValue, title: "Approve", options: locked),
-                UNTextInputNotificationAction(identifier: Action.sendBack.rawValue, title: "Send back", options: locked,
-                                              textInputButtonTitle: "Send", textInputPlaceholder: "What needs another look?"),
+                UNNotificationAction(identifier: Action.approveChore.rawValue, title: String(localized: "Approve"), options: locked),
+                UNTextInputNotificationAction(identifier: Action.sendBack.rawValue, title: String(localized: "Send back"), options: locked,
+                                              textInputButtonTitle: String(localized: "Send"),
+                                              textInputPlaceholder: String(localized: "What needs another look?")),
             ], intentIdentifiers: []),
             UNNotificationCategory(identifier: Category.rewardRequest.rawValue, actions: [
-                UNNotificationAction(identifier: Action.approveReward.rawValue, title: "Approve", options: locked),
-                UNNotificationAction(identifier: Action.denyReward.rawValue, title: "Deny", options: locked.union(.destructive)),
+                UNNotificationAction(identifier: Action.approveReward.rawValue, title: String(localized: "Approve"), options: locked),
+                UNNotificationAction(identifier: Action.denyReward.rawValue, title: String(localized: "Deny"), options: locked.union(.destructive)),
             ], intentIdentifiers: []),
         ]
     }
@@ -89,7 +90,7 @@ final class Notifier: NSObject, UNUserNotificationCenterDelegate {
         switch action {
         case .approveChore, .sendBack:
             guard let chore = ((household.chores as? Set<Chore>) ?? []).first(where: { $0.id == id }) else {
-                throw ServiceError.invalid("That chore is gone.")
+                throw ServiceError.invalid(String(localized: "That chore is gone."))
             }
             if action == .approveChore {
                 try service.approve(chore, by: me)
@@ -98,7 +99,7 @@ final class Notifier: NSObject, UNUserNotificationCenterDelegate {
             }
         case .approveReward, .denyReward:
             guard let request = ((household.redemptions as? Set<Redemption>) ?? []).first(where: { $0.id == id }) else {
-                throw ServiceError.invalid("That request is gone.")
+                throw ServiceError.invalid(String(localized: "That request is gone."))
             }
             try service.decide(request, approve: action == .approveReward, by: me)
         }
@@ -114,7 +115,7 @@ final class Notifier: NSObject, UNUserNotificationCenterDelegate {
     }
 
     private func reportFailure(_ message: String) {
-        let failure = Event(key: "failed-\(UUID().uuidString)", title: "Couldn't do that", body: message)
+        let failure = Event(key: "failed-\(UUID().uuidString)", title: String(localized: "Couldn't do that"), body: message)
         center.add(UNNotificationRequest(identifier: failure.key, content: failure.content, trigger: nil))
     }
 
@@ -159,15 +160,15 @@ final class Notifier: NSObject, UNUserNotificationCenterDelegate {
                 let when = chore.completedAt?.timeIntervalSince1970 ?? 0
                 result.append(Event(
                     key: "review-\(chore.id?.uuidString ?? "")-\(when)",
-                    title: "\(chore.assignee?.displayName ?? "Someone") finished a chore",
-                    body: "\(chore.displayTitle) is ready for you to check. Worth \(chore.points) points.",
+                    title: String(localized: "\(chore.assignee?.displayName ?? "Someone") finished a chore"),
+                    body: String(localized: "\(chore.displayTitle) is ready for you to check. Worth \(chore.points) points."),
                     category: .choreReview, objectID: chore.id))
             }
             for request in redemptions where request.status == .requested {
                 result.append(Event(
                     key: "redeem-\(request.id?.uuidString ?? "")",
-                    title: "\(request.member?.displayName ?? "Someone") wants a reward",
-                    body: "\(request.displayEmoji) \(request.displayTitle) · \(request.cost) pts",
+                    title: String(localized: "\(request.member?.displayName ?? "Someone") wants a reward"),
+                    body: String(localized: "\(request.displayEmoji) \(request.displayTitle) · \(request.cost) pts"),
                     category: .rewardRequest, objectID: request.id))
             }
         } else {
@@ -177,19 +178,19 @@ final class Notifier: NSObject, UNUserNotificationCenterDelegate {
                     let when = chore.reviewedAt?.timeIntervalSince1970 ?? 0
                     result.append(Event(
                         key: "sentback-\(chore.id?.uuidString ?? "")-\(when)",
-                        title: "\(chore.displayTitle) needs another look",
+                        title: String(localized: "\(chore.displayTitle) needs another look"),
                         body: chore.reviewNote ?? ""))
                 case .todo:
                     result.append(Event(
                         key: "assigned-\(chore.id?.uuidString ?? "")",
-                        title: "New chore: \(chore.displayTitle)",
-                        body: "Worth \(chore.points) points."))
+                        title: String(localized: "New chore: \(chore.displayTitle)"),
+                        body: String(localized: "Worth \(chore.points) points.")))
                 case .approved:
                     guard let reviewed = chore.reviewedAt, reviewed > Date().addingTimeInterval(-86_400) else { continue }
                     result.append(Event(
                         key: "approved-\(chore.id?.uuidString ?? "")",
-                        title: "You earned \(chore.awardedPoints) points!",
-                        body: "\(chore.displayTitle) was approved."))
+                        title: String(localized: "You earned \(chore.awardedPoints) points!"),
+                        body: String(localized: "\(chore.displayTitle) was approved.")))
                 case .pendingReview:
                     break
                 }
@@ -197,22 +198,22 @@ final class Notifier: NSObject, UNUserNotificationCenterDelegate {
             for request in redemptions where request.member?.id == me.id && request.status != .requested {
                 result.append(Event(
                     key: "decided-\(request.id?.uuidString ?? "")",
-                    title: request.status == .approved ? "Reward approved!" : "Reward not approved",
-                    body: "\(request.displayEmoji) \(request.displayTitle)"))
+                    title: request.status == .approved ? String(localized: "Reward approved!") : String(localized: "Reward not approved"),
+                    body: String(localized: "\(request.displayEmoji) \(request.displayTitle)")))
             }
             for entry in me.entryList where entry.kind == .bonus {
                 guard let date = entry.date, date > Date().addingTimeInterval(-86_400) else { continue }
                 result.append(Event(
                     key: "bonus-\(entry.id?.uuidString ?? "")",
-                    title: "Bonus! +\(entry.amount) points",
-                    body: entry.reason ?? "From a parent."))
+                    title: String(localized: "Bonus! +\(entry.amount) points"),
+                    body: entry.reason ?? String(localized: "From a parent.")))
             }
             for entry in me.entryList where entry.kind == .payout {
                 guard let date = entry.date, date > Date().addingTimeInterval(-86_400) else { continue }
                 result.append(Event(
                     key: "payout-\(entry.id?.uuidString ?? "")",
-                    title: entry.reason ?? "You got paid",
-                    body: "For \(-entry.amount) points."))
+                    title: entry.reason ?? String(localized: "You got paid"),
+                    body: String(localized: "For \(-entry.amount) points.")))
             }
         }
         return result
@@ -265,15 +266,15 @@ final class Notifier: NSObject, UNUserNotificationCenterDelegate {
                 // An hour's warning, but never before the start of the day it's due.
                 let fireDate = max(dueAt.addingTimeInterval(-3600), calendar.startOfDay(for: due))
                 guard fireDate > now else { return nil }
-                return Reminder(id: "due-\(id.uuidString)", title: "Due soon: \(chore.displayTitle)",
-                                body: "By \(dueAt.formatted(date: .omitted, time: .shortened)). Worth \(chore.points) points.",
+                return Reminder(id: "due-\(id.uuidString)", title: String(localized: "Due soon: \(chore.displayTitle)"),
+                                body: String(localized: "By \(dueAt.formatted(date: .omitted, time: .shortened)). Worth \(chore.points) points."),
                                 fireAt: calendar.dateComponents([.year, .month, .day, .hour, .minute], from: fireDate))
             }
             var parts = calendar.dateComponents([.year, .month, .day], from: due)
             parts.hour = 9
             guard let fireDate = calendar.date(from: parts), fireDate > now else { return nil }
-            return Reminder(id: "due-\(id.uuidString)", title: "Due today: \(chore.displayTitle)",
-                            body: "Worth \(chore.points) points.", fireAt: parts)
+            return Reminder(id: "due-\(id.uuidString)", title: String(localized: "Due today: \(chore.displayTitle)"),
+                            body: String(localized: "Worth \(chore.points) points."), fireAt: parts)
         }
     }
 
@@ -285,8 +286,8 @@ final class Notifier: NSObject, UNUserNotificationCenterDelegate {
             center.removePendingNotificationRequests(withIdentifiers: [Self.weeklyRecapID])
             return
         }
-        let recap = Event(key: Self.weeklyRecapID, title: "How did the week go?",
-                          body: "See everyone's points and chores in the weekly recap.").content
+        let recap = Event(key: Self.weeklyRecapID, title: String(localized: "How did the week go?"),
+                          body: String(localized: "See everyone's points and chores in the weekly recap.")).content
         let trigger = UNCalendarNotificationTrigger(dateMatching: WeeklyRecap.reminderTime, repeats: true)
         center.add(UNNotificationRequest(identifier: Self.weeklyRecapID, content: recap, trigger: trigger))
     }

@@ -69,7 +69,7 @@ final class AssistantRepliesTests: ServiceTestCase {
             try service.markComplete(more, by: kid, note: nil, photo: nil)
         }
         XCTAssertEqual(AssistantReplies.summary(household: household, me: parent),
-                       "2 chores and one reward request are waiting for you.")
+                       "2 chores and 1 reward request are waiting for you.")
     }
 
     func testKidSummaryCountsWhatsLeftToday() throws {
@@ -79,10 +79,10 @@ final class AssistantRepliesTests: ServiceTestCase {
 
         _ = try assign(title: "Later", due: day(3))
         _ = try assign(title: "Dishes", due: day(0))
-        XCTAssertEqual(summary(), "You have one chore left today: Dishes.")
+        XCTAssertEqual(summary(), "One chore left today: Dishes.")
 
         for title in ["Bed", "Cat", "Plants"] { _ = try assign(title: title) }
-        XCTAssertEqual(summary(), "You have 4 chores left today: Dishes, Bed, Cat, and 1 more.")
+        XCTAssertEqual(summary(), "4 chores left today, starting with Dishes, Bed, and Cat.")
     }
 
     func testPoints() throws {
@@ -92,16 +92,16 @@ final class AssistantRepliesTests: ServiceTestCase {
         try service.approve(chore, by: parent)
         let movie = try service.saveReward(nil, title: "Movie", emoji: "🎬", cost: 15, isActive: true, in: household, by: parent)
         try service.setGoal(movie, for: kid, by: kid)
-        XCTAssertEqual(AssistantReplies.points(household: household, me: kid), "You have 10 points. 5 more for Movie.")
+        XCTAssertEqual(AssistantReplies.points(household: household, me: kid), "You have 10 points. 5 more points for Movie.")
 
         let treat = try service.saveReward(nil, title: "Treat", emoji: "🍬", cost: 1, isActive: true, in: household, by: parent)
         try service.requestRedemption(of: treat, by: kid)
         XCTAssertEqual(AssistantReplies.points(household: household, me: kid),
-                       "You have 9 points. 1 more are on hold for a reward request. 6 more for Movie.")
+                       "You have 9 points. 1 point is on hold for a reward request. 6 more points for Movie.")
 
         try service.setGoal(treat, for: kid, by: kid)
         XCTAssertTrue(AssistantReplies.points(household: household, me: kid).hasSuffix("That's enough for Treat!"))
-        XCTAssertEqual(AssistantReplies.points(household: household, me: parent), "Sam has 9.")
+        XCTAssertEqual(AssistantReplies.points(household: household, me: parent), "Sam: 9 points.")
     }
 
     func testParentPointsWithNoKids() throws {

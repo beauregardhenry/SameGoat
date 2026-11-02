@@ -79,9 +79,9 @@ struct PayoutSheet: View {
         NavigationStack {
             Form {
                 Section {
-                    LabeledContent("Available", value: "\(kid.available) points")
+                    LabeledContent("Available", value: String(localized: "\(kid.available) points"))
                     Stepper(value: $points, in: 0...max(0, kid.available), step: rate) {
-                        LabeledContent("Pay out", value: "\(points) points")
+                        LabeledContent("Pay out", value: String(localized: "\(points) points"))
                     }
                     LabeledContent("Amount") {
                         Text(kid.household?.moneyText(for: points) ?? "").font(.title3.bold()).foregroundStyle(Theme.accent)

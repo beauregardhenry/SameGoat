@@ -16,6 +16,13 @@ Parents assign chores with point values; kids mark them done; points are awarded
 * Data: Core Data + CloudKit. The household is shared via `CKShare`; each person signs in with their own Apple ID and picks their profile.
 * Roles are enforced in the app (`HouseholdService`), not by CloudKit, so this is built for trusted family use.
 
+## Languages
+
+English and Spanish. Text lives in `Shared/Localizable.xcstrings` (a String Catalog, shared with the
+widgets). Building in Xcode adds new strings to it automatically; give each a Spanish translation in
+the catalog editor. Strings built in code need `String(localized:)` to be picked up. Siri phrases
+are English only for now.
+
 ## App Store
 
 `docs/app-store/` has the listing copy, review notes and privacy policy. `./scripts/take-screenshots.sh`
