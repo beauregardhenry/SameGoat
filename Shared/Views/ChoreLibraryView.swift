@@ -10,6 +10,8 @@ struct ChoreLibraryView: View {
     @State private var picked: Set<String> = []
     @State private var kids: Set<Member>
     @State private var takeTurns = false
+    @State private var letThemChoose = false
+    @State private var pickCount = 1
     @State private var error: String?
 
     init(household: Household, me: Member) {
@@ -43,8 +45,14 @@ struct ChoreLibraryView: View {
                         .buttonStyle(.plain)
                         .accessibilityAddTraits(kids.contains(kid) ? .isSelected : [])
                     }
-                    if kids.count > 1 {
+                    if kids.count > 1 && !letThemChoose {
                         Toggle("Take turns on repeating chores", isOn: $takeTurns)
+                    }
+                    Toggle("Let them choose", isOn: $letThemChoose)
+                    if letThemChoose {
+                        Stepper(value: $pickCount, in: 1...max(1, picked.count - 1)) {
+                            Text("They pick \(pickCount) of \(picked.count)")
+                        }
                     }
                 } header: {
                     Text("For")
@@ -107,7 +115,11 @@ struct ChoreLibraryView: View {
     private func add() {
         let ordered = household.kids.filter { kids.contains($0) }
         do {
-            try service.addFromLibrary(pickedTemplates, assignees: ordered, takeTurns: takeTurns, in: household, by: me)
+            if letThemChoose {
+                try service.addChoiceMenu(pickedTemplates, pick: pickCount, for: ordered, in: household, by: me)
+            } else {
+                try service.addFromLibrary(pickedTemplates, assignees: ordered, takeTurns: takeTurns, in: household, by: me)
+            }
             dismiss()
         } catch {
             self.error = error.localizedDescription

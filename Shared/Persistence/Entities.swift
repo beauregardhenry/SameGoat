@@ -133,6 +133,8 @@ final class Member: NSManagedObject, Identifiable {
     @NSManaged var goalRewardID: UUID?
     /// The day a kid last used their reset pass (one chore pushed to tomorrow, once a day).
     @NSManaged var resetUsedOn: Date?
+    /// Shows this kid big picture tiles instead of a list, for little ones.
+    @NSManaged var bigPicture: Bool
     @NSManaged var household: Household?
     @NSManaged var assignedChores: NSSet?
     @NSManaged var redemptions: NSSet?
@@ -260,6 +262,15 @@ final class Chore: NSManagedObject, Identifiable {
     @NSManaged var phase: Int16
     /// How much energy it takes, 1 to 3 spoons; 0 means "go by the difficulty".
     @NSManaged var spoonsRaw: Int16
+    /// A choice menu: the kid picks `menuPick` of the chores sharing this id.
+    @NSManaged var menuID: UUID?
+    @NSManaged var menuPick: Int16
+    @NSManaged var menuPicked: Bool
+    /// When picked, it was the easiest option left, for spotting a kid who always goes easy.
+    @NSManaged var menuEasiest: Bool
+
+    /// Still one of the options on offer: not chosen yet, so not owed.
+    var isMenuOption: Bool { menuID != nil && !menuPicked }
 
     var spoons: Int {
         get {
@@ -349,7 +360,7 @@ final class Chore: NSManagedObject, Identifiable {
     }
     var isOverdue: Bool { isOverdue() }
     func isOverdue(now: Date = Date(), calendar: Calendar = .current) -> Bool {
-        guard status == .todo, !extraCredit, let due = dueAt(calendar: calendar) else { return false }
+        guard status == .todo, !extraCredit, !isMenuOption, let due = dueAt(calendar: calendar) else { return false }
         // Regular chores wait while a project that comes first is underway.
         if isOnHold(now: now, calendar: calendar) { return false }
         // Nothing goes overdue during a vacation, or for being due on one.

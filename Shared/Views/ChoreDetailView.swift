@@ -284,6 +284,10 @@ struct ChoreDetailView: View {
                     Button("Let someone else do it") { perform { try service.release(chore, by: me) } }
                         .frame(maxWidth: .infinity)
                 }
+                if !me.isParent && chore.menuPicked && ChoiceMenu.options(like: chore).contains(where: \.isMenuOption) {
+                    Button("Change my mind") { perform { try service.unpick(chore, by: me) } }
+                        .frame(maxWidth: .infinity)
+                }
                 if !me.isParent && isAssignee && canUseResetPass {
                     Button("Not today: use my reset pass") { perform { try service.useResetPass(on: chore, by: me) } }
                         .frame(maxWidth: .infinity)

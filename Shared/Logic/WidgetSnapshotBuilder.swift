@@ -18,7 +18,7 @@ extension WidgetSnapshot {
 
     private static func kid(_ member: Member, chores: Set<Chore>, now: Date, calendar: Calendar) -> Kid {
         let open = chores
-            .filter { $0.assignee?.id == member.id && $0.status == .todo && !$0.extraCredit }
+            .filter { $0.assignee?.id == member.id && $0.status == .todo && !$0.extraCredit && !$0.isMenuOption }
             .sorted { ($0.dueAt(calendar: calendar) ?? .distantFuture, $0.displayTitle)
                 < ($1.dueAt(calendar: calendar) ?? .distantFuture, $1.displayTitle) }
             .prefix(20)

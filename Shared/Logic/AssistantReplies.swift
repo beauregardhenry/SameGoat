@@ -52,7 +52,7 @@ enum AssistantReplies {
         }
         guard let tomorrow = calendar.date(byAdding: .day, value: 1, to: calendar.startOfDay(for: now)) else { return "" }
         // Extra credit is never owed, so it doesn't count as left to do.
-        let today = openChores(for: me).filter { !$0.extraCredit && ($0.dueDate ?? .distantPast) < tomorrow }
+        let today = openChores(for: me).filter { !$0.extraCredit && !$0.isMenuOption && ($0.dueDate ?? .distantPast) < tomorrow }
         let names = today.prefix(3).map(\.displayTitle).formatted(.list(type: .and))
         switch today.count {
         case 0: return String(localized: "You're all done for today!")
