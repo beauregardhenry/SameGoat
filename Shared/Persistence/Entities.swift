@@ -228,6 +228,23 @@ final class Chore: NSManagedObject, Identifiable {
     /// The last time a parent sent a reminder about it, and who.
     @NSManaged var nudgedAt: Date?
     @NSManaged var nudgedByName: String?
+    /// How this chore helps the whole family, in a sentence kids can read.
+    @NSManaged var whyItHelps: String?
+    /// Parents' advice for doing it faster or better, so kids hear it from the app.
+    @NSManaged var tips: String?
+    /// How much problem-solving it takes, 1 to 5 stars; 0 when not set.
+    @NSManaged var skillRaw: Int16
+    /// A step up from what this kid usually does.
+    @NSManaged var stretch: Bool
+    /// Optional: earns points but is never owed, so it never goes overdue.
+    @NSManaged var extraCredit: Bool
+    /// Due any day this week rather than on one day.
+    @NSManaged var dueWithinWeek: Bool
+
+    var skill: Int? {
+        get { skillRaw > 0 ? Int(skillRaw) : nil }
+        set { skillRaw = Int16(newValue.map { min(max($0, 0), 5) } ?? 0) }
+    }
 
     /// Still in the pool: nobody has claimed it yet.
     var isUnclaimed: Bool { upForGrabs && assignee == nil }
@@ -291,7 +308,7 @@ final class Chore: NSManagedObject, Identifiable {
     }
     var isOverdue: Bool { isOverdue() }
     func isOverdue(now: Date = Date(), calendar: Calendar = .current) -> Bool {
-        guard status == .todo, let due = dueAt(calendar: calendar) else { return false }
+        guard status == .todo, !extraCredit, let due = dueAt(calendar: calendar) else { return false }
         // Nothing goes overdue during a vacation, or for being due on one.
         if let household, household.isPaused(on: now, calendar: calendar)
             || dueDate.map({ household.isPaused(on: $0, calendar: calendar) }) == true { return false }

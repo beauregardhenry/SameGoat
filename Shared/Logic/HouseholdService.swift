@@ -183,6 +183,14 @@ final class HouseholdService: ObservableObject {
         var upForGrabs = false
         var timeOfDay: TimeOfDay?
         var emoji: String?
+        var whyItHelps = ""
+        var tips = ""
+        /// Problem-solving stars, 1 to 5.
+        var skill: Int?
+        var stretch = false
+        var extraCredit = false
+        /// Due by the end of the week of `dueDate` (or this week) rather than on that day.
+        var dueWithinWeek = false
     }
 
     static let maxSteps = 12
@@ -384,19 +392,36 @@ final class HouseholdService: ObservableObject {
         try save()
     }
 
+    /// The last day of the week that `date` falls in, by the household's calendar.
+    func endOfWeek(containing date: Date) -> Date {
+        let start = calendar.dateInterval(of: .weekOfYear, for: date)?.start ?? calendar.startOfDay(for: date)
+        return calendar.date(byAdding: .day, value: 6, to: start) ?? start
+    }
+
     /// The fields editing can change, shared by every kind of assignment.
     private func apply(_ draft: ChoreDraft, title: String, to chore: Chore) {
         chore.title = title
         chore.notes = draft.notes.trimmed
         chore.points = Int32(max(0, draft.points))
-        chore.dueDate = draft.dueDate.map { calendar.startOfDay(for: $0) }
-        chore.dueTime = draft.dueDate == nil ? nil : draft.dueTime
+        if draft.dueWithinWeek {
+            chore.dueDate = endOfWeek(containing: draft.dueDate ?? Date())
+            chore.dueTime = nil
+        } else {
+            chore.dueDate = draft.dueDate.map { calendar.startOfDay(for: $0) }
+            chore.dueTime = draft.dueDate == nil ? nil : draft.dueTime
+        }
+        chore.dueWithinWeek = draft.dueWithinWeek
         chore.autoApprove = draft.autoApprove
         chore.photoRequired = draft.photoRequired
         chore.minutes = draft.minutes
         chore.difficulty = draft.difficulty
         chore.timeOfDay = draft.timeOfDay
         chore.emoji = draft.emoji?.trimmed.nilIfEmpty
+        chore.whyItHelps = draft.whyItHelps.trimmed.nilIfEmpty
+        chore.tips = draft.tips.trimmed.nilIfEmpty
+        chore.skill = draft.skill
+        chore.stretch = draft.stretch
+        chore.extraCredit = draft.extraCredit
         let oldSteps = chore.steps
         chore.steps = draft.steps
         if chore.steps != oldSteps { chore.doneSteps = [] }
@@ -464,6 +489,12 @@ final class HouseholdService: ObservableObject {
         draft.difficulty = chore.difficulty
         draft.timeOfDay = chore.timeOfDay
         draft.emoji = chore.emoji
+        draft.whyItHelps = chore.whyItHelps ?? ""
+        draft.tips = chore.tips ?? ""
+        draft.skill = chore.skill
+        draft.stretch = chore.stretch
+        draft.extraCredit = chore.extraCredit
+        draft.dueWithinWeek = chore.dueWithinWeek
         draft.recurrence = rule
         let copy = try newChore(from: draft, title: chore.displayTitle, assignee: kid, household: household)
         copy.sourceChoreID = chore.id

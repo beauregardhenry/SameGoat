@@ -38,10 +38,16 @@ struct ChoreEditorView: View {
             draft.upForGrabs = chore.upForGrabs
             draft.timeOfDay = chore.timeOfDay
             draft.emoji = chore.emoji
+            draft.whyItHelps = chore.whyItHelps ?? ""
+            draft.tips = chore.tips ?? ""
+            draft.skill = chore.skill
+            draft.stretch = chore.stretch
+            draft.extraCredit = chore.extraCredit
+            draft.dueWithinWeek = chore.dueWithinWeek
         }
         _draft = State(initialValue: draft)
         let suggested = Effort.suggestedPoints(minutes: draft.minutes, difficulty: draft.difficulty,
-                                               rate: Int(household.effortRate))
+                                               rate: Int(household.effortRate), skill: draft.skill)
         _pointsFollowEffort = State(initialValue: chore == nil || suggested == draft.points)
         _hasDue = State(initialValue: chore?.dueDate != nil)
         _due = State(initialValue: chore?.dueDate ?? Date())
@@ -60,7 +66,8 @@ struct ChoreEditorView: View {
     private var isEditing: Bool { chore != nil }
 
     private var suggestedPoints: Int? {
-        Effort.suggestedPoints(minutes: draft.minutes, difficulty: draft.difficulty, rate: Int(household.effortRate))
+        Effort.suggestedPoints(minutes: draft.minutes, difficulty: draft.difficulty,
+                               rate: Int(household.effortRate), skill: draft.skill)
     }
 
     private var effortSection: some View {
@@ -72,6 +79,10 @@ struct ChoreEditorView: View {
             Picker("Difficulty", selection: $draft.difficulty) {
                 Text("Not set").tag(Difficulty?.none)
                 ForEach(Difficulty.allCases) { Text($0.title).tag(Difficulty?.some($0)) }
+            }
+            Picker("Problem-solving", selection: $draft.skill) {
+                Text("Not set").tag(Int?.none)
+                ForEach(1...5, id: \.self) { Text(String(repeating: "⭐️", count: $0)).tag(Int?.some($0)) }
             }
         } header: {
             Text("Effort")
@@ -89,6 +100,7 @@ struct ChoreEditorView: View {
             }
         }
         .onChange(of: draft.minutes) { _, _ in followEffort() }
+        .onChange(of: draft.skill) { _, _ in followEffort() }
         .onChange(of: draft.difficulty) { _, _ in followEffort() }
     }
 
@@ -119,10 +131,14 @@ struct ChoreEditorView: View {
                     TextField("Notes (optional)", text: $draft.notes, axis: .vertical)
                         .lineLimit(2...5)
                     ChoreEmojiPicker(selection: $draft.emoji)
+                    TextField("How it helps the family (optional)", text: $draft.whyItHelps, axis: .vertical)
+                        .lineLimit(1...3)
+                    TextField("Tips for doing it well (optional)", text: $draft.tips, axis: .vertical)
+                        .lineLimit(1...3)
                 } header: {
                     Text("Chore")
                 } footer: {
-                    Text("A picture helps kids who can't read yet.")
+                    Text("A picture helps kids who can't read yet. Kids see how it helps and your tips on the chore, so you don't have to say it every time.")
                 }
 
                 effortSection
@@ -146,11 +162,16 @@ struct ChoreEditorView: View {
                         if points != suggestedPoints { pointsFollowEffort = false }
                     }
                     Toggle("Approve automatically", isOn: $draft.autoApprove)
+                    Toggle("Extra credit", isOn: $draft.extraCredit)
+                    Toggle("Stretch chore", isOn: $draft.stretch)
                     Toggle("Needs a photo", isOn: $draft.photoRequired)
                 } footer: {
                     Text(draft.autoApprove
                          ? "Points are awarded as soon as it's marked done. Good for small daily habits."
                          : "Awarded only after a parent confirms the chore is done.")
+                    + Text(" ")
+                    + Text(draft.extraCredit ? "Extra credit is optional: it earns points but is never overdue." : "")
+                    + Text(draft.stretch ? " A stretch chore is a step up, and kids see it as a challenge." : "")
                 }
 
                 Section {
@@ -233,9 +254,12 @@ struct ChoreEditorView: View {
                 Section("Schedule") {
                     Toggle("Due date", isOn: $hasDue)
                     if hasDue {
-                        DatePicker("Due", selection: $due, displayedComponents: .date)
-                        Toggle("By a certain time", isOn: $hasTime)
-                        if hasTime {
+                        DatePicker(draft.dueWithinWeek ? "Week of" : "Due", selection: $due, displayedComponents: .date)
+                        Toggle("Any day that week", isOn: $draft.dueWithinWeek)
+                        if !draft.dueWithinWeek {
+                            Toggle("By a certain time", isOn: $hasTime)
+                        }
+                        if hasTime && !draft.dueWithinWeek {
                             DatePicker("Time", selection: $time, displayedComponents: .hourAndMinute)
                         }
                     }
@@ -353,5 +377,32 @@ struct ChoreEmojiPicker: View {
         .buttonStyle(.plain)
         .accessibilityLabel(emoji ?? String(localized: "No picture"))
         .accessibilityAddTraits(on ? .isSelected : [])
+    }
+}
+
+/// Lets a parent edit a chore wherever it appears: long-press (or right-click) it, or swipe on a list row.
+private struct ChoreEditing: ViewModifier {
+    @ObservedObject var chore: Chore
+    let household: Household
+    let me: Member
+    @State private var editing = false
+
+    private var canEdit: Bool { me.isParent && chore.status == .todo }
+
+    func body(content: Content) -> some View {
+        content
+            .contextMenu {
+                if canEdit { Button("Edit", systemImage: "pencil") { editing = true } }
+            }
+            .swipeActions(edge: .trailing) {
+                if canEdit { Button("Edit", systemImage: "pencil") { editing = true }.tint(Theme.accent) }
+            }
+            .sheet(isPresented: $editing) { ChoreEditorView(household: household, me: me, chore: chore) }
+    }
+}
+
+extension View {
+    func choreEditing(_ chore: Chore, household: Household, me: Member) -> some View {
+        modifier(ChoreEditing(chore: chore, household: household, me: me))
     }
 }

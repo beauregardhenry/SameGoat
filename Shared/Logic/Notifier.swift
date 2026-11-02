@@ -274,7 +274,7 @@ final class Notifier: NSObject, UNUserNotificationCenterDelegate {
         }
         return chores.compactMap { chore in
             guard let due = chore.dueDate, let id = chore.id else { return nil }
-            if household.isPaused(on: due, calendar: calendar) { return nil }
+            if household.isPaused(on: due, calendar: calendar) || chore.extraCredit { return nil }
             if let dueAt = chore.dueAt(calendar: calendar), chore.dueTime != nil {
                 // An hour's warning, but never before the start of the day it's due.
                 let fireDate = max(dueAt.addingTimeInterval(-3600), calendar.startOfDay(for: due))

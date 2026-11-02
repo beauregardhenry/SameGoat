@@ -32,11 +32,41 @@ enum Effort {
     static let assumedMinutes = 10
 
     /// `rate` points for every 5 minutes (rounded up), times the difficulty. Nil with no effort set.
-    static func suggestedPoints(minutes: Int?, difficulty: Difficulty?, rate: Int) -> Int? {
+    /// Problem-solving adds a tenth for each star above one.
+    static func suggestedPoints(minutes: Int?, difficulty: Difficulty?, rate: Int, skill: Int? = nil) -> Int? {
         guard minutes != nil || difficulty != nil else { return nil }
         let blocks = (Double(minutes ?? assumedMinutes) / 5).rounded(.up)
-        let points = blocks * Double(max(1, rate)) * (difficulty ?? .medium).multiplier
+        let thinking = 1 + 0.1 * Double(max(0, (skill ?? 1) - 1))
+        let points = blocks * Double(max(1, rate)) * (difficulty ?? .medium).multiplier * thinking
         return max(1, Int(points.rounded()))
+    }
+
+    /// The chore's "character card": 1 to 5 stars for time, difficulty and problem-solving.
+    struct Stars: Equatable {
+        var time: Int?
+        var difficulty: Int?
+        var thinking: Int?
+        var isEmpty: Bool { time == nil && difficulty == nil && thinking == nil }
+    }
+
+    static func stars(minutes: Int?, difficulty: Difficulty?, skill: Int?) -> Stars {
+        let time = minutes.map { m -> Int in
+            switch m {
+            case ...5: 1
+            case ...10: 2
+            case ...20: 3
+            case ...45: 4
+            default: 5
+            }
+        }
+        let hard = difficulty.map { d -> Int in
+            switch d {
+            case .easy: 1
+            case .medium: 3
+            case .hard: 5
+            }
+        }
+        return Stars(time: time, difficulty: hard, thinking: skill)
     }
 
     /// "15 min · Hard", "15 min", "Hard", or nil.
