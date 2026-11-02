@@ -115,6 +115,7 @@ struct FamilyBoardView: View {
             }
             ForEach(chores) { chore in
                 BoardCard(chore: chore) { if chore.status == .todo { onTap(chore) } }
+                    .choreEditing(chore, household: household, me: me)
             }
         }
         .frame(width: width, alignment: .leading)

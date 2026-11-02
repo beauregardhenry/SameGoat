@@ -33,7 +33,8 @@ struct ChoresView: View {
     }
 
     private var waiting: [Chore] { chores.filter { $0.status == .pendingReview } }
-    private var todo: [Chore] { dueSorted(chores.filter { $0.status == .todo && !$0.isUnclaimed }) }
+    private var todo: [Chore] { dueSorted(chores.filter { $0.status == .todo && !$0.isUnclaimed && !$0.extraCredit }) }
+    private var extra: [Chore] { dueSorted(chores.filter { $0.status == .todo && !$0.isUnclaimed && $0.extraCredit }) }
     private var grabs: [Chore] { dueSorted(chores.filter { $0.status == .todo && $0.isUnclaimed }) }
     private var done: [Chore] {
         Array(chores.filter { $0.status == .approved }
@@ -54,6 +55,7 @@ struct ChoresView: View {
             if me.isParent {
                 choreSection("Waiting for review", waiting)
                 choreSection("To do", todo)
+                choreSection("Extra credit", extra)
                 choreSection("Up for grabs", grabs)
             } else {
                 // A kid's list reads like their day: morning, afternoon, evening, then anytime.
@@ -62,6 +64,7 @@ struct ChoresView: View {
                 }
                 choreSection(todo.contains { $0.timeOfDay != nil } ? "Anytime" : "To do", todo.filter { $0.timeOfDay == nil })
                 choreSection("Up for grabs", grabs, icon: "hand.raised")
+                choreSection("Extra credit", extra, icon: "plus.circle")
                 choreSection("Waiting for approval", waiting)
             }
             choreSection("Done", done)
@@ -108,6 +111,7 @@ struct ChoresView: View {
                     NavigationLink(value: chore) {
                         ChoreRow(chore: chore, showAssignee: me.isParent)
                     }
+                    .choreEditing(chore, household: household, me: me)
                 }
             } header: {
                 if let icon { Label(title, systemImage: icon) } else { Text(title) }
@@ -247,6 +251,12 @@ struct ChoreRow: View {
                 if chore.isRoutine && chore.status == .todo {
                     Text("\(chore.doneSteps.count) of \(chore.steps.count) steps")
                         .font(.caption).foregroundStyle(.secondary)
+                }
+                if chore.status == .todo && (chore.stretch || chore.extraCredit) {
+                    HStack(spacing: 4) {
+                        if chore.stretch { StatusChip(text: "Stretch", color: .purple) }
+                        if chore.extraCredit { StatusChip(text: "Extra credit", color: .green) }
+                    }
                 }
                 if chore.wasSentBack { StatusChip(text: "Sent back", color: .orange) }
                 if chore.status == .pendingReview && showAssignee { StatusChip(text: "Needs review", color: .blue) }

@@ -73,6 +73,12 @@ func dueText(_ date: Date) -> String {
 /// "Today" or "Today, 5:00 PM" when the chore has a due time.
 func dueText(for chore: Chore) -> String? {
     guard let due = chore.dueDate else { return nil }
+    if chore.dueWithinWeek {
+        let calendar = Calendar.current
+        if calendar.isDate(due, equalTo: Date(), toGranularity: .weekOfYear) { return String(localized: "This week") }
+        let start = calendar.dateInterval(of: .weekOfYear, for: due)?.start ?? due
+        return String(localized: "Week of \(start.formatted(.dateTime.month(.abbreviated).day()))")
+    }
     guard chore.dueTime != nil, let at = chore.dueAt() else { return dueText(due) }
     return dueText(due) + ", " + at.formatted(date: .omitted, time: .shortened)
 }

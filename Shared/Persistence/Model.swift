@@ -58,6 +58,12 @@ enum HappyMamaModel {
             attr("emoji", .stringAttributeType),
             attr("nudgedAt", .dateAttributeType),
             attr("nudgedByName", .stringAttributeType),
+            attr("whyItHelps", .stringAttributeType),
+            attr("tips", .stringAttributeType),
+            attr("skillRaw", .integer16AttributeType, 0),
+            attr("stretch", .booleanAttributeType, false),
+            attr("extraCredit", .booleanAttributeType, false),
+            attr("dueWithinWeek", .booleanAttributeType, false),
         ])
         let reward = entity(Reward.self, [
             attr("id", .UUIDAttributeType),

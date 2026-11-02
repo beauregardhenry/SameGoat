@@ -20,6 +20,7 @@ struct ChoreDetailView: View {
 
     var body: some View {
         Form {
+            starsSection
             detailsSection
             if chore.isRoutine { stepsSection }
 
@@ -108,6 +109,50 @@ struct ChoreDetailView: View {
             }
         }
         .errorAlert($error)
+    }
+
+    /// The chore's "character card": what it asks of you, how it helps, and how to do it well.
+    @ViewBuilder
+    private var starsSection: some View {
+        let stars = Effort.stars(minutes: chore.minutes, difficulty: chore.difficulty, skill: chore.skill)
+        let level = ChoreLevel.of(chore)
+        if !stars.isEmpty || chore.whyItHelps != nil || chore.stretch || level != nil {
+            Section {
+                if !stars.isEmpty {
+                    StarRow(title: String(localized: "Time"), icon: "stopwatch", stars: stars.time)
+                    StarRow(title: String(localized: "Difficulty"), icon: "dumbbell", stars: stars.difficulty)
+                    StarRow(title: String(localized: "Problem-solving"), icon: "puzzlepiece", stars: stars.thinking)
+                }
+                if let level {
+                    Label {
+                        Text(level.title) + Text(verbatim: " · ") + Text("Done \(ChoreLevel.timesDone(chore)) times")
+                    } icon: { Image(systemName: level.icon) }
+                    .foregroundStyle(.secondary)
+                }
+                if chore.stretch {
+                    Label("Stretch chore: a step up. You've got this!", systemImage: "arrow.up.forward.circle")
+                        .foregroundStyle(.purple)
+                }
+                if chore.extraCredit {
+                    Label("Extra credit: optional, and it earns points", systemImage: "plus.circle")
+                        .foregroundStyle(.green)
+                }
+            }
+        }
+        if let helps = chore.whyItHelps {
+            Section {
+                Label(helps, systemImage: "heart.fill").foregroundStyle(Color.primary)
+            } header: {
+                Text("How it helps the family")
+            }
+        }
+        if let tips = chore.tips {
+            Section {
+                Label(tips, systemImage: "lightbulb.fill")
+            } header: {
+                Text("Tips")
+            }
+        }
     }
 
     /// The kid ticks steps off; everyone else sees how far they've got.
@@ -322,5 +367,30 @@ struct CompleteChoreSheet: View {
             }
         }
         .sheetFrame(height: 520)
+    }
+}
+
+/// One stat on a chore's card, out of five stars.
+private struct StarRow: View {
+    let title: String
+    let icon: String
+    let stars: Int?
+
+    var body: some View {
+        if let stars {
+            LabeledContent {
+                HStack(spacing: 2) {
+                    ForEach(1...5, id: \.self) { i in
+                        Image(systemName: i <= stars ? "star.fill" : "star")
+                            .foregroundStyle(i <= stars ? Color.orange : Color.secondary.opacity(0.4))
+                    }
+                }
+                .font(.subheadline)
+            } label: {
+                Label(title, systemImage: icon)
+            }
+            .accessibilityElement(children: .ignore)
+            .accessibilityLabel("\(title): \(stars) of 5 stars")
+        }
     }
 }
