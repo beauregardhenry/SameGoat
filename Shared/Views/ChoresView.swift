@@ -7,6 +7,7 @@ struct ChoresView: View {
     @FetchRequest private var chores: FetchedResults<Chore>
     @State private var showingNew = false
     @State private var showingLibrary = false
+    @State private var showingProject = false
 
     init(household: Household, me: Member) {
         self.household = household
@@ -33,9 +34,14 @@ struct ChoresView: View {
     }
 
     private var waiting: [Chore] { chores.filter { $0.status == .pendingReview } }
-    private var todo: [Chore] { dueSorted(chores.filter { $0.status == .todo && !$0.isUnclaimed && !$0.extraCredit }) }
-    private var extra: [Chore] { dueSorted(chores.filter { $0.status == .todo && !$0.isUnclaimed && $0.extraCredit }) }
-    private var grabs: [Chore] { dueSorted(chores.filter { $0.status == .todo && $0.isUnclaimed }) }
+    /// Open chores outside any project; projects list their own.
+    private var open: [Chore] { chores.filter { $0.status == .todo && $0.projectID == nil } }
+    private var onHold: Bool { household.overridingProject() != nil }
+    private var todo: [Chore] { onHold ? [] : dueSorted(open.filter { !$0.isUnclaimed && !$0.extraCredit }) }
+    private var extra: [Chore] { onHold ? [] : dueSorted(open.filter { !$0.isUnclaimed && $0.extraCredit }) }
+    private var grabs: [Chore] { onHold ? [] : dueSorted(open.filter(\.isUnclaimed)) }
+    /// Regular chores waiting while a project comes first.
+    private var later: [Chore] { onHold ? dueSorted(open) : [] }
     private var done: [Chore] {
         Array(chores.filter { $0.status == .approved }
             .sorted { ($0.reviewedAt ?? .distantPast) > ($1.reviewedAt ?? .distantPast) }
@@ -52,6 +58,9 @@ struct ChoresView: View {
                     .listRowBackground(Color.clear)
                     .listRowInsets(EdgeInsets())
             }
+            ForEach(household.activeProjects()) { project in
+                ProjectSection(project: project, household: household, me: me)
+            }
             if me.isParent {
                 choreSection("Waiting for review", waiting)
                 choreSection("To do", todo)
@@ -67,6 +76,7 @@ struct ChoresView: View {
                 choreSection("Extra credit", extra, icon: "plus.circle")
                 choreSection("Waiting for approval", waiting)
             }
+            choreSection("After the project", later, icon: "pause.circle")
             choreSection("Done", done)
         }
         .overlay {
@@ -88,6 +98,9 @@ struct ChoresView: View {
         .toolbar {
             if me.isParent {
                 ToolbarItem(placement: .primaryAction) {
+                    Button { showingProject = true } label: { Label("New Project", systemImage: "hammer") }
+                }
+                ToolbarItem(placement: .primaryAction) {
                     Button { showingLibrary = true } label: { Label("Chore Ideas", systemImage: "lightbulb") }
                 }
                 ToolbarItem(placement: .primaryAction) {
@@ -97,6 +110,9 @@ struct ChoresView: View {
         }
         .sheet(isPresented: $showingNew) {
             ChoreEditorView(household: household, me: me, chore: nil)
+        }
+        .sheet(isPresented: $showingProject) {
+            ProjectEditorView(household: household, me: me)
         }
         .sheet(isPresented: $showingLibrary) {
             ChoreLibraryView(household: household, me: me)

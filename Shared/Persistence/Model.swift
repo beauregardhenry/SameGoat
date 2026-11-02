@@ -64,6 +64,8 @@ enum HappyMamaModel {
             attr("stretch", .booleanAttributeType, false),
             attr("extraCredit", .booleanAttributeType, false),
             attr("dueWithinWeek", .booleanAttributeType, false),
+            attr("projectID", .UUIDAttributeType),
+            attr("phase", .integer16AttributeType, 0),
         ])
         let reward = entity(Reward.self, [
             attr("id", .UUIDAttributeType),
@@ -83,6 +85,16 @@ enum HappyMamaModel {
             attr("decidedAt", .dateAttributeType),
             attr("decidedByName", .stringAttributeType),
         ])
+        let project = entity(Project.self, [
+            attr("id", .UUIDAttributeType),
+            attr("title", .stringAttributeType),
+            attr("emoji", .stringAttributeType),
+            attr("dueDate", .dateAttributeType),
+            attr("pausesRegular", .booleanAttributeType, false),
+            attr("phaseNamesRaw", .stringAttributeType),
+            attr("createdAt", .dateAttributeType),
+            attr("finishedAt", .dateAttributeType),
+        ])
         let entry = entity(PointEntry.self, [
             attr("id", .UUIDAttributeType),
             attr("amount", .integer32AttributeType, 0),
@@ -99,12 +111,13 @@ enum HappyMamaModel {
         link(household, reward, oneSide: "household", manySide: "rewards")
         link(household, redemption, oneSide: "household", manySide: "redemptions")
         link(household, entry, oneSide: "household", manySide: "entries")
+        link(household, project, oneSide: "household", manySide: "projects")
         link(member, chore, oneSide: "assignee", manySide: "assignedChores")
         link(member, redemption, oneSide: "member", manySide: "redemptions")
         link(member, entry, oneSide: "member", manySide: "entries")
 
         let model = NSManagedObjectModel()
-        model.entities = [household, member, chore, reward, redemption, entry]
+        model.entities = [household, member, chore, reward, redemption, entry, project]
         return model
     }
 
