@@ -24,8 +24,9 @@ enum RedemptionStatus: String {
 }
 
 enum EntryKind: String {
-    /// `bonus` is points a parent gives with a reason, outside any chore.
-    case chore, redemption, bonus
+    /// `bonus` is points a parent gives with a reason, outside any chore;
+    /// `payout` is points turned into pocket money.
+    case chore, redemption, bonus, payout
 }
 
 @objc(Household)
@@ -39,8 +40,23 @@ final class Household: NSManagedObject, Identifiable {
     @NSManaged var rewards: NSSet?
     @NSManaged var redemptions: NSSet?
     @NSManaged var entries: NSSet?
+    /// Allowance mode: how many points make one unit of money (one dollar, one euro). 0 is off.
+    @NSManaged var allowanceRate: Int16
+    @NSManaged var currencyCode: String?
 
     var displayName: String { name ?? "Our Household" }
+    var allowanceOn: Bool { allowanceRate > 0 }
+
+    /// What `points` are worth in money, or nil with allowance mode off.
+    func money(for points: Int) -> Decimal? {
+        guard allowanceOn else { return nil }
+        return Decimal(points) / Decimal(Int(allowanceRate))
+    }
+
+    /// "$2.40", or nil with allowance mode off.
+    func moneyText(for points: Int, locale: Locale = .current) -> String? {
+        money(for: points)?.formatted(.currency(code: currencyCode ?? "USD").locale(locale))
+    }
     var memberList: [Member] {
         ((members as? Set<Member>) ?? []).sorted {
             if $0.isParent != $1.isParent { return $0.isParent }
@@ -276,8 +292,8 @@ final class PointEntry: NSManagedObject, Identifiable {
         switch kind {
         case .chore: choreID.map { "chore-\($0.uuidString)" } ?? "entry-\(id?.uuidString ?? "")"
         case .redemption: redemptionID.map { "redemption-\($0.uuidString)" } ?? "entry-\(id?.uuidString ?? "")"
-        // Every bonus is its own source: two parents giving one each means two bonuses.
-        case .bonus: "entry-\(id?.uuidString ?? "")"
+        // Every bonus or payout is its own source: two parents each giving one means two.
+        case .bonus, .payout: "entry-\(id?.uuidString ?? "")"
         }
     }
 

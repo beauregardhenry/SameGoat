@@ -206,6 +206,13 @@ final class Notifier: NSObject, UNUserNotificationCenterDelegate {
                     title: "Bonus! +\(entry.amount) points",
                     body: entry.reason ?? "From a parent."))
             }
+            for entry in me.entryList where entry.kind == .payout {
+                guard let date = entry.date, date > Date().addingTimeInterval(-86_400) else { continue }
+                result.append(Event(
+                    key: "payout-\(entry.id?.uuidString ?? "")",
+                    title: entry.reason ?? "You got paid",
+                    body: "For \(-entry.amount) points."))
+            }
         }
         return result
     }

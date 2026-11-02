@@ -64,6 +64,7 @@ enum AssistantReplies {
             return kids.map { "\($0.displayName) has \($0.available)" }.joined(separator: ", ") + "."
         }
         var reply = "You have \(me.available) \(pointsWord(me.available))."
+        if let money = household.moneyText(for: me.available) { reply += " That's \(money)." }
         if me.reserved > 0 { reply += " \(me.reserved) more are on hold for a reward request." }
         if let goal = me.goal {
             let left = Int(goal.cost) - me.available
