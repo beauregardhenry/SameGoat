@@ -29,6 +29,7 @@ struct ChoreEditorView: View {
             draft.dueDate = chore.dueDate
             draft.takeTurns = chore.takesTurns
             draft.autoApprove = chore.autoApprove
+            draft.steps = chore.steps
         }
         _draft = State(initialValue: draft)
         _hasDue = State(initialValue: chore?.dueDate != nil)
@@ -82,6 +83,29 @@ struct ChoreEditorView: View {
                     Text(draft.autoApprove
                          ? "Points are awarded as soon as it's marked done. Good for small daily habits."
                          : "Awarded only after a parent confirms the chore is done.")
+                }
+
+                Section {
+                    ForEach(draft.steps.indices, id: \.self) { index in
+                        HStack {
+                            Image(systemName: "circle").foregroundStyle(.tertiary).accessibilityHidden(true)
+                            TextField("Step \(index + 1)", text: $draft.steps[index])
+                            Button { draft.steps.remove(at: index) } label: {
+                                Image(systemName: "minus.circle.fill").foregroundStyle(.red)
+                            }
+                            .buttonStyle(.borderless)
+                            .accessibilityLabel("Remove step \(index + 1)")
+                        }
+                    }
+                    if draft.steps.count < HouseholdService.maxSteps {
+                        Button("Add a step", systemImage: "plus.circle") { draft.steps.append("") }
+                    }
+                } header: {
+                    Text("Steps")
+                } footer: {
+                    Text(draft.steps.isEmpty
+                         ? "Optional. Add steps to make a routine, like a morning checklist."
+                         : "They tick off each step before they can say it's done.")
                 }
 
                 Section(isEditing ? "Assigned to" : "Assign to") {

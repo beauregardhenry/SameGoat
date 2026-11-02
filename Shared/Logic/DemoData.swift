@@ -49,6 +49,14 @@ extension HouseholdService {
         let brushed = try createChores(teeth, assignees: [ben], in: household, by: mama)
         try markComplete(brushed[0], by: ben, note: nil, photo: nil)
 
+        // A morning routine Ava is halfway through.
+        var morning = ChoreDraft(title: "Morning routine", points: 4, dueDate: today)
+        morning.recurrence.kind = .daily
+        morning.steps = ["Make your bed", "Get dressed", "Brush teeth", "Pack your school bag"]
+        let routine = try createChores(morning, assignees: [ava], in: household, by: mama)
+        try toggleStep(0, of: routine[0], by: ava)
+        try toggleStep(1, of: routine[0], by: ava)
+
         try createChores(ChoreDraft(title: "Water the plants", points: 6, dueDate: day(-2)), assignees: [ben], in: household, by: mama)
         try createChores(ChoreDraft(title: "Set the table", notes: "Plates, forks and napkins.", points: 5), assignees: [household.kids[0]], in: household, by: mama)
 

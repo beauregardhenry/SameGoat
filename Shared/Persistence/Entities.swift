@@ -149,6 +149,10 @@ final class Chore: NSManagedObject, Identifiable {
     @NSManaged var dueMinute: Int16
     /// Points are awarded as soon as the kid marks it done.
     @NSManaged var autoApprove: Bool
+    /// For a routine: its steps, one per line.
+    @NSManaged var stepsRaw: String?
+    /// Which steps (by position) the kid has ticked, comma-separated.
+    @NSManaged var doneStepsRaw: String?
     @NSManaged var household: Household?
     @NSManaged var assignee: Member?
 
@@ -197,6 +201,20 @@ final class Chore: NSManagedObject, Identifiable {
         return due <= now
     }
     var wasSentBack: Bool { status == .todo && !(reviewNote ?? "").isEmpty }
+
+    var steps: [String] {
+        get { (stepsRaw ?? "").split(separator: "\n").map(String.init) }
+        set {
+            let clean = newValue.map { $0.replacingOccurrences(of: "\n", with: " ").trimmed }.filter { !$0.isEmpty }
+            stepsRaw = clean.isEmpty ? nil : clean.joined(separator: "\n")
+        }
+    }
+    var doneSteps: Set<Int> {
+        get { Set((doneStepsRaw ?? "").split(separator: ",").compactMap { Int($0) }.filter { steps.indices.contains($0) }) }
+        set { doneStepsRaw = newValue.isEmpty ? nil : newValue.sorted().map(String.init).joined(separator: ",") }
+    }
+    var isRoutine: Bool { !steps.isEmpty }
+    var allStepsDone: Bool { doneSteps.count == steps.count }
 }
 
 @objc(Reward)

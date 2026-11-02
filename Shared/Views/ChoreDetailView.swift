@@ -20,6 +20,7 @@ struct ChoreDetailView: View {
     var body: some View {
         Form {
             detailsSection
+            if chore.isRoutine { stepsSection }
 
             if chore.wasSentBack {
                 Section("Sent back") {
@@ -96,6 +97,30 @@ struct ChoreDetailView: View {
         .errorAlert($error)
     }
 
+    /// The kid ticks steps off; everyone else sees how far they've got.
+    private var stepsSection: some View {
+        let canTick = isAssignee && !me.isParent && chore.status == .todo
+        return Section("Steps") {
+            ForEach(Array(chore.steps.enumerated()), id: \.offset) { index, step in
+                let done = chore.doneSteps.contains(index) || chore.status != .todo
+                Button {
+                    do { try service.toggleStep(index, of: chore, by: me) } catch { self.error = error.localizedDescription }
+                } label: {
+                    HStack {
+                        Image(systemName: done ? "checkmark.circle.fill" : "circle")
+                            .foregroundStyle(done ? Color.green : Color.secondary)
+                            .font(.title3)
+                        Text(step).strikethrough(done && canTick).foregroundStyle(Color.primary)
+                    }
+                    .contentShape(Rectangle())
+                }
+                .buttonStyle(.plain)
+                .disabled(!canTick)
+                .accessibilityAddTraits(done ? .isSelected : [])
+            }
+        }
+    }
+
     private var detailsSection: some View {
         Section {
             if let notes = chore.notes, !notes.isEmpty {
@@ -151,8 +176,11 @@ struct ChoreDetailView: View {
                 }
                 .buttonStyle(.borderedProminent)
                 .controlSize(.large)
+                .disabled(!chore.allStepsDone)
             } footer: {
-                Text(chore.autoApprove
+                Text(!chore.allStepsDone
+                     ? "Tick off every step first."
+                     : chore.autoApprove
                      ? "You'll get your points right away."
                      : "A parent will check it before you get your points.")
             }

@@ -168,7 +168,11 @@ final class HouseholdService: ObservableObject {
         var takeTurns = false
         /// Award the points as soon as the kid marks it done, without a parent checking.
         var autoApprove = false
+        /// A routine's checklist; empty for an ordinary chore.
+        var steps: [String] = []
     }
+
+    static let maxSteps = 12
 
     /// Gives each kid their own copy, or with `takeTurns` one chore the kids take turns on,
     /// starting with the first of `assignees`.
@@ -208,6 +212,9 @@ final class HouseholdService: ObservableObject {
         chore.dueDate = draft.dueDate.map { calendar.startOfDay(for: $0) }
         chore.dueTime = draft.dueDate == nil ? nil : draft.dueTime
         chore.autoApprove = draft.autoApprove
+        let oldSteps = chore.steps
+        chore.steps = draft.steps
+        if chore.steps != oldSteps { chore.doneSteps = [] }
         chore.recurrence = draft.recurrence
         chore.rotationIDs = draft.takeTurns ? assignees.compactMap(\.id) : []
         let assignee = assignees.first { $0.id == chore.assignee?.id } ?? first
@@ -230,6 +237,7 @@ final class HouseholdService: ObservableObject {
             throw ServiceError.notAllowed("Only the person a chore is assigned to can mark it done.")
         }
         guard chore.status == .todo else { throw ServiceError.invalid("This chore was already turned in.") }
+        guard chore.allStepsDone else { throw ServiceError.invalid("Tick off every step first.") }
         chore.status = .pendingReview
         chore.completedAt = Date()
         chore.completionNote = note?.trimmed.nilIfEmpty
@@ -237,6 +245,17 @@ final class HouseholdService: ObservableObject {
         chore.reviewNote = nil
         // Parents can trust small habits to count right away.
         if chore.autoApprove { try award(chore, points: Int(chore.points), reviewer: nil) }
+        try save()
+    }
+
+    /// A kid ticks or unticks one step of a routine.
+    func toggleStep(_ index: Int, of chore: Chore, by me: Member) throws {
+        guard chore.assignee?.id == me.id, !me.isParent else { throw ServiceError.notAllowed("This isn't your routine.") }
+        guard chore.status == .todo else { throw ServiceError.invalid("This routine was already turned in.") }
+        guard chore.steps.indices.contains(index) else { throw ServiceError.invalid("That step is gone.") }
+        var done = chore.doneSteps
+        if done.contains(index) { done.remove(index) } else { done.insert(index) }
+        chore.doneSteps = done
         try save()
     }
 
@@ -299,6 +318,9 @@ final class HouseholdService: ObservableObject {
         if draft.recurrence.isRepeating, draft.dueDate == nil {
             throw ServiceError.invalid("Repeating chores need a due date to start from.")
         }
+        guard draft.steps.filter({ !$0.trimmed.isEmpty }).count <= Self.maxSteps else {
+            throw ServiceError.invalid("A routine can have up to \(Self.maxSteps) steps.")
+        }
         if draft.takeTurns {
             guard assignees.count > 1 else { throw ServiceError.invalid("Choose at least two kids to take turns.") }
             guard draft.recurrence.isRepeating else { throw ServiceError.invalid("Taking turns needs a chore that repeats.") }
@@ -316,6 +338,7 @@ final class HouseholdService: ObservableObject {
         chore.dueDate = draft.dueDate.map { calendar.startOfDay(for: $0) }
         chore.dueTime = draft.dueDate == nil ? nil : draft.dueTime
         chore.autoApprove = draft.autoApprove
+        chore.steps = draft.steps
         chore.createdAt = Date()
         chore.recurrence = draft.recurrence
         chore.household = household
@@ -337,6 +360,7 @@ final class HouseholdService: ObservableObject {
         draft.dueDate = next
         draft.dueTime = chore.dueTime
         draft.autoApprove = chore.autoApprove
+        draft.steps = chore.steps
         draft.recurrence = rule
         let copy = try newChore(from: draft, title: chore.displayTitle, assignee: kid, household: household)
         copy.sourceChoreID = chore.id

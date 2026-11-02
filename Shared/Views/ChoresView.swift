@@ -213,6 +213,10 @@ struct ChoreRow: View {
                 }
                 .font(.subheadline)
                 .foregroundStyle(.secondary)
+                if chore.isRoutine && chore.status == .todo {
+                    Text("\(chore.doneSteps.count) of \(chore.steps.count) steps")
+                        .font(.caption).foregroundStyle(.secondary)
+                }
                 if chore.wasSentBack { StatusChip(text: "Sent back", color: .orange) }
                 if chore.status == .pendingReview && showAssignee { StatusChip(text: "Needs review", color: .blue) }
             }
