@@ -26,6 +26,8 @@ extension HouseholdService {
         weekly.difficulty = .easy
         weekly.emoji = "🗑️"
         weekly.timeOfDay = .evening
+        weekly.whyItHelps = "Nobody likes a smelly kitchen. This keeps it fresh for all of us."
+        weekly.tips = "Put a new bag in right away."
         try createChores(weekly, assignees: [ava, ben], in: household, by: mama)
 
         let waiting = try createChores(ChoreDraft(title: "Make your bed", points: 3, dueDate: today), assignees: [ava], in: household, by: mama)
@@ -80,6 +82,21 @@ extension HouseholdService {
 
         let movie = try saveReward(nil, title: "Movie night pick", emoji: "🎬", cost: 20, isActive: true, in: household, by: mama)
         try setGoal(movie, for: ava, by: mama)
+        // The grown-ups pitch in too, and the kids can see it.
+        var insurance = ChoreDraft(title: "Call the insurance company", dueDate: today)
+        insurance.emoji = "📞"
+        insurance.spoons = 3
+        try createChores(insurance, assignees: [mama], in: household, by: mama)
+        var groceries2 = ChoreDraft(title: "Grocery run", dueDate: today)
+        groceries2.emoji = "🛒"
+        try createChores(groceries2, assignees: [papa], in: household, by: mama)
+
+        // Ben chooses two of these four this week.
+        let options = ChoreLibrary.templates.filter {
+            $0.age == .kids && ["Tidy your room", "Fold the laundry", "Empty the dishwasher", "Clear the table"].contains($0.title)
+        }
+        try addChoiceMenu(options, pick: 2, for: [ben], in: household, by: mama)
+
         let iceCream = try saveReward(nil, title: "Ice cream trip", emoji: "🍦", cost: 4, isActive: true, in: household, by: mama)
         try saveReward(nil, title: "Extra screen time", emoji: "🎮", cost: 12, isActive: true, in: household, by: mama)
 
