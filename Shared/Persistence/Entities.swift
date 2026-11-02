@@ -3,7 +3,7 @@ import CoreData
 enum Role: String, CaseIterable, Identifiable {
     case parent, kid
     var id: String { rawValue }
-    var title: String { self == .parent ? "Parent" : "Kid" }
+    var title: String { self == .parent ? String(localized: "Parent") : String(localized: "Kid") }
 }
 
 enum ChoreStatus: String {
@@ -47,7 +47,7 @@ final class Household: NSManagedObject, Identifiable {
     @NSManaged var pausedFrom: Date?
     @NSManaged var pausedUntil: Date?
 
-    var displayName: String { name ?? "Our Household" }
+    var displayName: String { name ?? String(localized: "Our Household") }
     var allowanceOn: Bool { allowanceRate > 0 }
 
     /// True on any day of the vacation pause.
@@ -104,7 +104,7 @@ final class Member: NSManagedObject, Identifiable {
         set { roleRaw = newValue.rawValue }
     }
     var isParent: Bool { role == .parent }
-    var displayName: String { name ?? "Someone" }
+    var displayName: String { name ?? String(localized: "Someone") }
     var displayEmoji: String { emoji ?? (isParent ? "🌻" : "🦊") }
     var isClaimed: Bool { appleUserID != nil }
 
@@ -214,7 +214,7 @@ final class Chore: NSManagedObject, Identifiable {
         return kids[(index + 1) % kids.count]
     }
 
-    var displayTitle: String { title ?? "Chore" }
+    var displayTitle: String { title ?? String(localized: "Chore") }
     var status: ChoreStatus {
         get { ChoreStatus(rawValue: statusRaw ?? "") ?? .todo }
         set { statusRaw = newValue.rawValue }
@@ -270,7 +270,7 @@ final class Reward: NSManagedObject, Identifiable {
     @NSManaged var createdAt: Date?
     @NSManaged var household: Household?
 
-    var displayTitle: String { title ?? "Reward" }
+    var displayTitle: String { title ?? String(localized: "Reward") }
     var displayEmoji: String { emoji ?? "🎁" }
 }
 
@@ -291,7 +291,7 @@ final class Redemption: NSManagedObject, Identifiable {
         get { RedemptionStatus(rawValue: statusRaw ?? "") ?? .requested }
         set { statusRaw = newValue.rawValue }
     }
-    var displayTitle: String { rewardTitle ?? "Reward" }
+    var displayTitle: String { rewardTitle ?? String(localized: "Reward") }
     var displayEmoji: String { rewardEmoji ?? "🎁" }
 }
 

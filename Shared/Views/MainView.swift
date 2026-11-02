@@ -7,10 +7,10 @@ enum AppSection: String, Identifiable, Hashable {
 
     func title(isParent: Bool) -> String {
         switch self {
-        case .chores: isParent ? "Chores" : "My Chores"
-        case .review: "Review"
-        case .rewards: "Rewards"
-        case .family: "Family"
+        case .chores: isParent ? String(localized: "Chores") : String(localized: "My Chores")
+        case .review: String(localized: "Review")
+        case .rewards: String(localized: "Rewards")
+        case .family: String(localized: "Family")
         }
     }
 

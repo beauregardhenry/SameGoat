@@ -32,8 +32,8 @@ final class HouseholdService: ObservableObject {
     @discardableResult
     func createHousehold(name: String, yourName: String, emoji: String, userID: String) throws -> Household {
         let name = name.trimmed, yourName = yourName.trimmed
-        guard !name.isEmpty else { throw ServiceError.invalid("Give your household a name.") }
-        guard !yourName.isEmpty else { throw ServiceError.invalid("Enter your name.") }
+        guard !name.isEmpty else { throw ServiceError.invalid(String(localized: "Give your household a name.")) }
+        guard !yourName.isEmpty else { throw ServiceError.invalid(String(localized: "Enter your name.")) }
 
         let household = try make(Household.self)
         household.id = UUID()
@@ -58,7 +58,7 @@ final class HouseholdService: ObservableObject {
     func addMember(name: String, role: Role, emoji: String, to household: Household, by me: Member) throws -> Member {
         try requireParent(me)
         let name = name.trimmed
-        guard !name.isEmpty else { throw ServiceError.invalid("Enter a name.") }
+        guard !name.isEmpty else { throw ServiceError.invalid(String(localized: "Enter a name.")) }
         let userID = autoClaimNewMembers ? "local-" + UUID().uuidString : nil
         let member = try newMember(name: name, role: role, emoji: emoji, userID: userID, household: household)
         try save()
@@ -68,12 +68,12 @@ final class HouseholdService: ObservableObject {
     func updateMember(_ member: Member, name: String, role: Role, emoji: String, by me: Member) throws {
         try requireParent(me)
         let name = name.trimmed
-        guard !name.isEmpty else { throw ServiceError.invalid("Enter a name.") }
+        guard !name.isEmpty else { throw ServiceError.invalid(String(localized: "Enter a name.")) }
         if member.role == .parent, role == .kid, (member.household?.parents.count ?? 0) <= 1 {
-            throw ServiceError.invalid("A household needs at least one parent.")
+            throw ServiceError.invalid(String(localized: "A household needs at least one parent."))
         }
         if member.id == me.id, role == .kid {
-            throw ServiceError.invalid("You can't make yourself a kid.")
+            throw ServiceError.invalid(String(localized: "You can't make yourself a kid."))
         }
         member.name = name
         member.role = role
@@ -83,9 +83,9 @@ final class HouseholdService: ObservableObject {
 
     func removeMember(_ member: Member, by me: Member) throws {
         try requireParent(me)
-        guard member.id != me.id else { throw ServiceError.invalid("You can't remove yourself.") }
+        guard member.id != me.id else { throw ServiceError.invalid(String(localized: "You can't remove yourself.")) }
         if member.isParent, (member.household?.parents.count ?? 0) <= 1 {
-            throw ServiceError.invalid("A household needs at least one parent.")
+            throw ServiceError.invalid(String(localized: "A household needs at least one parent."))
         }
         // A chore kids take turns on passes to whoever is next instead of leaving with this kid.
         for chore in (member.assignedChores as? Set<Chore>) ?? [] where chore.takesTurns && chore.status == .todo {
@@ -102,7 +102,7 @@ final class HouseholdService: ObservableObject {
     /// Lets someone else pick this profile again (e.g. after a new Apple ID).
     func resetSignIn(of member: Member, by me: Member) throws {
         try requireParent(me)
-        guard member.id != me.id else { throw ServiceError.invalid("You can't reset your own sign-in.") }
+        guard member.id != me.id else { throw ServiceError.invalid(String(localized: "You can't reset your own sign-in.")) }
         member.appleUserID = nil
         try save()
     }
@@ -113,7 +113,7 @@ final class HouseholdService: ObservableObject {
         try requireParent(me)
         let code = code.trimmed
         guard (4...8).contains(code.count), code.allSatisfy({ $0.isASCII && $0.isNumber }) else {
-            throw ServiceError.invalid("Use 4 to 8 digits.")
+            throw ServiceError.invalid(String(localized: "Use 4 to 8 digits."))
         }
         household.parentCode = code
         try save()
@@ -122,10 +122,10 @@ final class HouseholdService: ObservableObject {
     /// Links the signed-in iCloud user to an existing profile. Parent profiles
     /// need the household's parent code so a kid can't pick one.
     func claim(_ member: Member, userID: String, parentCode: String?) throws {
-        guard member.appleUserID == nil else { throw ServiceError.invalid("Someone has already signed in as \(member.displayName).") }
+        guard member.appleUserID == nil else { throw ServiceError.invalid(String(localized: "Someone has already signed in as \(member.displayName).")) }
         if member.isParent {
             guard let expected = member.household?.parentCode, parentCode?.trimmed == expected else {
-                throw ServiceError.notAllowed("That parent code isn't right. A parent can find it under Family.")
+                throw ServiceError.notAllowed(String(localized: "That parent code isn't right. A parent can find it under Family."))
             }
         }
         member.appleUserID = userID
@@ -135,7 +135,7 @@ final class HouseholdService: ObservableObject {
     @discardableResult
     func joinAsKid(name: String, emoji: String, userID: String, household: Household) throws -> Member {
         let name = name.trimmed
-        guard !name.isEmpty else { throw ServiceError.invalid("Enter your name.") }
+        guard !name.isEmpty else { throw ServiceError.invalid(String(localized: "Enter your name.")) }
         let member = try newMember(name: name, role: .kid, emoji: emoji, userID: userID, household: household)
         try save()
         return member
@@ -181,7 +181,7 @@ final class HouseholdService: ObservableObject {
     @discardableResult
     func createChores(_ draft: ChoreDraft, assignees: [Member], in household: Household, by me: Member) throws -> [Chore] {
         try requireParent(me)
-        guard let first = assignees.first else { throw ServiceError.invalid("Choose who should do it.") }
+        guard let first = assignees.first else { throw ServiceError.invalid(String(localized: "Choose who should do it.")) }
         let title = try validated(draft, assignees: assignees)
         if draft.takeTurns {
             let chore = try newChore(from: draft, title: title, assignee: first, household: household)
@@ -204,9 +204,9 @@ final class HouseholdService: ObservableObject {
     /// whose turn it is keeps it if they're still in the rotation.
     func updateChore(_ chore: Chore, with draft: ChoreDraft, assignees: [Member], by me: Member) throws {
         try requireParent(me)
-        guard chore.status == .todo else { throw ServiceError.invalid("Only chores that haven't been turned in can be edited.") }
-        guard let first = assignees.first else { throw ServiceError.invalid("Choose who should do it.") }
-        guard draft.takeTurns || assignees.count == 1 else { throw ServiceError.invalid("Choose one person, or let them take turns.") }
+        guard chore.status == .todo else { throw ServiceError.invalid(String(localized: "Only chores that haven't been turned in can be edited.")) }
+        guard let first = assignees.first else { throw ServiceError.invalid(String(localized: "Choose who should do it.")) }
+        guard draft.takeTurns || assignees.count == 1 else { throw ServiceError.invalid(String(localized: "Choose one person, or let them take turns.")) }
         let title = try validated(draft, assignees: assignees)
         chore.title = title
         chore.notes = draft.notes.trimmed
@@ -237,11 +237,11 @@ final class HouseholdService: ObservableObject {
     /// A kid says they're done. Nothing is awarded until a parent confirms.
     func markComplete(_ chore: Chore, by me: Member, note: String?, photo: Data?) throws {
         guard chore.assignee?.id == me.id, !me.isParent else {
-            throw ServiceError.notAllowed("Only the person a chore is assigned to can mark it done.")
+            throw ServiceError.notAllowed(String(localized: "Only the person a chore is assigned to can mark it done."))
         }
-        guard chore.status == .todo else { throw ServiceError.invalid("This chore was already turned in.") }
-        guard chore.allStepsDone else { throw ServiceError.invalid("Tick off every step first.") }
-        guard !chore.photoRequired || photo != nil else { throw ServiceError.invalid("Add a photo to show it's done.") }
+        guard chore.status == .todo else { throw ServiceError.invalid(String(localized: "This chore was already turned in.")) }
+        guard chore.allStepsDone else { throw ServiceError.invalid(String(localized: "Tick off every step first.")) }
+        guard !chore.photoRequired || photo != nil else { throw ServiceError.invalid(String(localized: "Add a photo to show it's done.")) }
         chore.status = .pendingReview
         chore.completedAt = Date()
         chore.completionNote = note?.trimmed.nilIfEmpty
@@ -254,9 +254,9 @@ final class HouseholdService: ObservableObject {
 
     /// A kid ticks or unticks one step of a routine.
     func toggleStep(_ index: Int, of chore: Chore, by me: Member) throws {
-        guard chore.assignee?.id == me.id, !me.isParent else { throw ServiceError.notAllowed("This isn't your routine.") }
-        guard chore.status == .todo else { throw ServiceError.invalid("This routine was already turned in.") }
-        guard chore.steps.indices.contains(index) else { throw ServiceError.invalid("That step is gone.") }
+        guard chore.assignee?.id == me.id, !me.isParent else { throw ServiceError.notAllowed(String(localized: "This isn't your routine.")) }
+        guard chore.status == .todo else { throw ServiceError.invalid(String(localized: "This routine was already turned in.")) }
+        guard chore.steps.indices.contains(index) else { throw ServiceError.invalid(String(localized: "That step is gone.")) }
         var done = chore.doneSteps
         if done.contains(index) { done.remove(index) } else { done.insert(index) }
         chore.doneSteps = done
@@ -265,8 +265,8 @@ final class HouseholdService: ObservableObject {
 
     /// Takes a turned-in chore back before a parent has looked at it.
     func withdraw(_ chore: Chore, by me: Member) throws {
-        guard chore.assignee?.id == me.id else { throw ServiceError.notAllowed("This isn't your chore.") }
-        guard chore.status == .pendingReview else { throw ServiceError.invalid("This chore isn't waiting for approval.") }
+        guard chore.assignee?.id == me.id else { throw ServiceError.notAllowed(String(localized: "This isn't your chore.")) }
+        guard chore.status == .pendingReview else { throw ServiceError.invalid(String(localized: "This chore isn't waiting for approval.")) }
         chore.status = .todo
         chore.completedAt = nil
         chore.completionNote = nil
@@ -278,7 +278,7 @@ final class HouseholdService: ObservableObject {
     /// chore points are awarded. `points` overrides the chore's value (partial or bonus credit).
     func approve(_ chore: Chore, by me: Member, points: Int? = nil) throws {
         try requireParent(me)
-        guard chore.status == .pendingReview else { throw ServiceError.invalid("This chore isn't waiting for approval.") }
+        guard chore.status == .pendingReview else { throw ServiceError.invalid(String(localized: "This chore isn't waiting for approval.")) }
         try award(chore, points: points ?? Int(chore.points), reviewer: me.name)
         try save()
     }
@@ -286,7 +286,7 @@ final class HouseholdService: ObservableObject {
     /// Marks the chore approved, records its points, and schedules a repeating chore's
     /// next copy. A nil reviewer means it was approved automatically.
     private func award(_ chore: Chore, points: Int, reviewer: String?) throws {
-        guard let kid = chore.assignee, let household = chore.household else { throw ServiceError.invalid("This chore has no owner.") }
+        guard let kid = chore.assignee, let household = chore.household else { throw ServiceError.invalid(String(localized: "This chore has no owner.")) }
         let awarded = max(0, points)
         chore.status = .approved
         chore.awardedPoints = Int32(awarded)
@@ -303,9 +303,9 @@ final class HouseholdService: ObservableObject {
     /// A parent sends the chore back to the kid with a note. No points are awarded.
     func reject(_ chore: Chore, by me: Member, note: String) throws {
         try requireParent(me)
-        guard chore.status == .pendingReview else { throw ServiceError.invalid("This chore isn't waiting for approval.") }
+        guard chore.status == .pendingReview else { throw ServiceError.invalid(String(localized: "This chore isn't waiting for approval.")) }
         chore.status = .todo
-        chore.reviewNote = note.trimmed.nilIfEmpty ?? "Please take another look."
+        chore.reviewNote = note.trimmed.nilIfEmpty ?? String(localized: "Please take another look.")
         chore.reviewedAt = Date()
         chore.reviewedByName = me.name
         chore.completedAt = nil
@@ -317,17 +317,17 @@ final class HouseholdService: ObservableObject {
     /// Returns the trimmed title once the draft passes the rules shared by creating and editing.
     private func validated(_ draft: ChoreDraft, assignees: [Member]) throws -> String {
         let title = draft.title.trimmed
-        guard !title.isEmpty else { throw ServiceError.invalid("Give the chore a title.") }
-        guard assignees.allSatisfy({ !$0.isParent }) else { throw ServiceError.invalid("Chores can only be assigned to kids.") }
+        guard !title.isEmpty else { throw ServiceError.invalid(String(localized: "Give the chore a title.")) }
+        guard assignees.allSatisfy({ !$0.isParent }) else { throw ServiceError.invalid(String(localized: "Chores can only be assigned to kids.")) }
         if draft.recurrence.isRepeating, draft.dueDate == nil {
-            throw ServiceError.invalid("Repeating chores need a due date to start from.")
+            throw ServiceError.invalid(String(localized: "Repeating chores need a due date to start from."))
         }
         guard draft.steps.filter({ !$0.trimmed.isEmpty }).count <= Self.maxSteps else {
-            throw ServiceError.invalid("A routine can have up to \(Self.maxSteps) steps.")
+            throw ServiceError.invalid(String(localized: "A routine can have up to \(Self.maxSteps) steps."))
         }
         if draft.takeTurns {
-            guard assignees.count > 1 else { throw ServiceError.invalid("Choose at least two kids to take turns.") }
-            guard draft.recurrence.isRepeating else { throw ServiceError.invalid("Taking turns needs a chore that repeats.") }
+            guard assignees.count > 1 else { throw ServiceError.invalid(String(localized: "Choose at least two kids to take turns.")) }
+            guard draft.recurrence.isRepeating else { throw ServiceError.invalid(String(localized: "Taking turns needs a chore that repeats.")) }
         }
         return title
     }
@@ -411,8 +411,8 @@ final class HouseholdService: ObservableObject {
                     in household: Household, by me: Member) throws -> Reward {
         try requireParent(me)
         let title = title.trimmed
-        guard !title.isEmpty else { throw ServiceError.invalid("Give the reward a name.") }
-        guard cost > 0 else { throw ServiceError.invalid("A reward needs to cost at least 1 point.") }
+        guard !title.isEmpty else { throw ServiceError.invalid(String(localized: "Give the reward a name.")) }
+        guard cost > 0 else { throw ServiceError.invalid(String(localized: "A reward needs to cost at least 1 point.")) }
         let target = try reward ?? insert(Reward.self, into: household)
         if reward == nil {
             target.id = UUID()
@@ -429,10 +429,10 @@ final class HouseholdService: ObservableObject {
 
     /// A kid picks a reward to save toward, or a parent picks it for them. nil clears it.
     func setGoal(_ reward: Reward?, for kid: Member, by me: Member) throws {
-        guard !kid.isParent else { throw ServiceError.invalid("Only kids save toward rewards.") }
-        guard me.isParent || me.id == kid.id else { throw ServiceError.notAllowed("You can only pick your own goal.") }
+        guard !kid.isParent else { throw ServiceError.invalid(String(localized: "Only kids save toward rewards.")) }
+        guard me.isParent || me.id == kid.id else { throw ServiceError.notAllowed(String(localized: "You can only pick your own goal.")) }
         if let reward, !reward.isActive || reward.household != kid.household {
-            throw ServiceError.invalid("That reward isn't available.")
+            throw ServiceError.invalid(String(localized: "That reward isn't available."))
         }
         kid.goalRewardID = reward?.id
         try save()
@@ -445,10 +445,10 @@ final class HouseholdService: ObservableObject {
     }
 
     func requestRedemption(of reward: Reward, by me: Member) throws {
-        guard !me.isParent else { throw ServiceError.notAllowed("Only kids spend points.") }
-        guard reward.isActive, let household = reward.household else { throw ServiceError.invalid("That reward isn't available.") }
+        guard !me.isParent else { throw ServiceError.notAllowed(String(localized: "Only kids spend points.")) }
+        guard reward.isActive, let household = reward.household else { throw ServiceError.invalid(String(localized: "That reward isn't available.")) }
         guard me.available >= Int(reward.cost) else {
-            throw ServiceError.invalid("You need \(Int(reward.cost) - me.available) more points for that.")
+            throw ServiceError.invalid(String(localized: "You need \(Int(reward.cost) - me.available) more points for that."))
         }
         let request = try insert(Redemption.self, into: household)
         request.id = UUID()
@@ -465,12 +465,12 @@ final class HouseholdService: ObservableObject {
     /// Approving spends the points; denying leaves the balance untouched.
     func decide(_ redemption: Redemption, approve: Bool, by me: Member) throws {
         try requireParent(me)
-        guard redemption.status == .requested else { throw ServiceError.invalid("This request was already decided.") }
-        guard let kid = redemption.member, let household = redemption.household else { throw ServiceError.invalid("This request has no owner.") }
+        guard redemption.status == .requested else { throw ServiceError.invalid(String(localized: "This request was already decided.")) }
+        guard let kid = redemption.member, let household = redemption.household else { throw ServiceError.invalid(String(localized: "This request has no owner.")) }
 
         if approve {
             guard kid.balance >= Int(redemption.cost) else {
-                throw ServiceError.invalid("\(kid.displayName) doesn't have enough points anymore.")
+                throw ServiceError.invalid(String(localized: "\(kid.displayName) doesn't have enough points anymore."))
             }
             let entry = try addEntry(-redemption.cost, kind: .redemption, reason: redemption.displayTitle, to: kid, in: household)
             entry.redemptionID = redemption.id
@@ -489,9 +489,9 @@ final class HouseholdService: ObservableObject {
     @discardableResult
     func giveBonus(_ points: Int, reason: String, to kid: Member, by me: Member) throws -> PointEntry {
         try requireParent(me)
-        guard !kid.isParent, let household = kid.household else { throw ServiceError.invalid("Bonus points are for kids.") }
-        guard Self.bonusRange.contains(points) else { throw ServiceError.invalid("Give between 1 and 1,000 points.") }
-        let entry = try addEntry(Int32(points), kind: .bonus, reason: reason.trimmed.nilIfEmpty ?? "Bonus", to: kid, in: household)
+        guard !kid.isParent, let household = kid.household else { throw ServiceError.invalid(String(localized: "Bonus points are for kids.")) }
+        guard Self.bonusRange.contains(points) else { throw ServiceError.invalid(String(localized: "Give between 1 and 1,000 points.")) }
+        let entry = try addEntry(Int32(points), kind: .bonus, reason: reason.trimmed.nilIfEmpty ?? String(localized: "Bonus"), to: kid, in: household)
         try save()
         return entry
     }
@@ -504,7 +504,7 @@ final class HouseholdService: ObservableObject {
     func setAllowance(rate: Int?, currencyCode: String, for household: Household, by me: Member) throws {
         try requireParent(me)
         if let rate {
-            guard Self.allowanceRates.contains(rate) else { throw ServiceError.invalid("Use between 1 and 1,000 points per unit.") }
+            guard Self.allowanceRates.contains(rate) else { throw ServiceError.invalid(String(localized: "Use between 1 and 1,000 points per unit.")) }
             household.allowanceRate = Int16(rate)
             household.currencyCode = currencyCode
         } else {
@@ -517,11 +517,11 @@ final class HouseholdService: ObservableObject {
     @discardableResult
     func payOut(_ points: Int, to kid: Member, by me: Member) throws -> PointEntry {
         try requireParent(me)
-        guard !kid.isParent, let household = kid.household else { throw ServiceError.invalid("Only kids get paid out.") }
-        guard let money = household.moneyText(for: points) else { throw ServiceError.invalid("Turn on allowance mode first.") }
-        guard points > 0 else { throw ServiceError.invalid("Pay out at least 1 point.") }
-        guard points <= kid.available else { throw ServiceError.invalid("\(kid.displayName) has \(kid.available) points to pay out.") }
-        let entry = try addEntry(Int32(-points), kind: .payout, reason: "Paid \(money)", to: kid, in: household)
+        guard !kid.isParent, let household = kid.household else { throw ServiceError.invalid(String(localized: "Only kids get paid out.")) }
+        guard let money = household.moneyText(for: points) else { throw ServiceError.invalid(String(localized: "Turn on allowance mode first.")) }
+        guard points > 0 else { throw ServiceError.invalid(String(localized: "Pay out at least 1 point.")) }
+        guard points <= kid.available else { throw ServiceError.invalid(String(localized: "\(kid.displayName) has \(kid.available) points to pay out.")) }
+        let entry = try addEntry(Int32(-points), kind: .payout, reason: String(localized: "Paid \(money)"), to: kid, in: household)
         try save()
         return entry
     }
@@ -533,8 +533,8 @@ final class HouseholdService: ObservableObject {
         try requireParent(me)
         if let from, let until {
             let start = calendar.startOfDay(for: from), end = calendar.startOfDay(for: until)
-            guard end >= start else { throw ServiceError.invalid("The pause has to end after it starts.") }
-            guard end >= calendar.startOfDay(for: Date()) else { throw ServiceError.invalid("Pick dates that haven't passed yet.") }
+            guard end >= start else { throw ServiceError.invalid(String(localized: "The pause has to end after it starts.")) }
+            guard end >= calendar.startOfDay(for: Date()) else { throw ServiceError.invalid(String(localized: "Pick dates that haven't passed yet.")) }
             household.pausedFrom = start
             household.pausedUntil = end
         } else {
@@ -560,13 +560,13 @@ final class HouseholdService: ObservableObject {
     }
 
     private func requireParent(_ me: Member) throws {
-        guard me.isParent else { throw ServiceError.notAllowed("Only parents can do that.") }
+        guard me.isParent else { throw ServiceError.notAllowed(String(localized: "Only parents can do that.")) }
     }
 
     private func make<T: NSManagedObject>(_ type: T.Type) throws -> T {
         let name = String(describing: type)
         guard let object = NSEntityDescription.insertNewObject(forEntityName: name, into: context) as? T else {
-            throw ServiceError.invalid("Couldn't create a \(name). Please try again.")
+            throw ServiceError.invalid(String(localized: "Couldn't create a \(name). Please try again."))
         }
         return object
     }

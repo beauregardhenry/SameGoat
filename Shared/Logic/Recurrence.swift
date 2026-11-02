@@ -5,10 +5,10 @@ enum Recurrence: String, CaseIterable, Identifiable {
     var id: String { rawValue }
     var title: String {
         switch self {
-        case .none: "Never"
-        case .daily: "Every day"
-        case .weekly: "Every week"
-        case .monthly: "Every month"
+        case .none: String(localized: "Never")
+        case .daily: String(localized: "Every day")
+        case .weekly: String(localized: "Every week")
+        case .monthly: String(localized: "Every month")
         }
     }
 }
@@ -49,14 +49,15 @@ struct RecurrenceRule: Equatable {
 
     func summary(calendar: Calendar = .current) -> String {
         switch kind {
-        case .none: return "Doesn't repeat"
-        case .daily: return "Every day"
-        case .monthly: return "Every month"
+        case .none: return String(localized: "Doesn't repeat")
+        case .daily: return String(localized: "Every day")
+        case .monthly: return String(localized: "Every month")
         case .weekly:
             let chosen = weekdays
-            guard !chosen.isEmpty else { return "Every week" }
+            guard !chosen.isEmpty else { return String(localized: "Every week") }
             let names = calendar.shortWeekdaySymbols
-            return "Every " + chosen.sorted().map { names[$0 - 1] }.joined(separator: ", ")
+            let days = chosen.sorted().map { names[$0 - 1] }.joined(separator: ", ")
+            return String(localized: "Every \(days)")
         }
     }
 }

@@ -77,7 +77,7 @@ struct RedemptionRow: View {
             if let kid = request.member { Avatar(member: kid, size: 38) }
             VStack(alignment: .leading, spacing: 2) {
                 Text("\(request.displayEmoji) \(request.displayTitle)").font(.headline)
-                Text("\(request.member?.displayName ?? "Someone") · \(request.cost) pts")
+                Text("\(request.member?.displayName ?? String(localized: "Someone")) · \(request.cost) pts")
                     .font(.subheadline).foregroundStyle(.secondary)
             }
             Spacer()

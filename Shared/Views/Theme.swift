@@ -38,18 +38,18 @@ struct Avatar: View {
 struct PointsBadge: View {
     let points: Int
     var body: some View {
-        Text("\(points) pt\(points == 1 ? "" : "s")")
+        Text("\(points) pts")
             .font(.caption.weight(.semibold))
             .padding(.horizontal, 8)
             .padding(.vertical, 3)
             .background(Theme.accent.opacity(0.15), in: Capsule())
             .foregroundStyle(Theme.accent)
-            .accessibilityLabel("\(points) point\(points == 1 ? "" : "s")")
+            .accessibilityLabel("\(points) points")
     }
 }
 
 struct StatusChip: View {
-    let text: String
+    let text: LocalizedStringKey
     let color: Color
     var body: some View {
         Text(text)
@@ -63,9 +63,9 @@ struct StatusChip: View {
 
 func dueText(_ date: Date) -> String {
     let calendar = Calendar.current
-    if calendar.isDateInToday(date) { return "Today" }
-    if calendar.isDateInTomorrow(date) { return "Tomorrow" }
-    if calendar.isDateInYesterday(date) { return "Yesterday" }
+    if calendar.isDateInToday(date) { return String(localized: "Today") }
+    if calendar.isDateInTomorrow(date) { return String(localized: "Tomorrow") }
+    if calendar.isDateInYesterday(date) { return String(localized: "Yesterday") }
     return date.formatted(.dateTime.weekday(.abbreviated).month(.abbreviated).day())
 }
 

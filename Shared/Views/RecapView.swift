@@ -22,7 +22,7 @@ struct RecapView: View {
                         Text(week.emoji).font(.title)
                         VStack(alignment: .leading, spacing: 2) {
                             Text(week.name).font(.headline)
-                            Text("\(week.choresDone) chores done" + (week.streak > 0 ? " · 🔥 \(week.streak)" : ""))
+                            Text("\(week.choresDone) chores done") + Text(verbatim: week.streak > 0 ? " · 🔥 \(week.streak)" : "")
                                 .font(.subheadline).foregroundStyle(.secondary)
                         }
                         Spacer()

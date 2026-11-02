@@ -95,7 +95,7 @@ final class PersistenceController {
     /// Returns the household's `CKShare`, creating it the first time.
     func share(_ household: Household) async throws -> (CKShare, CKContainer) {
         guard let cloud = container as? NSPersistentCloudKitContainer else {
-            throw ServiceError.invalid("Inviting people needs iCloud, which isn't available in this build.")
+            throw ServiceError.invalid(String(localized: "Inviting people needs iCloud, which isn't available in this build."))
         }
         if let existing = try cloud.fetchShares(matching: [household.objectID])[household.objectID] {
             return (existing, CKContainer(identifier: AppConfig.containerID))

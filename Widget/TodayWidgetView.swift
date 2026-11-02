@@ -165,12 +165,12 @@ private struct ParentWidgetView: View {
     }
 
     private var reviewText: String {
-        snapshot.waitingForReview == 0 ? "All caught up" : "\(snapshot.waitingForReview) to review"
+        snapshot.waitingForReview == 0 ? String(localized: "All caught up") : String(localized: "\(snapshot.waitingForReview) to review")
     }
 
     private func leftText(_ kid: WidgetSnapshot.Kid) -> String {
         let left = kid.today().count
-        return left == 0 ? "done" : "\(left) left"
+        return left == 0 ? String(localized: "done") : String(localized: "\(left) left")
     }
 }
 
