@@ -22,6 +22,8 @@ extension HouseholdService {
         weekly.recurrence.weekdays = [calendar.component(.weekday, from: day(1))]
         weekly.takeTurns = true
         weekly.dueTime = 19 * 60
+        weekly.minutes = 10
+        weekly.difficulty = .easy
         try createChores(weekly, assignees: [ava, ben], in: household, by: mama)
 
         let waiting = try createChores(ChoreDraft(title: "Make your bed", points: 3, dueDate: today), assignees: [ava], in: household, by: mama)
@@ -53,6 +55,8 @@ extension HouseholdService {
         var morning = ChoreDraft(title: "Morning routine", points: 4, dueDate: today)
         morning.recurrence.kind = .daily
         morning.steps = ["Make your bed", "Get dressed", "Brush teeth", "Pack your school bag"]
+        morning.minutes = 20
+        morning.difficulty = .easy
         let routine = try createChores(morning, assignees: [ava], in: household, by: mama)
         try toggleStep(0, of: routine[0], by: ava)
         try toggleStep(1, of: routine[0], by: ava)

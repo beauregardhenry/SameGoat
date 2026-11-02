@@ -22,43 +22,46 @@ enum ChoreLibrary {
         let age: Age
         /// Set for a routine: the checklist the kid ticks through.
         var steps: [String] = []
+        /// About how long it takes and how hard it is.
+        var minutes: Int?
+        var difficulty: Difficulty?
 
         var id: String { "\(age.rawValue)-\(title)" }
     }
 
     static let templates: [Template] = [
-        Template(title: String(localized: "Make your bed"), points: 2, repeats: .daily, age: .little),
-        Template(title: String(localized: "Put toys away"), points: 2, repeats: .daily, age: .little),
-        Template(title: String(localized: "Clothes in the hamper"), points: 1, repeats: .daily, age: .little),
-        Template(title: String(localized: "Feed the pet"), notes: String(localized: "With a grown-up's help."), points: 2, repeats: .daily, age: .little),
-        Template(title: String(localized: "Help set the table"), points: 2, repeats: .daily, age: .little),
-        Template(title: String(localized: "Water the plants"), points: 2, repeats: .weekly, age: .little),
+        Template(title: String(localized: "Make your bed"), points: 2, repeats: .daily, age: .little, minutes: 5, difficulty: .easy),
+        Template(title: String(localized: "Put toys away"), points: 2, repeats: .daily, age: .little, minutes: 10, difficulty: .easy),
+        Template(title: String(localized: "Clothes in the hamper"), points: 1, repeats: .daily, age: .little, minutes: 5, difficulty: .easy),
+        Template(title: String(localized: "Feed the pet"), notes: String(localized: "With a grown-up's help."), points: 2, repeats: .daily, age: .little, minutes: 5, difficulty: .easy),
+        Template(title: String(localized: "Help set the table"), points: 2, repeats: .daily, age: .little, minutes: 5, difficulty: .easy),
+        Template(title: String(localized: "Water the plants"), points: 2, repeats: .weekly, age: .little, minutes: 10, difficulty: .easy),
         Template(title: String(localized: "Bedtime routine"), points: 3, repeats: .daily, age: .little,
-                 steps: [String(localized: "Pajamas on"), String(localized: "Brush teeth"), String(localized: "Pick a book")]),
-        Template(title: String(localized: "Match the socks"), points: 2, repeats: .weekly, age: .little),
+                 steps: [String(localized: "Pajamas on"), String(localized: "Brush teeth"), String(localized: "Pick a book")], minutes: 15, difficulty: .easy),
+        Template(title: String(localized: "Match the socks"), points: 2, repeats: .weekly, age: .little, minutes: 10, difficulty: .medium),
 
-        Template(title: String(localized: "Make your bed"), points: 3, repeats: .daily, age: .kids),
+        Template(title: String(localized: "Make your bed"), points: 3, repeats: .daily, age: .kids, minutes: 5, difficulty: .easy),
         Template(title: String(localized: "Morning routine"), points: 4, repeats: .daily, age: .kids,
-                 steps: [String(localized: "Make your bed"), String(localized: "Get dressed"), String(localized: "Brush teeth"), String(localized: "Pack your school bag")]),
+                 steps: [String(localized: "Make your bed"), String(localized: "Get dressed"), String(localized: "Brush teeth"), String(localized: "Pack your school bag")], minutes: 20, difficulty: .easy),
         Template(title: String(localized: "Bedtime routine"), points: 4, repeats: .daily, age: .kids,
-                 steps: [String(localized: "Shower or bath"), String(localized: "Pajamas on"), String(localized: "Brush teeth"), String(localized: "Lay out tomorrow's clothes")]),
-        Template(title: String(localized: "Pack your school bag"), points: 2, repeats: .daily, age: .kids),
-        Template(title: String(localized: "Set the table"), points: 3, repeats: .daily, age: .kids),
-        Template(title: String(localized: "Clear the table"), points: 3, repeats: .daily, age: .kids),
-        Template(title: String(localized: "Empty the dishwasher"), points: 5, repeats: .daily, age: .kids),
-        Template(title: String(localized: "Feed the pet"), points: 3, repeats: .daily, age: .kids),
-        Template(title: String(localized: "Tidy your room"), notes: String(localized: "Floor, desk and bed."), points: 5, repeats: .weekly, age: .kids),
-        Template(title: String(localized: "Take out the trash"), points: 4, repeats: .weekly, age: .kids),
-        Template(title: String(localized: "Fold the laundry"), points: 5, repeats: .weekly, age: .kids),
+                 steps: [String(localized: "Shower or bath"), String(localized: "Pajamas on"), String(localized: "Brush teeth"), String(localized: "Lay out tomorrow's clothes")], minutes: 20, difficulty: .easy),
+        Template(title: String(localized: "Pack your school bag"), points: 2, repeats: .daily, age: .kids, minutes: 5, difficulty: .easy),
+        Template(title: String(localized: "Set the table"), points: 3, repeats: .daily, age: .kids, minutes: 5, difficulty: .easy),
+        Template(title: String(localized: "Clear the table"), points: 3, repeats: .daily, age: .kids, minutes: 10, difficulty: .easy),
+        Template(title: String(localized: "Empty the dishwasher"), points: 5, repeats: .daily, age: .kids, minutes: 10, difficulty: .medium),
+        Template(title: String(localized: "Feed the pet"), points: 3, repeats: .daily, age: .kids, minutes: 5, difficulty: .easy),
+        Template(title: String(localized: "Tidy your room"), notes: String(localized: "Floor, desk and bed."), points: 5, repeats: .weekly, age: .kids, minutes: 20, difficulty: .medium),
+        Template(title: String(localized: "Take out the trash"), points: 4, repeats: .weekly, age: .kids, minutes: 10, difficulty: .easy),
+        Template(title: String(localized: "Fold the laundry"), points: 5, repeats: .weekly, age: .kids, minutes: 15, difficulty: .medium),
 
-        Template(title: String(localized: "Load the dishwasher"), points: 5, repeats: .daily, age: .tweens),
-        Template(title: String(localized: "Walk the dog"), points: 5, repeats: .daily, age: .tweens),
-        Template(title: String(localized: "Trash and recycling out"), points: 5, repeats: .weekly, age: .tweens),
-        Template(title: String(localized: "Vacuum the living room"), points: 8, repeats: .weekly, age: .tweens),
-        Template(title: String(localized: "Clean the bathroom sink"), notes: String(localized: "Sink, tap and mirror."), points: 8, repeats: .weekly, age: .tweens),
-        Template(title: String(localized: "Do your own laundry"), notes: String(localized: "Wash, dry, fold and put away."), points: 10, repeats: .weekly, age: .tweens),
-        Template(title: String(localized: "Help cook dinner"), points: 8, repeats: .weekly, age: .tweens),
-        Template(title: String(localized: "Mow the lawn"), points: 15, repeats: .none, age: .tweens),
+        Template(title: String(localized: "Load the dishwasher"), points: 5, repeats: .daily, age: .tweens, minutes: 10, difficulty: .medium),
+        Template(title: String(localized: "Walk the dog"), points: 5, repeats: .daily, age: .tweens, minutes: 20, difficulty: .easy),
+        Template(title: String(localized: "Trash and recycling out"), points: 5, repeats: .weekly, age: .tweens, minutes: 10, difficulty: .easy),
+        Template(title: String(localized: "Vacuum the living room"), points: 8, repeats: .weekly, age: .tweens, minutes: 20, difficulty: .medium),
+        Template(title: String(localized: "Clean the bathroom sink"), notes: String(localized: "Sink, tap and mirror."), points: 8, repeats: .weekly, age: .tweens, minutes: 15, difficulty: .hard),
+        Template(title: String(localized: "Do your own laundry"), notes: String(localized: "Wash, dry, fold and put away."), points: 10, repeats: .weekly, age: .tweens, minutes: 30, difficulty: .medium),
+        Template(title: String(localized: "Help cook dinner"), points: 8, repeats: .weekly, age: .tweens, minutes: 30, difficulty: .medium),
+        Template(title: String(localized: "Mow the lawn"), points: 15, repeats: .none, age: .tweens, minutes: 60, difficulty: .hard),
     ]
 
     static func templates(for age: Age) -> [Template] {
@@ -75,6 +78,8 @@ enum ChoreLibrary {
         draft.dueDate = template.repeats == .none ? nil : today
         draft.takeTurns = takeTurns && template.repeats != .none
         draft.steps = template.steps
+        draft.minutes = template.minutes
+        draft.difficulty = template.difficulty
         return draft
     }
 }

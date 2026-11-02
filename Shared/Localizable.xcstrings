@@ -386,6 +386,16 @@
     "%d": {
       "shouldTranslate": false
     },
+    "%d per 5 min": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%d cada 5 min"
+          }
+        }
+      }
+    },
     "%d points awarded": {
       "localizations": {
         "en": {
@@ -658,6 +668,26 @@
                 }
               }
             }
+          }
+        }
+      }
+    },
+    "%lld min": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld min"
+          }
+        }
+      }
+    },
+    "%lld min to do this week": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld min pendientes esta semana"
           }
         }
       }
@@ -1025,6 +1055,46 @@
                 "stringUnit": {
                   "state": "translated",
                   "value": "%lld recompensas pedidas te están esperando."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "%lld steps": {
+      "localizations": {
+        "en": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld step"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld steps"
+                }
+              }
+            }
+          }
+        },
+        "es": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld paso"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld pasos"
                 }
               }
             }
@@ -2135,6 +2205,16 @@
         }
       }
     },
+    "Difficulty": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dificultad"
+          }
+        }
+      }
+    },
     "Do chores 3 days in a row.": {
       "localizations": {
         "es": {
@@ -2265,6 +2345,16 @@
         }
       }
     },
+    "Easy": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fácil"
+          }
+        }
+      }
+    },
     "Edit": {
       "localizations": {
         "es": {
@@ -2301,6 +2391,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Editar recompensa"
+          }
+        }
+      }
+    },
+    "Effort": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Esfuerzo"
           }
         }
       }
@@ -2355,6 +2455,16 @@
         }
       }
     },
+    "Every 5 minutes": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cada 5 minutos"
+          }
+        }
+      }
+    },
     "Every day": {
       "localizations": {
         "es": {
@@ -2381,6 +2491,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Cada semana"
+          }
+        }
+      }
+    },
+    "Examples": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ejemplos"
           }
         }
       }
@@ -2715,6 +2835,16 @@
         }
       }
     },
+    "Hard": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Difícil"
+          }
+        }
+      }
+    },
     "Help cook dinner": {
       "localizations": {
         "es": {
@@ -2991,6 +3121,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Emparejar los calcetines"
+          }
+        }
+      }
+    },
+    "Medium": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Media"
           }
         }
       }
@@ -3325,6 +3465,16 @@
         }
       }
     },
+    "Not set": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sin indicar"
+          }
+        }
+      }
+    },
     "Notes (optional)": {
       "localizations": {
         "es": {
@@ -3411,6 +3561,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Una tarea que pasa a la siguiente persona cada vez que se repite: %@."
+          }
+        }
+      }
+    },
+    "One-off": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Una vez"
           }
         }
       }
@@ -3775,12 +3935,42 @@
         }
       }
     },
+    "Points for Effort": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Puntos por esfuerzo"
+          }
+        }
+      }
+    },
+    "Points for effort": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Puntos por esfuerzo"
+          }
+        }
+      }
+    },
     "Points history": {
       "localizations": {
         "es": {
           "stringUnit": {
             "state": "translated",
             "value": "Historial de puntos"
+          }
+        }
+      }
+    },
+    "Points match the effort. Change them if you like.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Los puntos coinciden con el esfuerzo. Cámbialos si quieres."
           }
         }
       }
@@ -4145,6 +4335,16 @@
         }
       }
     },
+    "Set how long it takes and how hard it is to get a fair points suggestion.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Indica cuánto tarda y lo difícil que es para recibir una sugerencia de puntos justa."
+          }
+        }
+      }
+    },
     "Set the table": {
       "localizations": {
         "es": {
@@ -4271,6 +4471,46 @@
           "stringUnit": {
             "state": "translated",
             "value": "Dejar de ahorrar para esto"
+          }
+        }
+      }
+    },
+    "Suggested from effort: %lld points.": {
+      "localizations": {
+        "en": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Suggested from effort: %lld point."
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Suggested from effort: %lld points."
+                }
+              }
+            }
+          }
+        },
+        "es": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Según el esfuerzo: %lld punto."
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Según el esfuerzo: %lld puntos."
+                }
+              }
+            }
           }
         }
       }
@@ -4501,6 +4741,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "La pausa tiene que terminar después de empezar."
+          }
+        }
+      }
+    },
+    "Then times 1 for easy, 1.5 for medium and 2 for hard. It only suggests points in the chore editor; you can always change them.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Luego se multiplica por 1 si es fácil, 1,5 si es media y 2 si es difícil. Solo sugiere puntos en el editor de tareas; siempre puedes cambiarlos."
           }
         }
       }
@@ -4825,6 +5075,16 @@
         }
       }
     },
+    "Use": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Usar"
+          }
+        }
+      }
+    },
     "Use 4 to 8 digits.": {
       "localizations": {
         "es": {
@@ -4841,6 +5101,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "Usa entre 1 y 1000 puntos por unidad."
+          }
+        }
+      }
+    },
+    "Use between 1 and 20 points.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Usa entre 1 y 20 puntos."
+          }
+        }
+      }
+    },
+    "Use between 1 and 600 minutes.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Usa entre 1 y 600 minutos."
           }
         }
       }

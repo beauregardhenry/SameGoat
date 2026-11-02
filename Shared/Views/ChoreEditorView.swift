@@ -14,6 +14,8 @@ struct ChoreEditorView: View {
     @State private var hasTime: Bool
     @State private var time: Date
     @State private var selected: Set<Member>
+    /// Points follow the effort until the parent sets them by hand.
+    @State private var pointsFollowEffort: Bool
     @State private var error: String?
 
     init(household: Household, me: Member, chore: Chore?) {
@@ -31,8 +33,13 @@ struct ChoreEditorView: View {
             draft.autoApprove = chore.autoApprove
             draft.steps = chore.steps
             draft.photoRequired = chore.photoRequired
+            draft.minutes = chore.minutes
+            draft.difficulty = chore.difficulty
         }
         _draft = State(initialValue: draft)
+        let suggested = Effort.suggestedPoints(minutes: draft.minutes, difficulty: draft.difficulty,
+                                               rate: Int(household.effortRate))
+        _pointsFollowEffort = State(initialValue: chore == nil || suggested == draft.points)
         _hasDue = State(initialValue: chore?.dueDate != nil)
         _due = State(initialValue: chore?.dueDate ?? Date())
         _hasTime = State(initialValue: chore?.dueTime != nil)
@@ -48,6 +55,49 @@ struct ChoreEditorView: View {
     }
 
     private var isEditing: Bool { chore != nil }
+
+    private var suggestedPoints: Int? {
+        Effort.suggestedPoints(minutes: draft.minutes, difficulty: draft.difficulty, rate: Int(household.effortRate))
+    }
+
+    private var effortSection: some View {
+        Section {
+            Picker("Time", selection: $draft.minutes) {
+                Text("Not set").tag(Int?.none)
+                ForEach(Effort.timeChoices, id: \.self) { Text("\($0) min").tag(Int?.some($0)) }
+            }
+            Picker("Difficulty", selection: $draft.difficulty) {
+                Text("Not set").tag(Difficulty?.none)
+                ForEach(Difficulty.allCases) { Text($0.title).tag(Difficulty?.some($0)) }
+            }
+        } header: {
+            Text("Effort")
+        } footer: {
+            if let suggestedPoints, suggestedPoints != draft.points {
+                HStack {
+                    Text("Suggested from effort: \(suggestedPoints) points.")
+                    Button("Use") { draft.points = suggestedPoints; pointsFollowEffort = true }
+                        .font(.footnote.weight(.semibold))
+                }
+            } else if suggestedPoints != nil {
+                Text("Points match the effort. Change them if you like.")
+            } else {
+                Text("Set how long it takes and how hard it is to get a fair points suggestion.")
+            }
+        }
+        .onChange(of: draft.minutes) { _, _ in followEffort() }
+        .onChange(of: draft.difficulty) { _, _ in followEffort() }
+    }
+
+    private func followEffort() {
+        if pointsFollowEffort, let suggestedPoints { draft.points = suggestedPoints }
+    }
+
+    /// "40 min this week" beside each kid, so the work can be spread fairly.
+    private func workload(_ kid: Member) -> String? {
+        let minutes = Effort.openMinutes(for: kid)
+        return minutes > 0 ? String(localized: "\(minutes) min to do this week") : nil
+    }
 
     private var turnsHint: String {
         guard draft.takeTurns else { return String(localized: "Each person gets their own copy to complete.") }
@@ -67,6 +117,8 @@ struct ChoreEditorView: View {
                         .lineLimit(2...5)
                 }
 
+                effortSection
+
                 Section {
                     HStack {
                         Text("Points")
@@ -80,6 +132,10 @@ struct ChoreEditorView: View {
                             #endif
                         Stepper("Points", value: $draft.points, in: 0...10_000, step: 5)
                             .labelsHidden()
+                    }
+                    .onChange(of: draft.points) { _, points in
+                        // Typing or stepping a different number means the parent has chosen the points.
+                        if points != suggestedPoints { pointsFollowEffort = false }
                     }
                     Toggle("Approve automatically", isOn: $draft.autoApprove)
                     Toggle("Needs a photo", isOn: $draft.photoRequired)
@@ -120,7 +176,12 @@ struct ChoreEditorView: View {
                         Button { toggle(kid) } label: {
                             HStack {
                                 Avatar(member: kid, size: 32)
-                                Text(kid.displayName)
+                                VStack(alignment: .leading, spacing: 1) {
+                                    Text(kid.displayName)
+                                    if let load = workload(kid) {
+                                        Text(load).font(.caption).foregroundStyle(.secondary)
+                                    }
+                                }
                                 Spacer()
                                 if selected.contains(kid) {
                                     Image(systemName: "checkmark.circle.fill").foregroundStyle(Theme.accent)

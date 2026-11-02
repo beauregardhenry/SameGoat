@@ -178,3 +178,47 @@ struct PauseBanner: View {
         }
     }
 }
+
+/// Parents choose how many points each 5 minutes of a chore is worth before difficulty.
+struct EffortSettingsView: View {
+    @ObservedObject var household: Household
+    let me: Member
+    @EnvironmentObject private var service: HouseholdService
+    @State private var rate: Int
+    @State private var error: String?
+
+    init(household: Household, me: Member) {
+        self.household = household
+        self.me = me
+        _rate = State(initialValue: max(1, Int(household.effortRate)))
+    }
+
+    private func example(_ minutes: Int, _ difficulty: Difficulty) -> some View {
+        LabeledContent(Effort.label(minutes: minutes, difficulty: difficulty) ?? "",
+                       value: String(localized: "\(Effort.suggestedPoints(minutes: minutes, difficulty: difficulty, rate: rate) ?? 0) points"))
+    }
+
+    var body: some View {
+        Form {
+            Section {
+                Stepper(value: $rate, in: Effort.rateRange) {
+                    LabeledContent("Every 5 minutes", value: String(localized: "\(rate) points"))
+                }
+                .onChange(of: rate) { _, rate in
+                    do { try service.setEffortRate(rate, for: household, by: me) } catch { self.error = error.localizedDescription }
+                }
+            } footer: {
+                Text("Then times 1 for easy, 1.5 for medium and 2 for hard. It only suggests points in the chore editor; you can always change them.")
+            }
+            Section("Examples") {
+                example(5, .easy)
+                example(15, .medium)
+                example(30, .hard)
+                example(60, .hard)
+            }
+        }
+        .formStyle(.grouped)
+        .navigationTitle("Points for Effort")
+        .errorAlert($error)
+    }
+}
