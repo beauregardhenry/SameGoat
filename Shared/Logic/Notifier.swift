@@ -145,6 +145,7 @@ final class Notifier: NSObject, UNUserNotificationCenterDelegate {
             guard settings.authorizationStatus == .authorized || settings.authorizationStatus == .provisional else { return }
             deliverNewEvents(household: household, me: me)
             await scheduleDueReminders(household: household, me: me)
+            scheduleWeeklyRecap(for: me)
         }
     }
 
@@ -273,6 +274,20 @@ final class Notifier: NSObject, UNUserNotificationCenterDelegate {
             return Reminder(id: "due-\(id.uuidString)", title: "Due today: \(chore.displayTitle)",
                             body: "Worth \(chore.points) points.", fireAt: parts)
         }
+    }
+
+    static let weeklyRecapID = "weekly-recap"
+
+    /// Parents get a Sunday-evening nudge to look at the week; kids don't.
+    private func scheduleWeeklyRecap(for me: Member) {
+        guard me.isParent else {
+            center.removePendingNotificationRequests(withIdentifiers: [Self.weeklyRecapID])
+            return
+        }
+        let recap = Event(key: Self.weeklyRecapID, title: "How did the week go?",
+                          body: "See everyone's points and chores in the weekly recap.").content
+        let trigger = UNCalendarNotificationTrigger(dateMatching: WeeklyRecap.reminderTime, repeats: true)
+        center.add(UNNotificationRequest(identifier: Self.weeklyRecapID, content: recap, trigger: trigger))
     }
 
     private func scheduleDueReminders(household: Household, me: Member) async {

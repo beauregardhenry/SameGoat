@@ -68,6 +68,9 @@ struct FamilyView: View {
             }
 
             Section(me.isParent ? "Family settings" : "You") {
+                NavigationLink { RecapView(household: household, me: me) } label: {
+                    Label(me.isParent ? "Weekly recap" : "Your week", systemImage: "chart.bar")
+                }
                 if me.isParent {
                     NavigationLink { AllowanceSettingsView(household: household, me: me) } label: {
                         LabeledContent {
