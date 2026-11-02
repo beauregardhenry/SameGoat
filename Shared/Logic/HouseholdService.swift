@@ -87,6 +87,10 @@ final class HouseholdService: ObservableObject {
         if member.isParent, (member.household?.parents.count ?? 0) <= 1 {
             throw ServiceError.invalid(String(localized: "A household needs at least one parent."))
         }
+        // An up-for-grabs chore this kid had claimed goes back in the pool.
+        for chore in (member.assignedChores as? Set<Chore>) ?? [] where chore.upForGrabs && chore.status == .todo {
+            chore.assignee = nil
+        }
         // A chore kids take turns on passes to whoever is next instead of leaving with this kid.
         for chore in (member.assignedChores as? Set<Chore>) ?? [] where chore.takesTurns && chore.status == .todo {
             guard let next = chore.nextAssignee, next != member else { continue }
@@ -175,6 +179,10 @@ final class HouseholdService: ObservableObject {
         /// About how long it takes, and how hard it is, for suggesting fair points.
         var minutes: Int?
         var difficulty: Difficulty?
+        /// Nobody is assigned: any kid can claim it or just do it.
+        var upForGrabs = false
+        var timeOfDay: TimeOfDay?
+        var emoji: String?
     }
 
     static let maxSteps = 12
@@ -184,6 +192,12 @@ final class HouseholdService: ObservableObject {
     @discardableResult
     func createChores(_ draft: ChoreDraft, assignees: [Member], in household: Household, by me: Member) throws -> [Chore] {
         try requireParent(me)
+        if draft.upForGrabs {
+            let title = try validated(draft, assignees: [])
+            let chore = try newChore(from: draft, title: title, assignee: nil, household: household)
+            try save()
+            return [chore]
+        }
         guard let first = assignees.first else { throw ServiceError.invalid(String(localized: "Choose who should do it.")) }
         let title = try validated(draft, assignees: assignees)
         if draft.takeTurns {
@@ -208,22 +222,21 @@ final class HouseholdService: ObservableObject {
     func updateChore(_ chore: Chore, with draft: ChoreDraft, assignees: [Member], by me: Member) throws {
         try requireParent(me)
         guard chore.status == .todo else { throw ServiceError.invalid(String(localized: "Only chores that haven't been turned in can be edited.")) }
+        if draft.upForGrabs {
+            // Turning a chore into an up-for-grabs one puts it in the pool; editing one keeps its claim.
+            let title = try validated(draft, assignees: [])
+            apply(draft, title: title, to: chore)
+            if !chore.upForGrabs { chore.assignee = nil }
+            chore.upForGrabs = true
+            chore.rotationIDs = []
+            try save()
+            return
+        }
         guard let first = assignees.first else { throw ServiceError.invalid(String(localized: "Choose who should do it.")) }
         guard draft.takeTurns || assignees.count == 1 else { throw ServiceError.invalid(String(localized: "Choose one person, or let them take turns.")) }
         let title = try validated(draft, assignees: assignees)
-        chore.title = title
-        chore.notes = draft.notes.trimmed
-        chore.points = Int32(max(0, draft.points))
-        chore.dueDate = draft.dueDate.map { calendar.startOfDay(for: $0) }
-        chore.dueTime = draft.dueDate == nil ? nil : draft.dueTime
-        chore.autoApprove = draft.autoApprove
-        chore.photoRequired = draft.photoRequired
-        chore.minutes = draft.minutes
-        chore.difficulty = draft.difficulty
-        let oldSteps = chore.steps
-        chore.steps = draft.steps
-        if chore.steps != oldSteps { chore.doneSteps = [] }
-        chore.recurrence = draft.recurrence
+        apply(draft, title: title, to: chore)
+        chore.upForGrabs = false
         chore.rotationIDs = draft.takeTurns ? assignees.compactMap(\.id) : []
         let assignee = assignees.first { $0.id == chore.assignee?.id } ?? first
         if chore.assignee?.id != assignee.id {
@@ -241,6 +254,8 @@ final class HouseholdService: ObservableObject {
 
     /// A kid says they're done. Nothing is awarded until a parent confirms.
     func markComplete(_ chore: Chore, by me: Member, note: String?, photo: Data?) throws {
+        // Nobody had claimed it, so the kid who did it gets the credit.
+        if chore.isUnclaimed, !me.isParent, chore.status == .todo { chore.assignee = me }
         guard chore.assignee?.id == me.id, !me.isParent else {
             throw ServiceError.notAllowed(String(localized: "Only the person a chore is assigned to can mark it done."))
         }
@@ -254,6 +269,56 @@ final class HouseholdService: ObservableObject {
         chore.reviewNote = nil
         // Parents can trust small habits to count right away.
         if chore.autoApprove { try award(chore, points: Int(chore.points), reviewer: nil) }
+        try save()
+    }
+
+    /// A kid calls dibs on an up-for-grabs chore so nobody else does it.
+    func claim(_ chore: Chore, by me: Member) throws {
+        guard !me.isParent else { throw ServiceError.notAllowed(String(localized: "Only kids claim chores.")) }
+        guard chore.isUnclaimed, chore.status == .todo else {
+            throw ServiceError.invalid(String(localized: "Someone already took this one."))
+        }
+        chore.assignee = me
+        try save()
+    }
+
+    /// Puts a claimed chore back in the pool, by the kid who claimed it or a parent.
+    func release(_ chore: Chore, by me: Member) throws {
+        guard chore.upForGrabs, chore.status == .todo, let holder = chore.assignee else {
+            throw ServiceError.invalid(String(localized: "This chore isn't claimed."))
+        }
+        guard me.isParent || holder.id == me.id else { throw ServiceError.notAllowed(String(localized: "This isn't your chore.")) }
+        chore.assignee = nil
+        chore.doneSteps = []
+        try save()
+    }
+
+    /// When life gets in the way, a parent passes a take-turns chore to whoever's next.
+    func skipTurn(_ chore: Chore, by me: Member) throws {
+        try requireParent(me)
+        guard chore.takesTurns, chore.status == .todo else {
+            throw ServiceError.invalid(String(localized: "Only a chore kids take turns on can skip a turn."))
+        }
+        guard let next = chore.nextAssignee, next != chore.assignee else { throw ServiceError.invalid(String(localized: "There's nobody else to take a turn.")) }
+        chore.assignee = next
+        chore.doneSteps = []
+        chore.reviewNote = nil
+        try save()
+    }
+
+    static let nudgeInterval: TimeInterval = 10 * 60
+
+    /// A parent reminds a kid about a chore; their device shows it as a notification.
+    func nudge(_ chore: Chore, by me: Member, now: Date = Date()) throws {
+        try requireParent(me)
+        guard chore.status == .todo, chore.assignee != nil else {
+            throw ServiceError.invalid(String(localized: "Only a chore someone still has to do can get a reminder."))
+        }
+        if let last = chore.nudgedAt, now.timeIntervalSince(last) < Self.nudgeInterval {
+            throw ServiceError.invalid(String(localized: "You just sent a reminder. Give it a few minutes."))
+        }
+        chore.nudgedAt = now
+        chore.nudgedByName = me.name
         try save()
     }
 
@@ -319,6 +384,25 @@ final class HouseholdService: ObservableObject {
         try save()
     }
 
+    /// The fields editing can change, shared by every kind of assignment.
+    private func apply(_ draft: ChoreDraft, title: String, to chore: Chore) {
+        chore.title = title
+        chore.notes = draft.notes.trimmed
+        chore.points = Int32(max(0, draft.points))
+        chore.dueDate = draft.dueDate.map { calendar.startOfDay(for: $0) }
+        chore.dueTime = draft.dueDate == nil ? nil : draft.dueTime
+        chore.autoApprove = draft.autoApprove
+        chore.photoRequired = draft.photoRequired
+        chore.minutes = draft.minutes
+        chore.difficulty = draft.difficulty
+        chore.timeOfDay = draft.timeOfDay
+        chore.emoji = draft.emoji?.trimmed.nilIfEmpty
+        let oldSteps = chore.steps
+        chore.steps = draft.steps
+        if chore.steps != oldSteps { chore.doneSteps = [] }
+        chore.recurrence = draft.recurrence
+    }
+
     /// Returns the trimmed title once the draft passes the rules shared by creating and editing.
     private func validated(_ draft: ChoreDraft, assignees: [Member]) throws -> String {
         let title = draft.title.trimmed
@@ -333,29 +417,21 @@ final class HouseholdService: ObservableObject {
         guard draft.steps.filter({ !$0.trimmed.isEmpty }).count <= Self.maxSteps else {
             throw ServiceError.invalid(String(localized: "A routine can have up to \(Self.maxSteps) steps."))
         }
-        if draft.takeTurns {
+        if draft.takeTurns && !draft.upForGrabs {
             guard assignees.count > 1 else { throw ServiceError.invalid(String(localized: "Choose at least two kids to take turns.")) }
             guard draft.recurrence.isRepeating else { throw ServiceError.invalid(String(localized: "Taking turns needs a chore that repeats.")) }
         }
         return title
     }
 
-    private func newChore(from draft: ChoreDraft, title: String, assignee: Member, household: Household) throws -> Chore {
+    /// A nil assignee means the chore is up for grabs.
+    private func newChore(from draft: ChoreDraft, title: String, assignee: Member?, household: Household) throws -> Chore {
         let chore = try insert(Chore.self, into: household)
         chore.id = UUID()
-        chore.title = title
-        chore.notes = draft.notes.trimmed
-        chore.points = Int32(max(0, draft.points))
+        apply(draft, title: title, to: chore)
         chore.status = .todo
-        chore.dueDate = draft.dueDate.map { calendar.startOfDay(for: $0) }
-        chore.dueTime = draft.dueDate == nil ? nil : draft.dueTime
-        chore.autoApprove = draft.autoApprove
-        chore.photoRequired = draft.photoRequired
-        chore.minutes = draft.minutes
-        chore.difficulty = draft.difficulty
-        chore.steps = draft.steps
         chore.createdAt = Date()
-        chore.recurrence = draft.recurrence
+        chore.upForGrabs = assignee == nil
         chore.household = household
         chore.assignee = assignee
         return chore
@@ -365,7 +441,10 @@ final class HouseholdService: ObservableObject {
     /// take turns, it goes to whoever is next.
     private func scheduleNextOccurrence(after chore: Chore) throws {
         let rule = chore.recurrence
-        guard rule.isRepeating, let household = chore.household, let kid = chore.nextAssignee else { return }
+        guard rule.isRepeating, let household = chore.household else { return }
+        // An up-for-grabs chore goes back in the pool; others go to whoever's next.
+        let kid = chore.upForGrabs ? nil : chore.nextAssignee
+        guard chore.upForGrabs || kid != nil else { return }
         // Late chores repeat from today, not from the missed date.
         let base = max(chore.dueDate ?? Date(), calendar.startOfDay(for: Date()))
         guard var next = rule.nextDate(after: base, calendar: calendar) else { return }
@@ -383,6 +462,8 @@ final class HouseholdService: ObservableObject {
         draft.photoRequired = chore.photoRequired
         draft.minutes = chore.minutes
         draft.difficulty = chore.difficulty
+        draft.timeOfDay = chore.timeOfDay
+        draft.emoji = chore.emoji
         draft.recurrence = rule
         let copy = try newChore(from: draft, title: chore.displayTitle, assignee: kid, household: household)
         copy.sourceChoreID = chore.id

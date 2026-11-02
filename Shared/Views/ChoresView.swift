@@ -11,10 +11,10 @@ struct ChoresView: View {
     init(household: Household, me: Member) {
         self.household = household
         self.me = me
-        // Kids only ever see their own chores; parents see everyone's.
+        // Kids see their own chores plus the up-for-grabs pool; parents see everyone's.
         let predicate = me.isParent
             ? NSPredicate(format: "household == %@", household)
-            : NSPredicate(format: "household == %@ AND assignee == %@", household, me)
+            : NSPredicate(format: "household == %@ AND (assignee == %@ OR (upForGrabs == YES AND assignee == nil))", household, me)
         _chores = FetchRequest(
             sortDescriptors: [NSSortDescriptor(keyPath: \Chore.createdAt, ascending: false)],
             predicate: predicate,
@@ -33,7 +33,8 @@ struct ChoresView: View {
     }
 
     private var waiting: [Chore] { chores.filter { $0.status == .pendingReview } }
-    private var todo: [Chore] { dueSorted(chores.filter { $0.status == .todo }) }
+    private var todo: [Chore] { dueSorted(chores.filter { $0.status == .todo && !$0.isUnclaimed }) }
+    private var grabs: [Chore] { dueSorted(chores.filter { $0.status == .todo && $0.isUnclaimed }) }
     private var done: [Chore] {
         Array(chores.filter { $0.status == .approved }
             .sorted { ($0.reviewedAt ?? .distantPast) > ($1.reviewedAt ?? .distantPast) }
@@ -53,8 +54,14 @@ struct ChoresView: View {
             if me.isParent {
                 choreSection("Waiting for review", waiting)
                 choreSection("To do", todo)
+                choreSection("Up for grabs", grabs)
             } else {
-                choreSection("To do", todo)
+                // A kid's list reads like their day: morning, afternoon, evening, then anytime.
+                ForEach(TimeOfDay.allCases) { time in
+                    choreSection(LocalizedStringKey(time.title), todo.filter { $0.timeOfDay == time }, icon: time.icon)
+                }
+                choreSection(todo.contains { $0.timeOfDay != nil } ? "Anytime" : "To do", todo.filter { $0.timeOfDay == nil })
+                choreSection("Up for grabs", grabs, icon: "hand.raised")
                 choreSection("Waiting for approval", waiting)
             }
             choreSection("Done", done)
@@ -94,14 +101,16 @@ struct ChoresView: View {
     }
 
     @ViewBuilder
-    private func choreSection(_ title: LocalizedStringKey, _ list: [Chore]) -> some View {
+    private func choreSection(_ title: LocalizedStringKey, _ list: [Chore], icon: String? = nil) -> some View {
         if !list.isEmpty {
-            Section(title) {
+            Section {
                 ForEach(list) { chore in
                     NavigationLink(value: chore) {
                         ChoreRow(chore: chore, showAssignee: me.isParent)
                     }
                 }
+            } header: {
+                if let icon { Label(title, systemImage: icon) } else { Text(title) }
             }
         }
     }
@@ -202,6 +211,13 @@ struct ChoreRow: View {
         layout {
             if showAssignee, let assignee = chore.assignee {
                 Avatar(member: assignee, size: 38)
+            } else if showAssignee, chore.isUnclaimed {
+                Image(systemName: "hand.raised.circle.fill")
+                    .font(.title).foregroundStyle(.orange).frame(width: 38)
+                    .accessibilityLabel("Up for grabs")
+            } else if let emoji = chore.emoji, chore.status == .todo {
+                // A picture for kids who can't read yet.
+                Text(emoji).font(.system(size: 28)).frame(width: 38).accessibilityHidden(true)
             } else {
                 Image(systemName: statusIcon)
                     .font(.title3)
@@ -213,6 +229,7 @@ struct ChoreRow: View {
                 Text(chore.displayTitle).font(.headline)
                 HStack(spacing: 6) {
                     if showAssignee, let assignee = chore.assignee { Text(assignee.displayName) }
+                    if showAssignee, chore.isUnclaimed { Text("Anyone") }
                     if let due = dueText(for: chore) {
                         Text(due).foregroundStyle(chore.isOverdue ? Color.red : Color.secondary)
                     }
@@ -235,7 +252,11 @@ struct ChoreRow: View {
                 if chore.status == .pendingReview && showAssignee { StatusChip(text: "Needs review", color: .blue) }
             }
             if !typeSize.isAccessibilitySize { Spacer() }
-            PointsBadge(points: Int(chore.status == .approved ? chore.awardedPoints : chore.points))
+            if chore.isFamilyJob && chore.status != .approved {
+                StatusChip(text: "Family job", color: .teal)
+            } else {
+                PointsBadge(points: Int(chore.status == .approved ? chore.awardedPoints : chore.points))
+            }
         }
         .padding(.vertical, 2)
         // One VoiceOver stop per chore: "Dishes, Ava, Today, Repeats, 5 points".

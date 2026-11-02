@@ -19,6 +19,28 @@ enum ChoreStatus: String {
     }
 }
 
+/// When in the day a chore belongs, so a kid's list reads like their day.
+enum TimeOfDay: String, CaseIterable, Identifiable {
+    case morning, afternoon, evening
+    var id: String { rawValue }
+
+    var title: String {
+        switch self {
+        case .morning: String(localized: "Morning")
+        case .afternoon: String(localized: "Afternoon")
+        case .evening: String(localized: "Evening")
+        }
+    }
+
+    var icon: String {
+        switch self {
+        case .morning: "sunrise"
+        case .afternoon: "sun.max"
+        case .evening: "moon.stars"
+        }
+    }
+}
+
 enum RedemptionStatus: String {
     case requested, approved, denied
 }
@@ -198,6 +220,23 @@ final class Chore: NSManagedObject, Identifiable {
     /// About how long it takes, in minutes; 0 when not set.
     @NSManaged var minutesRaw: Int16
     @NSManaged var difficultyRaw: String?
+    /// Open to every kid: whoever claims or finishes it first gets it.
+    @NSManaged var upForGrabs: Bool
+    @NSManaged var timeOfDayRaw: String?
+    /// A picture for kids who can't read yet.
+    @NSManaged var emoji: String?
+    /// The last time a parent sent a reminder about it, and who.
+    @NSManaged var nudgedAt: Date?
+    @NSManaged var nudgedByName: String?
+
+    /// Still in the pool: nobody has claimed it yet.
+    var isUnclaimed: Bool { upForGrabs && assignee == nil }
+    var timeOfDay: TimeOfDay? {
+        get { timeOfDayRaw.flatMap(TimeOfDay.init(rawValue:)) }
+        set { timeOfDayRaw = newValue?.rawValue }
+    }
+    /// A chore worth no points is a family job: done because we live here.
+    var isFamilyJob: Bool { points == 0 }
 
     var minutes: Int? {
         get { minutesRaw > 0 ? Int(minutesRaw) : nil }

@@ -2,13 +2,14 @@ import SwiftUI
 import CoreData
 
 enum AppSection: String, Identifiable, Hashable {
-    case chores, review, rewards, family
+    case chores, review, board, rewards, family
     var id: String { rawValue }
 
     func title(isParent: Bool) -> String {
         switch self {
         case .chores: isParent ? String(localized: "Chores") : String(localized: "My Chores")
         case .review: String(localized: "Review")
+        case .board: String(localized: "Board")
         case .rewards: String(localized: "Rewards")
         case .family: String(localized: "Family")
         }
@@ -18,6 +19,7 @@ enum AppSection: String, Identifiable, Hashable {
         switch self {
         case .chores: "checklist"
         case .review: "checkmark.seal"
+        case .board: "square.grid.3x2"
         case .rewards: "gift"
         case .family: "person.2"
         }
@@ -51,7 +53,7 @@ struct MainView: View {
     }
 
     private var sections: [AppSection] {
-        me.isParent ? [.chores, .review, .rewards, .family] : [.chores, .rewards, .family]
+        me.isParent ? [.chores, .review, .board, .rewards, .family] : [.chores, .rewards, .family]
     }
     private var reviewCount: Int { pendingChores.count + pendingRedemptions.count }
 
@@ -69,6 +71,7 @@ struct MainView: View {
         switch section {
         case .chores: ChoresView(household: household, me: me)
         case .review: ReviewView(household: household, me: me)
+        case .board: FamilyBoardView(household: household, me: me)
         case .rewards: RewardsView(household: household, me: me)
         case .family: FamilyView(household: household, me: me)
         }

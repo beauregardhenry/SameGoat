@@ -7,7 +7,8 @@ enum AssistantReplies {
     /// The chores this person could say they've finished: their own open ones, soonest due first.
     static func openChores(for me: Member) -> [Chore] {
         guard !me.isParent else { return [] }
-        return ((me.assignedChores as? Set<Chore>) ?? [])
+        let pool = ((me.household?.chores as? Set<Chore>) ?? []).filter(\.isUnclaimed)
+        return (((me.assignedChores as? Set<Chore>) ?? []).union(pool))
             .filter { $0.status == .todo }
             .sorted { ($0.dueAt() ?? .distantFuture, $0.displayTitle) < ($1.dueAt() ?? .distantFuture, $1.displayTitle) }
     }

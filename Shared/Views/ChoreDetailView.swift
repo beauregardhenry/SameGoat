@@ -8,6 +8,7 @@ struct ChoreDetailView: View {
     @Environment(\.dismiss) private var dismiss
 
     @State private var showingComplete = false
+    @State private var showingTimer = false
     @State private var showingEdit = false
     @State private var showingSendBack = false
     @State private var confirmingDelete = false
@@ -54,18 +55,30 @@ struct ChoreDetailView: View {
             actionsSection
         }
         .formStyle(.grouped)
-        .navigationTitle(chore.displayTitle)
+        .navigationTitle([chore.emoji, chore.displayTitle].compactMap { $0 }.joined(separator: " "))
         .toolbar {
             if me.isParent && chore.status == .todo {
                 ToolbarItem(placement: .primaryAction) {
                     Menu {
                         Button("Edit", systemImage: "pencil") { showingEdit = true }
+                        if chore.status == .todo, chore.assignee != nil {
+                            Button("Send a reminder", systemImage: "bell.badge") { perform { try service.nudge(chore, by: me) } }
+                        }
+                        if chore.takesTurns, chore.status == .todo {
+                            Button("Skip this turn", systemImage: "forward") { perform { try service.skipTurn(chore, by: me) } }
+                        }
+                        if chore.upForGrabs, chore.status == .todo, chore.assignee != nil {
+                            Button("Put back up for grabs", systemImage: "hand.raised") { perform { try service.release(chore, by: me) } }
+                        }
                         Button("Delete", systemImage: "trash", role: .destructive) { confirmingDelete = true }
                     } label: { Label("More", systemImage: "ellipsis.circle") }
                 }
             }
         }
         .onAppear { awardPoints = Int(chore.points) }
+        .sheet(isPresented: $showingTimer) {
+            ChoreTimerView(title: chore.displayTitle, emoji: chore.emoji, minutes: chore.minutes ?? 10)
+        }
         .sheet(isPresented: $showingComplete) {
             CompleteChoreSheet(chore: chore) { note, photo in
                 perform { try service.markComplete(chore, by: me, note: note, photo: photo) }
@@ -130,7 +143,7 @@ struct ChoreDetailView: View {
             if let effort = chore.effortLabel {
                 LabeledContent("Effort", value: effort)
             }
-            if let assignee = chore.assignee {
+            if let assignee = chore.assignee, !chore.upForGrabs {
                 LabeledContent("Assigned to") {
                     HStack(spacing: 6) { Text(assignee.displayEmoji); Text(assignee.displayName) }
                 }
@@ -145,6 +158,16 @@ struct ChoreDetailView: View {
             }
             if chore.autoApprove {
                 LabeledContent("Approval", value: String(localized: "Automatic"))
+            }
+            if chore.upForGrabs {
+                LabeledContent("Up for grabs", value: chore.assignee.map { String(localized: "Taken by \($0.displayName)") }
+                               ?? String(localized: "First to do it gets the points"))
+            }
+            if let time = chore.timeOfDay {
+                LabeledContent("When", value: time.title)
+            }
+            if chore.status == .todo, let nudged = chore.nudgedAt {
+                LabeledContent("Reminder sent", value: nudged.formatted(.relative(presentation: .named)))
             }
             if chore.photoRequired {
                 LabeledContent("Photo", value: String(localized: "Needed to turn in"))
@@ -175,14 +198,30 @@ struct ChoreDetailView: View {
 
     @ViewBuilder
     private var actionsSection: some View {
-        if chore.status == .todo && isAssignee && !me.isParent {
+        if chore.status == .todo && (isAssignee || chore.isUnclaimed) && !me.isParent {
             Section {
+                if chore.isUnclaimed {
+                    Button { perform { try service.claim(chore, by: me) } } label: {
+                        Label("I'll do it", systemImage: "hand.raised.fill").frame(maxWidth: .infinity)
+                    }
+                    .controlSize(.large)
+                }
+                if chore.minutes != nil {
+                    Button { showingTimer = true } label: {
+                        Label("Start a timer", systemImage: "timer").frame(maxWidth: .infinity)
+                    }
+                    .controlSize(.large)
+                }
                 Button { showingComplete = true } label: {
                     Label("I'm done!", systemImage: "checkmark.circle.fill").frame(maxWidth: .infinity)
                 }
                 .buttonStyle(.borderedProminent)
                 .controlSize(.large)
                 .disabled(!chore.allStepsDone)
+                if chore.upForGrabs && isAssignee {
+                    Button("Let someone else do it") { perform { try service.release(chore, by: me) } }
+                        .frame(maxWidth: .infinity)
+                }
             } footer: {
                 Text(!chore.allStepsDone
                      ? "Tick off every step first."
