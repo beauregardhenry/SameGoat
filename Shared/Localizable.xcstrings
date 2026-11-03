@@ -20,6 +20,16 @@
     "%@ %@": {
       "shouldTranslate": false
     },
+    "%@ %@ for %@!": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "¡%1$@ %2$@ para %3$@!"
+          }
+        }
+      }
+    },
     "%@ %@ · %d pts": {
       "localizations": {
         "es": {
@@ -1378,6 +1388,16 @@
         }
       }
     },
+    "+%lld for %@!": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "¡+%1$lld para %2$@!"
+          }
+        }
+      }
+    },
     "100 points": {
       "localizations": {
         "es": {
@@ -1678,6 +1698,16 @@
         }
       }
     },
+    "Add the kids who'll be doing chores. You can add more, and other grown-ups, later under Family.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Agrega a los niños que harán tareas. Puedes agregar más, y a otros adultos, después en Familia."
+          }
+        }
+      }
+    },
     "Add things kids can spend points on, like movie night or extra screen time.": {
       "localizations": {
         "es": {
@@ -1764,6 +1794,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "¡Todo hecho! 🎉"
+          }
+        }
+      }
+    },
+    "All done. Nice work, everyone!": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Todo listo. ¡Buen trabajo, familia!"
           }
         }
       }
@@ -1868,6 +1908,16 @@
         }
       }
     },
+    "Approve %@": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aprobar %@"
+          }
+        }
+      }
+    },
     "Approve & Award Points": {
       "localizations": {
         "es": {
@@ -1888,12 +1938,32 @@
         }
       }
     },
+    "Approve all": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aprobar todo"
+          }
+        }
+      }
+    },
     "Approve automatically": {
       "localizations": {
         "es": {
           "stringUnit": {
             "state": "translated",
             "value": "Aprobar automáticamente"
+          }
+        }
+      }
+    },
+    "Approve every chore here?": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "¿Aprobar todas las tareas?"
           }
         }
       }
@@ -2084,6 +2154,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Se dan solo cuando un adulto confirma que la tarea está hecha."
+          }
+        }
+      }
+    },
+    "Back": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Atrás"
           }
         }
       }
@@ -3548,12 +3628,12 @@
         }
       }
     },
-    "Extras (optional)": {
+    "Extras": {
       "localizations": {
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Extras (opcional)"
+            "value": "Extras"
           }
         }
       }
@@ -3988,6 +4068,16 @@
         }
       }
     },
+    "Get started": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Empezar"
+          }
+        }
+      }
+    },
     "Get your first reward.": {
       "localizations": {
         "es": {
@@ -4364,6 +4454,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Niño"
+          }
+        }
+      }
+    },
+    "Kid's name": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nombre del niño"
           }
         }
       }
@@ -4948,6 +5048,16 @@
         }
       }
     },
+    "Next": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Siguiente"
+          }
+        }
+      }
+    },
     "Next time": {
       "localizations": {
         "es": {
@@ -5024,6 +5134,16 @@
                 }
               }
             }
+          }
+        }
+      }
+    },
+    "Nice work, %@!": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "¡Buen trabajo, %@!"
           }
         }
       }
@@ -6618,6 +6738,16 @@
         }
       }
     },
+    "Skip for now": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Saltar por ahora"
+          }
+        }
+      }
+    },
     "Skip this turn": {
       "localizations": {
         "es": {
@@ -6748,16 +6878,6 @@
         }
       }
     },
-    "Start a household": {
-      "localizations": {
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Crea un hogar"
-          }
-        }
-      }
-    },
     "Start a timer": {
       "localizations": {
         "es": {
@@ -6794,6 +6914,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Paso %lld"
+          }
+        }
+      }
+    },
+    "Step %lld of %lld": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Paso %1$lld de %2$lld"
           }
         }
       }
@@ -8168,6 +8298,16 @@
         }
       }
     },
+    "What should we call your household, and you?": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "¿Cómo se llama tu hogar, y cómo te llamas tú?"
+          }
+        }
+      }
+    },
     "What we've noticed": {
       "localizations": {
         "es": {
@@ -8774,6 +8914,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "Tu media"
+          }
+        }
+      }
+    },
+    "Your family": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tu familia"
+          }
+        }
+      }
+    },
+    "Your kids": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tus hijos"
           }
         }
       }

@@ -12,8 +12,8 @@ Chores, points and rewards
 Primary: Lifestyle. Secondary: Productivity.
 
 ## Languages
-English, Spanish. (The App Store listing itself is English for now; add a Spanish localization in
-App Store Connect when ready.)
+English, Spanish. The Spanish App Store copy is in listing-es.md; add it as the Spanish (Mexico)
+and Spanish (Spain) localizations in App Store Connect.
 
 ## Age rating
 4+. No user-generated content leaves the family, no web access, no ads, no purchases.
@@ -30,11 +30,11 @@ Parents assign chores and set what each is worth, or let the app suggest fair po
 
 EARN AND SAVE
 • Points add up to rewards you choose together, or real pocket money in allowance mode.
-• Kids pick a reward to save for and watch the progress bar fill.
+• Kids pick a reward to save for and watch the goat sail toward it.
 • Streaks, badges and celebrations make finishing feel great.
 
 LESS NAGGING FOR PARENTS
-• Approve or send back a chore straight from the notification.
+• Approve or send back a chore straight from the notification, or with one tap in Review.
 • Repeating chores, routines with checklists, chores kids take turns on, and "up for grabs" chores anyone can claim.
 • Every chore can say how it helps the family and give a tip, so you don't have to repeat yourself.
 • Start in seconds with ready-made chore ideas for ages 3 to 10+.
@@ -72,10 +72,9 @@ databases), which the developer can't access, so under Apple's definitions it is
 ## Notes for App Review
 Same Goat syncs a household through iCloud. To review on one device:
 1. Sign in to iCloud on the device and open the app.
-2. Create a household (your name, a household name).
-3. Under Family, tap + to add a kid. To act as that kid, turn on "Shared family device" under
-   Family, then pick the kid on the "Who's using Same Goat?" screen. Parent profiles ask for
-   the parent code shown under Family.
+2. Tap Get started, enter a household name and your name, and add a kid on the next step.
+3. To act as that kid, turn on "Shared family device" under Family, then pick the kid on the
+   "Who's using Same Goat?" screen. Parent profiles ask for the parent code shown under Family.
 4. As the parent, add a chore (or tap the lightbulb for ideas); as the kid, mark it done; as the
-   parent, approve it under Review to award the points.
+   parent, approve it with the check button under Review to award the points.
 Inviting a second person uses the standard iCloud sharing sheet (Family → Invite).
