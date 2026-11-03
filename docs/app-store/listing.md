@@ -3,7 +3,7 @@
 Copy for App Store Connect. Character limits are Apple's; counts are noted where they bite.
 
 ## Name (30)
-Happy Mama: Family Chores
+Same Goat: Family Chores
 
 ## Subtitle (30)
 Chores, points and rewards
@@ -22,7 +22,9 @@ App Store Connect when ready.)
 Chores, points and rewards that make kids want to help, plus projects for "guests are coming", a family board for the kitchen tablet, and a daily family mood check-in.
 
 ## Description (4000)
-Happy Mama turns everyday chores into something kids actually want to finish, and makes helping out feel like a family thing, not a battle.
+We're all in the same goat.
+
+Same Goat turns everyday chores into something kids actually want to finish, and makes helping out feel like a family thing, not a battle.
 
 Parents assign chores and set what each is worth, or let the app suggest fair points from how long it takes and how hard it is. Kids mark them done, add a note or a photo, and a parent confirms. Points only count once a grown-up says so.
 
@@ -68,11 +70,11 @@ Data Not Collected. Household data is stored in the user's iCloud (CloudKit priv
 databases), which the developer can't access, so under Apple's definitions it isn't collected.
 
 ## Notes for App Review
-Happy Mama syncs a household through iCloud. To review on one device:
+Same Goat syncs a household through iCloud. To review on one device:
 1. Sign in to iCloud on the device and open the app.
 2. Create a household (your name, a household name).
 3. Under Family, tap + to add a kid. To act as that kid, turn on "Shared family device" under
-   Family, then pick the kid on the "Who's using Happy Mama?" screen. Parent profiles ask for
+   Family, then pick the kid on the "Who's using Same Goat?" screen. Parent profiles ask for
    the parent code shown under Family.
 4. As the parent, add a chore (or tap the lightbulb for ideas); as the kid, mark it done; as the
    parent, approve it under Review to award the points.

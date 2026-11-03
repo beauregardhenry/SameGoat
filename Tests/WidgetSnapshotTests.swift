@@ -1,5 +1,5 @@
 import XCTest
-@testable import HappyMama
+@testable import SameGoat
 
 @MainActor
 final class WidgetSnapshotTests: ServiceTestCase {
@@ -72,7 +72,7 @@ final class WidgetSnapshotTests: ServiceTestCase {
 
     func testAppGroupComesFromInfoPlist() {
         // The test host is the Mac app built with no team, so the prefix is empty.
-        XCTAssertEqual(WidgetSnapshot.appGroup, "group.com.happymama.HappyMama")
+        XCTAssertEqual(WidgetSnapshot.appGroup, "group.com.samegoat.SameGoat")
     }
 
     func testSaveRoundTripsAndSkipsUnchangedWrites() throws {

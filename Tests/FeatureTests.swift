@@ -1,5 +1,5 @@
 import XCTest
-@testable import HappyMama
+@testable import SameGoat
 
 @MainActor
 final class FeatureTests: ServiceTestCase {

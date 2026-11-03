@@ -1,5 +1,5 @@
 import XCTest
-@testable import HappyMama
+@testable import SameGoat
 
 /// The String Catalog is compiled into the app; check Spanish is really there, plurals included.
 final class LocalizationTests: XCTestCase {
@@ -14,7 +14,7 @@ final class LocalizationTests: XCTestCase {
 
     func testSpanishIsBundled() throws {
         XCTAssertEqual(try text("Chores", "es"), "Tareas")
-        XCTAssertEqual(try text("Who's using Happy Mama?", "es"), "¿Quién usa Happy Mama?")
+        XCTAssertEqual(try text("Who's using Same Goat?", "es"), "¿Quién usa Same Goat?")
         XCTAssertEqual(try text("Give the chore a title.", "es"), "Ponle un título a la tarea.")
         XCTAssertEqual(try text("Morning routine", "es"), "Rutina de la mañana")
     }

@@ -24,7 +24,7 @@ private struct EmptyWidgetView: View {
     var body: some View {
         VStack(spacing: 4) {
             Text("😊").font(.title)
-            Text("Open Happy Mama to get started.").font(.caption).multilineTextAlignment(.center)
+            Text("Open Same Goat to get started.").font(.caption).multilineTextAlignment(.center)
         }
     }
 }

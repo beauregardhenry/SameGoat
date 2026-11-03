@@ -42,8 +42,8 @@ struct WidgetSnapshot: Codable, Equatable {
     /// iOS uses the group as written. On the Mac the group carries the team prefix, which the
     /// build fills into Info.plist (with no team set, both come out the same).
     static var appGroup: String {
-        (Bundle.main.object(forInfoDictionaryKey: "HappyMamaAppGroup") as? String)?.nilIfBlank
-            ?? "group.com.happymama.HappyMama"
+        (Bundle.main.object(forInfoDictionaryKey: "SameGoatAppGroup") as? String)?.nilIfBlank
+            ?? "group.com.samegoat.SameGoat"
     }
     static let kind = "Today"
 

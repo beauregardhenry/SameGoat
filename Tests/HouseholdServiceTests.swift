@@ -1,6 +1,6 @@
 import XCTest
 import CoreData
-@testable import HappyMama
+@testable import SameGoat
 
 @MainActor
 final class HouseholdServiceTests: XCTestCase {

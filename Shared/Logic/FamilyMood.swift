@@ -65,7 +65,7 @@ extension HouseholdService {
     @discardableResult
     func checkInMood(_ rating: Int, note: String? = nil, by me: Member, now: Date = Date()) throws -> MoodCheckIn {
         guard FamilyMood.range.contains(rating) else { throw ServiceError.invalid(String(localized: "Pick a face from 1 to 5.")) }
-        guard let household = me.household else { throw ServiceError.invalid(String(localized: "Open Happy Mama first to set up your household.")) }
+        guard let household = me.household else { throw ServiceError.invalid(String(localized: "Open Same Goat first to set up your household.")) }
         let mood: MoodCheckIn
         if let existing = FamilyMood.checkIn(by: me, on: now, calendar: calendar) {
             mood = existing

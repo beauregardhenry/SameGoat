@@ -55,7 +55,7 @@ final class AppEnvironment {
         notifier.sync(household: household, me: me)
         WidgetSnapshot.publish(household: household, me: me)
         // Lets Siri offer "I finished the dishes" with the current chore names.
-        HappyMamaShortcuts.updateAppShortcutParameters()
+        SameGoatShortcuts.updateAppShortcutParameters()
     }
 
     /// For Siri and Shortcuts, which can run before any window opens.

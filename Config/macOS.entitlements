@@ -16,7 +16,7 @@
 	<true/>
 	<key>com.apple.security.application-groups</key>
 	<array>
-		<string>$(TeamIdentifierPrefix)group.com.happymama.HappyMama</string>
+		<string>$(TeamIdentifierPrefix)group.com.samegoat.SameGoat</string>
 	</array>
 	<key>com.apple.security.network.client</key>
 	<true/>

@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
-	<string>Happy Mama</string>
+	<string>Same Goat</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -29,8 +29,8 @@
 	<true/>
 	<key>CloudKitContainerID</key>
 	<string>iCloud.$(PRODUCT_BUNDLE_IDENTIFIER)</string>
-	<key>HappyMamaAppGroup</key>
-	<string>$(TeamIdentifierPrefix)group.com.happymama.HappyMama</string>
+	<key>SameGoatAppGroup</key>
+	<string>$(TeamIdentifierPrefix)group.com.samegoat.SameGoat</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 	<key>LSApplicationCategoryType</key>

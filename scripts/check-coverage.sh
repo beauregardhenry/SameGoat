@@ -49,11 +49,11 @@ case "${1:-}" in
 esac
 
 cd "$PROJECT_ROOT"
-[[ -d HappyMama.xcodeproj ]] || xcodegen generate
+[[ -d SameGoat.xcodeproj ]] || xcodegen generate
 
 print "Running the test suite with a fresh coverage profile."
 rm -rf "$RESULT"
-xcodebuild -project HappyMama.xcodeproj -scheme HappyMama-macOS-Local -configuration Local \
+xcodebuild -project SameGoat.xcodeproj -scheme SameGoat-macOS-Local -configuration Local \
     -destination 'platform=macOS' -derivedDataPath build \
     -enableCodeCoverage YES -resultBundlePath "$RESULT" \
     CODE_SIGNING_ALLOWED=NO test

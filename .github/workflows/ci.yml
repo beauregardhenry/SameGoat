@@ -37,16 +37,16 @@ jobs:
         run: ./scripts/check-coverage.sh
       - name: Build the iCloud (Debug) configuration
         run: >-
-          xcodebuild -project HappyMama.xcodeproj -scheme HappyMama-macOS
+          xcodebuild -project SameGoat.xcodeproj -scheme SameGoat-macOS
           -configuration Debug -destination 'platform=macOS'
           -derivedDataPath build/debug CODE_SIGNING_ALLOWED=NO build
       - name: Build the universal Release app
         run: >-
-          xcodebuild -project HappyMama.xcodeproj -scheme HappyMama-macOS
+          xcodebuild -project SameGoat.xcodeproj -scheme SameGoat-macOS
           -configuration Release -destination 'generic/platform=macOS'
           -derivedDataPath build/release CODE_SIGNING_ALLOWED=NO build
       - name: Verify it runs on Intel and Apple silicon
-        run: ./scripts/verify-macos-universal.sh build/release/Build/Products/Release/HappyMama.app
+        run: ./scripts/verify-macos-universal.sh build/release/Build/Products/Release/SameGoat.app
 
   ios:
     name: iOS build
@@ -60,11 +60,11 @@ jobs:
           xcodegen generate
       - name: Build the iCloud (Debug) configuration
         run: >-
-          xcodebuild -project HappyMama.xcodeproj -scheme HappyMama-iOS
+          xcodebuild -project SameGoat.xcodeproj -scheme SameGoat-iOS
           -configuration Debug -destination 'generic/platform=iOS Simulator'
           -derivedDataPath build/debug CODE_SIGNING_ALLOWED=NO build
       - name: Build the Local (no iCloud) configuration
         run: >-
-          xcodebuild -project HappyMama.xcodeproj -scheme HappyMama-iOS-Local
+          xcodebuild -project SameGoat.xcodeproj -scheme SameGoat-iOS-Local
           -configuration Local -destination 'generic/platform=iOS Simulator'
           -derivedDataPath build/local CODE_SIGNING_ALLOWED=NO build

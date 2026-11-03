@@ -4058,12 +4058,12 @@
         }
       }
     },
-    "Happy Mama": {
+    "Same Goat": {
       "localizations": {
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Happy Mama"
+            "value": "Same Goat"
           }
         }
       }
@@ -5308,22 +5308,22 @@
         }
       }
     },
-    "Open Happy Mama first to set up your household.": {
+    "Open Same Goat first to set up your household.": {
       "localizations": {
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Abre Happy Mama primero para configurar tu hogar."
+            "value": "Abre Same Goat primero para configurar tu hogar."
           }
         }
       }
     },
-    "Open Happy Mama to get started.": {
+    "Open Same Goat to get started.": {
       "localizations": {
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Abre Happy Mama para empezar."
+            "value": "Abre Same Goat para empezar."
           }
         }
       }
@@ -8028,12 +8028,12 @@
         }
       }
     },
-    "Welcome to Happy Mama": {
+    "Welcome to Same Goat": {
       "localizations": {
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Bienvenido a Happy Mama"
+            "value": "Bienvenido a Same Goat"
           }
         }
       }
@@ -8178,12 +8178,12 @@
         }
       }
     },
-    "Who's using Happy Mama?": {
+    "Who's using Same Goat?": {
       "localizations": {
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "¿Quién usa Happy Mama?"
+            "value": "¿Quién usa Same Goat?"
           }
         }
       }

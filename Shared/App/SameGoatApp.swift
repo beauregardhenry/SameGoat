@@ -2,7 +2,7 @@ import SwiftUI
 import CloudKit
 
 @main
-struct HappyMamaApp: App {
+struct SameGoatApp: App {
     #if os(iOS)
     @UIApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
     #else
@@ -61,7 +61,7 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
     }
 }
 
-/// Receives the invitation when someone taps a Happy Mama share link.
+/// Receives the invitation when someone taps a Same Goat share link.
 final class SceneDelegate: NSObject, UIWindowSceneDelegate {
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         if let metadata = connectionOptions.cloudKitShareMetadata {

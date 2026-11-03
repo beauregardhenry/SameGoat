@@ -1,6 +1,6 @@
 import XCTest
 import UserNotifications
-@testable import HappyMama
+@testable import SameGoat
 
 @MainActor
 final class NotificationActionTests: ServiceTestCase {

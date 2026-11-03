@@ -1,5 +1,5 @@
 import XCTest
-@testable import HappyMama
+@testable import SameGoat
 
 @MainActor
 final class AssistantRepliesTests: ServiceTestCase {
@@ -157,7 +157,7 @@ final class IntentTests: ServiceTestCase {
     }
 
     func testShortcutsAndChoreDisplay() throws {
-        XCTAssertEqual(HappyMamaShortcuts.appShortcuts.count, 3)
+        XCTAssertEqual(SameGoatShortcuts.appShortcuts.count, 3)
         let entity = ChoreEntity(try assign(title: "Dishes", points: 4))
         XCTAssertEqual(String(localized: entity.displayRepresentation.title), "Dishes")
         XCTAssertNotNil(entity.displayRepresentation.subtitle)
@@ -170,7 +170,7 @@ final class IntentTests: ServiceTestCase {
             _ = try await CheckPointsIntent().perform()
             XCTFail("expected an error")
         } catch {
-            XCTAssertEqual(error.localizedDescription, "Open Happy Mama first to set up your household.")
+            XCTAssertEqual(error.localizedDescription, "Open Same Goat first to set up your household.")
         }
     }
 }
