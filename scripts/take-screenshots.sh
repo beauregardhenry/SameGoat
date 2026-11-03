@@ -44,6 +44,9 @@ shoot() {
     # A fresh install, so the demo family is loaded with today's dates.
     xcrun simctl uninstall "$device" "$BUNDLE_ID" 2>/dev/null || true
     xcrun simctl install "$device" "$APP"
+    # The first launch after installing is slow; warm up so the first shot isn't a loading screen.
+    xcrun simctl launch "$device" "$BUNDLE_ID" -screenshotMember Ava -screenshotSection chores >/dev/null
+    sleep 8
     mkdir -p "$OUT/$folder"
     for shot in "${SHOTS[@]}"; do
         local name="${shot%% *}" rest="${shot#* }"
