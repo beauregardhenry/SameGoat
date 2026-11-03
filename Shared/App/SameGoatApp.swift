@@ -25,6 +25,8 @@ struct SameGoatApp: App {
                 .environmentObject(env.celebrations)
                 .environmentObject(PersistenceBox(env.persistence))
                 .tint(Theme.accent)
+                // Rounded type everywhere, to match the Same Goat wordmark.
+                .fontDesign(.rounded)
                 #if os(macOS)
                 .frame(minWidth: 860, minHeight: 580)
                 #endif

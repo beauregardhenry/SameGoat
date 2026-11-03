@@ -61,7 +61,7 @@ struct FamilyBoardView: View {
         .background(Color.secondary.opacity(0.06))
         .overlay {
             if household.kids.isEmpty {
-                ContentUnavailableView("No kids yet", systemImage: "person.2", description: Text("Add a kid in the Family tab first."))
+                GoatEmptyView(title: "No kids yet", mood: .curious, description: Text("Add a kid in the Family tab first."))
             }
         }
         .navigationTitle("Family Board")
@@ -159,7 +159,7 @@ private struct KidHeader: View {
             }
             Spacer()
             if !kid.isParent, case let streak = kid.streak(), streak > 0 {
-                Text(verbatim: "🔥\(streak)").font(.headline).foregroundStyle(.orange)
+                Text(verbatim: "🔥\(streak)").font(.headline).foregroundStyle(Theme.gold)
             }
         }
     }

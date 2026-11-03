@@ -101,9 +101,9 @@ struct RewardsView: View {
         }
         .overlay {
             if visibleRewards.isEmpty {
-                ContentUnavailableView(
-                    me.isParent ? "No rewards yet" : "No rewards yet",
-                    systemImage: "gift",
+                GoatEmptyView(
+                    title: "No rewards yet",
+                    mood: .curious,
                     description: Text(me.isParent
                         ? "Add things kids can spend points on, like movie night or extra screen time."
                         : "Ask a parent to add some rewards."))

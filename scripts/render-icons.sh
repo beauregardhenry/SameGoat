@@ -22,3 +22,23 @@ swift scripts/render-icons.swift docs/brand/icon-light.svg "$mascot/mascot.png" 
 swift scripts/render-icons.swift docs/brand/icon-light.svg "$mascot/mascot@2x.png" 224
 swift scripts/render-icons.swift docs/brand/icon-light.svg "$mascot/mascot@3x.png" 336
 echo "Mascot written to $mascot"
+# The goat's moods for celebrations and empty screens (120 points wide).
+for pose in cheer party sleep curious; do
+    name="Goat$(tr '[:lower:]' '[:upper:]' <<< "${pose:0:1}")${pose:1}"
+    set="Shared/Assets.xcassets/$name.imageset"
+    mkdir -p "$set"
+    swift scripts/render-icons.swift "docs/brand/goat-$pose.svg" "$set/goat.png"    120x121
+    swift scripts/render-icons.swift "docs/brand/goat-$pose.svg" "$set/goat@2x.png" 240x243
+    swift scripts/render-icons.swift "docs/brand/goat-$pose.svg" "$set/goat@3x.png" 360x364
+    cat > "$set/Contents.json" <<JSON
+{
+  "images" : [
+    { "filename" : "goat.png", "idiom" : "universal", "scale" : "1x" },
+    { "filename" : "goat@2x.png", "idiom" : "universal", "scale" : "2x" },
+    { "filename" : "goat@3x.png", "idiom" : "universal", "scale" : "3x" }
+  ],
+  "info" : { "author" : "xcode", "version" : 1 }
+}
+JSON
+done
+echo "Goat moods written to Shared/Assets.xcassets"

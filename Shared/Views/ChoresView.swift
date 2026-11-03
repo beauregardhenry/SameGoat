@@ -156,12 +156,12 @@ struct ChoresView: View {
         }
         .overlay {
             if chores.isEmpty {
-                ContentUnavailableView {
-                    Label(me.isParent ? "No chores yet" : "Nothing to do!", systemImage: "checklist")
-                } description: {
-                    Text(me.isParent ? "Tap + to assign the first chore, or start from a list of ideas by age."
-                                     : "When a parent gives you a chore, it shows up here.")
-                } actions: {
+                GoatEmptyView(
+                    title: me.isParent ? "No chores yet" : "Nothing to do!",
+                    mood: me.isParent ? .curious : .cheer,
+                    description: Text(me.isParent ? "Tap + to assign the first chore, or start from a list of ideas by age."
+                                                  : "When a parent gives you a chore, it shows up here.")
+                ) {
                     if me.isParent {
                         Button("Browse Chore Ideas") { showingLibrary = true }.buttonStyle(.borderedProminent)
                     }
@@ -244,7 +244,7 @@ struct BalanceCard: View {
                     Text(pointsLine)
                         .font(.subheadline).foregroundStyle(.secondary)
                     if streak > 0 {
-                        Text("🔥 \(streak)-day streak").font(.subheadline.weight(.semibold)).foregroundStyle(.orange)
+                        Text("🔥 \(streak)-day streak").font(.subheadline.weight(.semibold)).foregroundStyle(Theme.gold)
                     }
                 }
                 Spacer()
@@ -252,7 +252,7 @@ struct BalanceCard: View {
                 if !typeSize.isAccessibilitySize {
                     Text("\(member.available)")
                         .font(.system(.largeTitle, design: .rounded, weight: .heavy))
-                        .foregroundStyle(Theme.accent)
+                        .foregroundStyle(Theme.coral)
                         .contentTransition(.numericText())
                         .accessibilityHidden(true)
                 }
@@ -287,7 +287,7 @@ struct GoalProgress: View {
                 }
             }
             ProgressView(value: member.goalProgress)
-                .tint(reached ? .green : Theme.accent)
+                .tint(reached ? .green : Theme.gold)
                 .accessibilityHidden(true)
         }
     }

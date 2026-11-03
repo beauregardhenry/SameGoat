@@ -94,10 +94,85 @@ def wordmark(dark=False):
 """
 
 
+POSES = ("cheer", "party", "sleep", "curious")
+
+
+def mascot(pose):
+    """The goat in its boat on a transparent background, for moments inside the app.
+
+    A thin outline keeps the white face visible on light screens.
+    """
+    ink, face, horn, cheek, muzzle, nose, hull, rim = (
+        "#5A3A1A", "#FFFFFF", "#8C5A1E", "#F8C1B6", "#F6D9CF", "#8A3B2E", "#E8604C", "#C9483A")
+    line = f'stroke="{ink}" stroke-width="2.5" stroke-linejoin="round"'
+    left_ear, right_ear = (34, -8) if pose != "sleep" else (48, 30)
+    if pose == "cheer":
+        left_ear, right_ear = (14, -24)
+    eyes = {
+        "cheer": f'''<path d="M-19 -4 Q-13 -12 -7 -4" stroke="{ink}" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+    <path d="M7 -4 Q13 -12 19 -4" stroke="{ink}" stroke-width="3.5" fill="none" stroke-linecap="round"/>''',
+        "sleep": f'''<path d="M-19 -6 Q-13 0 -7 -6" stroke="{ink}" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+    <path d="M7 -6 Q13 0 19 -6" stroke="{ink}" stroke-width="3.5" fill="none" stroke-linecap="round"/>''',
+    }.get(pose, f'''<circle cx="-13" cy="-5" r="6" fill="#2B2B2B"/><circle cx="13" cy="-5" r="6" fill="#2B2B2B"/>
+    <circle cx="-11" cy="-7" r="2" fill="#FFFFFF"/><circle cx="15" cy="-7" r="2" fill="#FFFFFF"/>''')
+    mouth = {
+        "cheer": f'<path d="M-8 24 Q0 36 8 24 Z" fill="{nose}"/>',
+        "party": f'<path d="M-8 24 Q0 36 8 24 Z" fill="{nose}"/>',
+        "curious": f'<circle cx="0" cy="28" r="3" fill="{nose}"/>',
+        "sleep": f'<path d="M-5 27 Q0 30 5 27" stroke="{nose}" stroke-width="2.5" fill="none" stroke-linecap="round"/>',
+    }[pose]
+    extra_head = ""
+    if pose == "curious":
+        extra_head = f'<path d="M6 -17 Q13 -24 21 -18" stroke="{ink}" stroke-width="3" fill="none" stroke-linecap="round"/>'
+    if pose == "party":
+        extra_head = f'''<g transform="rotate(-14 0 -40)">
+      <path d="M-16 -40 L0 -84 L16 -40 Z" fill="#F5B82E" {line}/>
+      <path d="M-11 -54 L11 -54 M-6 -68 L6 -68" stroke="#E8604C" stroke-width="4" stroke-linecap="round"/>
+      <circle cx="0" cy="-86" r="6" fill="#4FB3A9" {line}/>
+    </g>'''
+    around = {
+        "cheer": '''<path d="M30 30 l3 8 8 3 -8 3 -3 8 -3 -8 -8 -3 8 -3 Z" fill="#F5B82E"/>
+  <path d="M148 22 l2.5 6 6 2.5 -6 2.5 -2.5 6 -2.5 -6 -6 -2.5 6 -2.5 Z" fill="#F5B82E"/>
+  <path d="M154 64 l2 5 5 2 -5 2 -2 5 -2 -5 -5 -2 5 -2 Z" fill="#4FB3A9"/>''',
+        "party": '''<rect x="26" y="34" width="7" height="7" rx="1.5" fill="#E8604C" transform="rotate(20 29 37)"/>
+  <rect x="148" y="30" width="7" height="7" rx="1.5" fill="#4FB3A9" transform="rotate(-25 151 33)"/>
+  <circle cx="40" cy="70" r="4" fill="#F5B82E"/><circle cx="146" cy="70" r="4" fill="#E8604C"/>
+  <rect x="134" y="12" width="6" height="6" rx="1.5" fill="#F5B82E" transform="rotate(40 137 15)"/>''',
+        "sleep": f'''<path d="M128 28 h12 l-12 13 h12" stroke="#4FB3A9" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M146 10 h8 l-8 9 h8" stroke="#4FB3A9" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>''',
+        "curious": '''<path d="M134 22 Q134 10 145 10 Q156 10 156 20 Q156 28 146 31 L146 37" stroke="#4FB3A9" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="146" cy="47" r="3.5" fill="#4FB3A9"/>''',
+    }[pose]
+    tilt = {"curious": -8, "sleep": 6}.get(pose, 0)
+    return f"""<svg xmlns="http://www.w3.org/2000/svg" width="360" height="364" viewBox="0 -12 180 182">
+  {around}
+  <g transform="translate(90,74) scale(0.82) rotate({tilt})">
+    <path d="M-20 -36 Q-30 -60 -46 -62" stroke="{horn}" stroke-width="9" fill="none" stroke-linecap="round"/>
+    <path d="M20 -36 Q30 -60 46 -62" stroke="{horn}" stroke-width="9" fill="none" stroke-linecap="round"/>
+    <ellipse cx="-40" cy="-10" rx="21" ry="10" transform="rotate({left_ear} -40 -10)" fill="{face}" {line}/>
+    <ellipse cx="40" cy="-10" rx="21" ry="10" transform="rotate({-right_ear} 40 -10)" fill="{face}" {line}/>
+    <path d="M-30 -20 Q-32 -42 0 -42 Q32 -42 30 -20 L24 22 Q18 40 0 40 Q-18 40 -24 22 Z" fill="{face}" {line}/>
+    <circle cx="-21" cy="6" r="5.5" fill="{cheek}"/><circle cx="21" cy="6" r="5.5" fill="{cheek}"/>
+    <ellipse cx="0" cy="16" rx="17" ry="10" fill="{muzzle}"/>
+    <circle cx="-6" cy="13" r="2.5" fill="{nose}"/><circle cx="6" cy="13" r="2.5" fill="{nose}"/>
+    {mouth}
+    {eyes}
+    {extra_head}
+  </g>
+  <path d="M26 101 Q90 115 154 101 L136 138 Q90 146 44 138 Z" fill="{hull}" {line.replace(ink, rim)}/>
+  <path d="M24 100 Q90 115 156 100" stroke="{rim}" stroke-width="6" fill="none" stroke-linecap="round"/>
+  <path d="M38 118 Q90 130 142 118" stroke="#FFFFFF" stroke-width="5" fill="none" stroke-linecap="round"/>
+  <path d="M30 158 q10 -7 20 0 t20 0 t20 0 t20 0 t20 0 t20 0" stroke="#4FB3A9" stroke-width="4.5" fill="none" stroke-linecap="round"/>
+</svg>
+"""
+
+
 if __name__ == "__main__":
     for v in PALETTES:
         open(os.path.join(HERE, f"icon-{v}.svg"), "w").write(ios(v))
     open(os.path.join(HERE, "icon-mac.svg"), "w").write(mac())
     open(os.path.join(HERE, "wordmark.svg"), "w").write(wordmark())
     open(os.path.join(HERE, "wordmark-dark.svg"), "w").write(wordmark(dark=True))
+    for pose in POSES:
+        open(os.path.join(HERE, f"goat-{pose}.svg"), "w").write(mascot(pose))
     print("Wrote", ", ".join(f"icon-{v}.svg" for v in [*PALETTES, "mac"]), "and the wordmarks")

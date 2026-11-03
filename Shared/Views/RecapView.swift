@@ -29,7 +29,7 @@ struct RecapView: View {
                         }
                         Spacer()
                         VStack(alignment: .trailing) {
-                            Text("\(week.points)").font(.title2.bold()).foregroundStyle(Theme.accent)
+                            Text("\(week.points)").font(.title2.bold()).foregroundStyle(Theme.coral)
                             Text("this week").font(.caption).foregroundStyle(.secondary)
                         }
                     }
@@ -37,7 +37,7 @@ struct RecapView: View {
                     Chart(week.history, id: \.start) { item in
                         BarMark(x: .value("Week", item.start, unit: .weekOfYear),
                                 y: .value("Points", item.points))
-                            .foregroundStyle(item.start == week.history.last?.start ? Theme.accent : Theme.accent.opacity(0.35))
+                            .foregroundStyle(item.start == week.history.last?.start ? Theme.coral : Theme.coral.opacity(0.35))
                     }
                     .chartXAxis {
                         AxisMarks(values: .stride(by: .weekOfYear, count: 2)) {

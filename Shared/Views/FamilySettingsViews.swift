@@ -169,12 +169,15 @@ struct PauseBanner: View {
     var body: some View {
         if let pause = household.upcomingPause() {
             let started = pause.lowerBound <= Date()
-            Label(started
-                  ? "On vacation until \(pause.upperBound.formatted(.dateTime.weekday(.abbreviated).month(.abbreviated).day())). Chores are paused."
-                  : "Vacation from \(pause.lowerBound.formatted(.dateTime.month(.abbreviated).day())) to \(pause.upperBound.formatted(.dateTime.month(.abbreviated).day())).",
-                  systemImage: "beach.umbrella")
-                .font(.subheadline)
-                .foregroundStyle(.teal)
+            Label {
+                Text(started
+                     ? "On vacation until \(pause.upperBound.formatted(.dateTime.weekday(.abbreviated).month(.abbreviated).day())). Chores are paused."
+                     : "Vacation from \(pause.lowerBound.formatted(.dateTime.month(.abbreviated).day())) to \(pause.upperBound.formatted(.dateTime.month(.abbreviated).day())).")
+            } icon: {
+                if started { Goat(mood: .sleep, size: 44) } else { Image(systemName: "beach.umbrella") }
+            }
+            .font(.subheadline)
+            .foregroundStyle(Theme.accent)
         }
     }
 }

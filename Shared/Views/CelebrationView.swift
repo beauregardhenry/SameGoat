@@ -49,7 +49,14 @@ private struct CelebrationCard: View {
                 .onTapGesture(perform: onDone)
             if !reduceMotion { Confetti().ignoresSafeArea().allowsHitTesting(false) }
             VStack(spacing: 14) {
-                Text(celebration.emoji).font(.system(size: 64))
+                Goat(mood: celebration.id.hasPrefix("badge-") ? .party : .cheer, size: 140)
+                    .overlay(alignment: .bottomTrailing) {
+                        Text(celebration.emoji)
+                            .font(.system(size: 34))
+                            .padding(6)
+                            .background(.regularMaterial, in: Circle())
+                            .offset(x: 8, y: 4)
+                    }
                 Text(celebration.title).font(.title2.bold()).multilineTextAlignment(.center)
                 Text(celebration.message).foregroundStyle(.secondary).multilineTextAlignment(.center)
                 Button("Yay!", action: onDone)
@@ -111,7 +118,7 @@ struct BadgeShelf: View {
                         Text(badge.emoji)
                             .font(.title)
                             .frame(width: 54, height: 54)
-                            .background(badge.earned ? Theme.accent.opacity(0.15) : Color.secondary.opacity(0.1), in: Circle())
+                            .background(badge.earned ? Theme.gold.opacity(0.2) : Color.secondary.opacity(0.1), in: Circle())
                             .grayscale(badge.earned ? 0 : 1)
                             .opacity(badge.earned ? 1 : 0.45)
                         Text(badge.title).font(.caption2).lineLimit(1)
