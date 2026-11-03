@@ -865,6 +865,16 @@
         }
       }
     },
+    "%lld of %lld on": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$lld de %2$lld activas"
+          }
+        }
+      }
+    },
     "%lld of %lld steps": {
       "localizations": {
         "es": {
@@ -881,6 +891,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "%lld de 5"
+          }
+        }
+      }
+    },
+    "%lld of 5 stars": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld de 5 estrellas"
           }
         }
       }
@@ -1364,6 +1384,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Con la mesa recogida, los platos se lavan y descansamos antes."
+          }
+        }
+      }
+    },
+    "A daily family mood check-in, with ideas for lifting everyone's spirits.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Un registro diario del ánimo familiar, con ideas para levantar el ánimo de todos."
           }
         }
       }
@@ -2038,6 +2068,16 @@
         }
       }
     },
+    "Big one-off jobs like \"Guests are coming\", with regular chores on hold until they're done.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Trabajos grandes y puntuales como \"Vienen invitados\", con las tareas de siempre en pausa hasta terminar."
+          }
+        }
+      }
+    },
     "Big picture tiles instead of a list, for little ones who can't read much yet.": {
       "localizations": {
         "es": {
@@ -2354,6 +2394,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Comprobando iCloud…"
+          }
+        }
+      }
+    },
+    "Choice menus": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Menús para elegir"
           }
         }
       }
@@ -3198,6 +3248,16 @@
         }
       }
     },
+    "Energy and reset pass": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Energía y pase de descanso"
+          }
+        }
+      }
+    },
     "Energy: %lld spoons": {
       "localizations": {
         "en": {
@@ -3358,6 +3418,16 @@
         }
       }
     },
+    "Everyone's chores side by side, for a tablet in the kitchen.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Las tareas de todos lado a lado, para una tableta en la cocina."
+          }
+        }
+      }
+    },
     "Examples": {
       "localizations": {
         "es": {
@@ -3418,6 +3488,16 @@
         }
       }
     },
+    "Extras (optional)": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Extras (opcional)"
+          }
+        }
+      }
+    },
     "Family": {
       "localizations": {
         "es": {
@@ -3444,6 +3524,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Ánimo familiar"
+          }
+        }
+      }
+    },
+    "Family board": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tablero familiar"
           }
         }
       }
@@ -3514,6 +3604,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Paseo en familia"
+          }
+        }
+      }
+    },
+    "Features": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Funciones"
           }
         }
       }
@@ -4318,6 +4418,16 @@
         }
       }
     },
+    "Let kids choose which chores to do from a menu.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deja que los niños elijan qué tareas hacer de un menú."
+          }
+        }
+      }
+    },
     "Let someone else do it": {
       "localizations": {
         "es": {
@@ -4474,6 +4584,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "La marca como hecha"
+          }
+        }
+      }
+    },
+    "Match chores to how much energy you have, and give kids one reset pass a day.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ajusta las tareas a la energía que tienes y da a los niños un pase de descanso al día."
           }
         }
       }
@@ -5438,6 +5558,16 @@
         }
       }
     },
+    "Pick %@": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Elegir %@"
+          }
+        }
+      }
+    },
     "Pick a book": {
       "localizations": {
         "es": {
@@ -5744,6 +5874,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Nombre del proyecto"
+          }
+        }
+      }
+    },
+    "Projects": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Proyectos"
           }
         }
       }
@@ -6534,6 +6674,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Poner un temporizador"
+          }
+        }
+      }
+    },
+    "Start simple: chores, points and rewards are always on. You can change these anytime under Family → Features.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Empieza simple: tareas, puntos y premios siempre están activos. Puedes cambiar esto cuando quieras en Familia → Funciones."
           }
         }
       }
@@ -7478,6 +7628,16 @@
         }
       }
     },
+    "Turn on Energy and reset pass under Family → Features first.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Primero activa Energía y pase de descanso en Familia → Funciones."
+          }
+        }
+      }
+    },
     "Turn on allowance mode first.": {
       "localizations": {
         "es": {
@@ -7494,6 +7654,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Activar notificaciones"
+          }
+        }
+      }
+    },
+    "Turn on only what your family wants; everything else stays out of the way. Allowance mode has its own switch under Family.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Activa solo lo que tu familia quiera; lo demás no estorba. El modo paga tiene su propio interruptor en Familia."
           }
         }
       }

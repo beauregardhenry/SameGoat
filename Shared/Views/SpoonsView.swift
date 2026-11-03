@@ -15,6 +15,7 @@ struct SpoonsView: View {
                     Picker("Energy", selection: $spoons) {
                         ForEach(Spoons.range, id: \.self) { n in
                             Text(String(repeating: "🥄", count: n)).tag(n)
+                                .accessibilityLabel(String(localized: "\(n) spoons"))
                         }
                     }
                     .pickerStyle(.segmented)

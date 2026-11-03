@@ -184,6 +184,7 @@ struct ChoresView: View {
                         }
                         .buttonStyle(.borderedProminent)
                         .controlSize(.small)
+                        .accessibilityLabel(String(localized: "Pick \(option.displayTitle)"))
                     }
                 }
             }
