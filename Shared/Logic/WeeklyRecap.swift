@@ -32,16 +32,19 @@ enum WeeklyRecap {
         let starts = (0..<weeksShown).reversed().compactMap {
             calendar.date(byAdding: .weekOfYear, value: -$0, to: thisWeek)
         }
+        guard let first = starts.first else { return [] }
         return kids.compactMap { kid in
             guard let id = kid.id else { return nil }
-            let earned = kid.entryList.filter { $0.amount > 0 }
-            let history = starts.map { start in
-                Week(start: start, points: earned
-                    .filter { ($0.date.map { weekStart(for: $0, calendar: calendar) }) == start }
-                    .reduce(0) { $0 + Int($1.amount) })
+            // Bucket each recent point by its week once, rather than once per week shown.
+            var pointsByWeek: [Date: Int] = [:]
+            for entry in kid.entryList where entry.amount > 0 {
+                guard let date = entry.date, date >= first else { continue }
+                pointsByWeek[weekStart(for: date, calendar: calendar), default: 0] += Int(entry.amount)
             }
+            let history = starts.map { Week(start: $0, points: pointsByWeek[$0] ?? 0) }
             let done = ((kid.assignedChores as? Set<Chore>) ?? []).filter {
-                $0.status == .approved && $0.completedAt.map { weekStart(for: $0, calendar: calendar) } == thisWeek
+                guard $0.status == .approved, let completed = $0.completedAt, completed >= thisWeek else { return false }
+                return weekStart(for: completed, calendar: calendar) == thisWeek
             }
             return KidWeek(id: id, name: kid.displayName, emoji: kid.displayEmoji,
                            points: history.last?.points ?? 0, choresDone: done.count,

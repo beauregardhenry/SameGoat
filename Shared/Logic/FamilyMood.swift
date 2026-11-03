@@ -28,19 +28,24 @@ enum FamilyMood {
         return checkIns(in: household).first { $0.member == member && $0.day == start }
     }
 
+    /// The family's average for each day anyone checked in, keyed by start of day.
+    /// Work it out once and look days up, rather than regrouping every check-in per day.
+    static func dailyAverages(in household: Household, calendar: Calendar = .current) -> [Date: Double] {
+        Dictionary(grouping: checkIns(in: household)) { calendar.startOfDay(for: $0.day ?? .distantPast) }
+            .mapValues { group in Double(group.reduce(0) { $0 + Int($1.rating) }) / Double(group.count) }
+    }
+
     /// The family's average for a day, or nil if nobody checked in.
     static func average(on day: Date, in household: Household, calendar: Calendar = .current) -> Double? {
-        let start = calendar.startOfDay(for: day)
-        let ratings = checkIns(in: household).filter { $0.day == start }.map { Double($0.rating) }
-        return ratings.isEmpty ? nil : ratings.reduce(0, +) / Double(ratings.count)
+        dailyAverages(in: household, calendar: calendar)[calendar.startOfDay(for: day)]
     }
 
     /// Daily averages for the last `days` days, oldest first; days nobody checked in are left out.
     static func trend(days: Int = 14, in household: Household, now: Date = Date(), calendar: Calendar = .current) -> [(day: Date, average: Double)] {
         let today = calendar.startOfDay(for: now)
+        let averages = dailyAverages(in: household, calendar: calendar)
         return (0..<days).reversed().compactMap { back in
-            guard let day = calendar.date(byAdding: .day, value: -back, to: today),
-                  let average = average(on: day, in: household, calendar: calendar) else { return nil }
+            guard let day = calendar.date(byAdding: .day, value: -back, to: today), let average = averages[day] else { return nil }
             return (day, average)
         }
     }

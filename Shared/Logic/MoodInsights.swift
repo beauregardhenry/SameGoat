@@ -43,9 +43,10 @@ enum MoodInsights {
         let thisWeek = WeeklyRecap.weekStart(for: now, calendar: calendar)
         let weeks = (0..<weeksLookedAt).compactMap { calendar.date(byAdding: .weekOfYear, value: -$0, to: thisWeek) }
         guard let first = weeks.last else { return [] }
+        let daily = FamilyMood.dailyAverages(in: household, calendar: calendar)
         let moodByWeek = Dictionary(uniqueKeysWithValues: weeks.compactMap { start -> (Date, Double)? in
             let days = (0..<7).compactMap { calendar.date(byAdding: .day, value: $0, to: start) }
-            let averages = days.compactMap { FamilyMood.average(on: $0, in: household, calendar: calendar) }
+            let averages = days.compactMap { daily[$0] }
             return averages.count >= 3 ? (start, averages.reduce(0, +) / Double(averages.count)) : nil
         })
         var result: [Insight] = []
@@ -71,9 +72,8 @@ enum MoodInsights {
         let today = calendar.startOfDay(for: now)
         guard let first = calendar.date(byAdding: .day, value: -(weeksLookedAt * 7 - 1), to: today) else { return [] }
         let days = (0..<(weeksLookedAt * 7)).compactMap { calendar.date(byAdding: .day, value: $0, to: first) }
-        let moodByDay = Dictionary(uniqueKeysWithValues: days.compactMap { day in
-            FamilyMood.average(on: day, in: household, calendar: calendar).map { (day, $0) }
-        })
+        let daily = FamilyMood.dailyAverages(in: household, calendar: calendar)
+        let moodByDay = Dictionary(uniqueKeysWithValues: days.compactMap { day in daily[day].map { (day, $0) } })
         var result: [Insight] = []
         for (key, chores) in finished(household, since: first) {
             guard let sample = chores.first else { continue }
@@ -122,11 +122,13 @@ enum MoodInsights {
     static func suggestedBoosters(for household: Household, now: Date = Date(), calendar: Calendar = .current) -> [(booster: Booster, before: Double?)] {
         let recent = FamilyMood.trend(days: 7, in: household, now: now, calendar: calendar).map(\.average)
         let rough = !recent.isEmpty && recent.reduce(0, +) / Double(recent.count) < 3
-        let chores = (household.chores as? Set<Chore>) ?? []
+        let daily = FamilyMood.dailyAverages(in: household, calendar: calendar)
+        let titles = Set(boosters.map(\.title))
+        let done = ((household.chores as? Set<Chore>) ?? []).filter { $0.status == .approved && titles.contains($0.displayTitle) }
         let scored = boosters.map { booster -> (Booster, Double?) in
-            let days = chores.filter { $0.status == .approved && $0.displayTitle == booster.title }
+            let days = done.filter { $0.displayTitle == booster.title }
                 .compactMap { $0.completedAt.map { calendar.startOfDay(for: $0) } }
-            let moods = days.compactMap { FamilyMood.average(on: $0, in: household, calendar: calendar) }
+            let moods = days.compactMap { daily[$0] }
             return (booster, moods.isEmpty ? nil : moods.reduce(0, +) / Double(moods.count))
         }
         return scored.sorted { a, b in
