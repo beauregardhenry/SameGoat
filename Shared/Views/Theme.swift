@@ -9,6 +9,14 @@ enum Theme {
     static let coral = Color("Coral")
     /// Rewards, goals, badges and streaks.
     static let gold = Color("Gold")
+    /// A brighter gold for bars and backgrounds, where the text shade would look muddy.
+    static let goldFill = Color(red: 0.96, green: 0.72, blue: 0.18)
+    /// Cards on a grouped background: white in light mode, a raised gray in dark mode.
+    #if os(iOS)
+    static let card = Color(uiColor: .secondarySystemGroupedBackground)
+    #else
+    static let card = Color(nsColor: .controlBackgroundColor)
+    #endif
 
     static let palette: [Color] = [
         Color(red: 0.91, green: 0.35, blue: 0.32),

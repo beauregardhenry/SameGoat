@@ -10,6 +10,9 @@ struct ChoresView: View {
     @State private var showingLibrary = false
     @State private var showingProject = false
     @State private var showingSpoons = false
+    /// Counts chores a kid finishes from their list, to buzz the phone each time.
+    @State private var finishedHere = 0
+    @State private var error: String?
 
     init(household: Household, me: Member) {
         self.household = household
@@ -54,6 +57,15 @@ struct ChoresView: View {
         return ((household.chores as? Set<Chore>) ?? [])
             .filter { $0.assignee?.isParent == true && $0.status == .todo && ($0.dueDate ?? .distantPast) < tomorrow }
             .sorted { ($0.assignee?.displayName ?? "", $0.displayTitle) < ($1.assignee?.displayName ?? "", $1.displayTitle) }
+    }
+
+    /// Today's chores a kid still has to do (undated ones included), and those they've turned in today.
+    private var leftToday: Int {
+        let tomorrow = Calendar.current.date(byAdding: .day, value: 1, to: Calendar.current.startOfDay(for: Date())) ?? Date()
+        return todo.filter { ($0.dueDate ?? .distantPast) < tomorrow }.count
+    }
+    private var doneToday: Int {
+        chores.filter { $0.status != .todo && $0.assignee == me && Calendar.current.isDateInToday($0.completedAt ?? .distantPast) }.count
     }
 
     /// Regular chores waiting while a project comes first.
@@ -114,7 +126,7 @@ struct ChoresView: View {
                 Section { PauseBanner(household: household) }
             }
             if !me.isParent {
-                Section { BalanceCard(member: me) }
+                Section { KidHero(member: me, left: leftToday, doneToday: doneToday) }
                     .listRowBackground(Color.clear)
                     .listRowInsets(EdgeInsets())
             }
@@ -132,12 +144,12 @@ struct ChoresView: View {
             } else {
                 // A kid's list reads like their day: morning, afternoon, evening, then anytime.
                 ForEach(TimeOfDay.allCases) { time in
-                    choreSection(LocalizedStringKey(time.title), todo.filter { $0.timeOfDay == time }, icon: time.icon)
+                    kidSection(LocalizedStringKey(time.title), todo.filter { $0.timeOfDay == time }, icon: time.icon)
                 }
-                choreSection(todo.contains { $0.timeOfDay != nil } ? "Anytime" : "To do", todo.filter { $0.timeOfDay == nil })
-                choreSection("Up for grabs", grabs, icon: "hand.raised")
-                choreSection("Extra credit", extra, icon: "plus.circle")
-                choreSection("Waiting for approval", waiting)
+                kidSection(todo.contains { $0.timeOfDay != nil } ? "Anytime" : "To do", todo.filter { $0.timeOfDay == nil })
+                kidSection("Up for grabs", grabs, icon: "hand.raised")
+                kidSection("Extra credit", extra, icon: "plus.circle")
+                kidSection("Waiting for approval", waiting, icon: "hourglass")
                 if !grownUps.isEmpty {
                     Section {
                         ForEach(grownUps) { ChoreRow(chore: $0, showAssignee: true) }
@@ -154,6 +166,8 @@ struct ChoresView: View {
             choreSection("After the project", later, icon: "pause.circle")
             choreSection("Done", done)
         }
+        .sensoryFeedback(.success, trigger: finishedHere)
+        .errorAlert($error)
         .overlay {
             if chores.isEmpty {
                 GoatEmptyView(
@@ -202,6 +216,37 @@ struct ChoresView: View {
             } else if !me.isParent {
                 Text("You choose which ones to do this week.")
             }
+        }
+    }
+
+    /// A kid's chores as big cards they can finish with one tap.
+    @ViewBuilder
+    private func kidSection(_ title: LocalizedStringKey, _ list: [Chore], icon: String? = nil) -> some View {
+        if !list.isEmpty {
+            Section {
+                ForEach(list) { chore in
+                    ZStack {
+                        // Tapping the card opens the chore; the hidden link keeps the card free of a chevron row.
+                        NavigationLink(value: chore) { EmptyView() }.opacity(0)
+                        KidChoreCard(chore: chore, me: me) { finish(chore) }
+                    }
+                    .listRowBackground(Color.clear)
+                    .listRowSeparator(.hidden)
+                    .listRowInsets(EdgeInsets(top: 5, leading: 0, bottom: 5, trailing: 0))
+                    .choreEditing(chore, household: household, me: me)
+                }
+            } header: {
+                if let icon { Label(title, systemImage: icon) } else { Text(title) }
+            }
+        }
+    }
+
+    private func finish(_ chore: Chore) {
+        do {
+            try withAnimation(.spring) { try service.markComplete(chore, by: me, note: nil, photo: nil) }
+            finishedHere += 1
+        } catch {
+            self.error = error.localizedDescription
         }
     }
 
@@ -287,7 +332,7 @@ struct GoalProgress: View {
                 }
             }
             ProgressView(value: member.goalProgress)
-                .tint(reached ? .green : Theme.gold)
+                .tint(reached ? .green : Theme.goldFill)
                 .accessibilityHidden(true)
         }
     }

@@ -865,6 +865,16 @@
         }
       }
     },
+    "%lld of %lld done today": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$lld de %2$lld hechas hoy"
+          }
+        }
+      }
+    },
     "%lld of %lld on": {
       "localizations": {
         "es": {
@@ -1231,6 +1241,46 @@
           "stringUnit": {
             "state": "translated",
             "value": "%lld para hoy"
+          }
+        }
+      }
+    },
+    "%lld to go. You've got this!": {
+      "localizations": {
+        "en": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld to go. You've got this!"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld to go. You've got this!"
+                }
+              }
+            }
+          }
+        },
+        "es": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Te falta %lld. ¡Tú puedes!"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Te faltan %lld. ¡Tú puedes!"
+                }
+              }
+            }
           }
         }
       }
@@ -1684,6 +1734,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "¡Todo hecho hoy!"
+          }
+        }
+      }
+    },
+    "All done today! You're the GOAT.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "¡Todo listo por hoy! Eres la cabra campeona."
           }
         }
       }
@@ -4448,6 +4508,16 @@
         }
       }
     },
+    "Let's do this, %@!": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "¡Vamos, %@!"
+          }
+        }
+      }
+    },
     "Like one? Ask a grown-up!": {
       "localizations": {
         "es": {
@@ -4544,6 +4614,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Hacer la cama"
+          }
+        }
+      }
+    },
+    "Mark %@ done": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Marcar %@ como hecha"
           }
         }
       }
@@ -5584,6 +5664,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Elige una cara del 1 al 5."
+          }
+        }
+      }
+    },
+    "Pick a reward to save for in Rewards.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Elige un premio para ahorrar en Recompensas."
           }
         }
       }
@@ -8758,12 +8848,32 @@
         }
       }
     },
+    "day streak": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "días seguidos"
+          }
+        }
+      }
+    },
     "done": {
       "localizations": {
         "es": {
           "stringUnit": {
             "state": "translated",
             "value": "listo"
+          }
+        }
+      }
+    },
+    "done today": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "hechas hoy"
           }
         }
       }
@@ -8843,9 +8953,6 @@
           }
         }
       }
-    },
-    "🏡": {
-      "shouldTranslate": false
     },
     "🔥 %lld": {
       "shouldTranslate": false
