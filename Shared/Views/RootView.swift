@@ -124,8 +124,13 @@ struct WelcomeView: View {
             Form {
                 Section {
                     VStack(spacing: 8) {
-                        Text("🏡").font(.system(size: 56)).accessibilityHidden(true)
+                        Image("Mascot")
+                            .resizable()
+                            .frame(width: 112, height: 112)
+                            .clipShape(RoundedRectangle(cornerRadius: 25, style: .continuous))
+                            .accessibilityHidden(true)
                         Text("Welcome to Same Goat").font(.title2.bold())
+                        Text("We're all in the same goat.").font(.subheadline.italic()).foregroundStyle(.secondary)
                         Text("Assign chores, check them off, and cheer everyone on with points.")
                             .multilineTextAlignment(.center)
                             .foregroundStyle(.secondary)
