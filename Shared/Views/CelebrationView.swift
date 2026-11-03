@@ -118,7 +118,7 @@ struct BadgeShelf: View {
                         Text(badge.emoji)
                             .font(.title)
                             .frame(width: 54, height: 54)
-                            .background(badge.earned ? Theme.gold.opacity(0.2) : Color.secondary.opacity(0.1), in: Circle())
+                            .background(badge.earned ? Theme.goldFill.opacity(0.25) : Color.secondary.opacity(0.1), in: Circle())
                             .grayscale(badge.earned ? 0 : 1)
                             .opacity(badge.earned ? 1 : 0.45)
                         Text(badge.title).font(.caption2).lineLimit(1)
