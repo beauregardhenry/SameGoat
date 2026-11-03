@@ -578,6 +578,12 @@ final class HouseholdService: ObservableObject {
                 context.delete(chore)
             }
         }
+
+        // Two devices checking in the same person for the same day: keep the one that counts.
+        let keptMoods = Set(FamilyMood.checkIns(in: household).map(\.objectID))
+        for mood in (household.moods as? Set<MoodCheckIn>) ?? [] where !keptMoods.contains(mood.objectID) {
+            context.delete(mood)
+        }
         try save()
     }
 

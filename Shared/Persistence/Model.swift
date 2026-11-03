@@ -102,6 +102,13 @@ enum HappyMamaModel {
             attr("createdAt", .dateAttributeType),
             attr("finishedAt", .dateAttributeType),
         ])
+        let mood = entity(MoodCheckIn.self, [
+            attr("id", .UUIDAttributeType),
+            attr("day", .dateAttributeType),
+            attr("rating", .integer16AttributeType, 3),
+            attr("note", .stringAttributeType),
+            attr("createdAt", .dateAttributeType),
+        ])
         let entry = entity(PointEntry.self, [
             attr("id", .UUIDAttributeType),
             attr("amount", .integer32AttributeType, 0),
@@ -119,12 +126,14 @@ enum HappyMamaModel {
         link(household, redemption, oneSide: "household", manySide: "redemptions")
         link(household, entry, oneSide: "household", manySide: "entries")
         link(household, project, oneSide: "household", manySide: "projects")
+        link(household, mood, oneSide: "household", manySide: "moods")
+        link(member, mood, oneSide: "member", manySide: "moods")
         link(member, chore, oneSide: "assignee", manySide: "assignedChores")
         link(member, redemption, oneSide: "member", manySide: "redemptions")
         link(member, entry, oneSide: "member", manySide: "entries")
 
         let model = NSManagedObjectModel()
-        model.entities = [household, member, chore, reward, redemption, entry, project]
+        model.entities = [household, member, chore, reward, redemption, entry, project, mood]
         return model
     }
 

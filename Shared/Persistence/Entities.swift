@@ -63,6 +63,7 @@ final class Household: NSManagedObject, Identifiable {
     @NSManaged var redemptions: NSSet?
     @NSManaged var entries: NSSet?
     @NSManaged var projects: NSSet?
+    @NSManaged var moods: NSSet?
     /// Allowance mode: how many points make one unit of money (one dollar, one euro). 0 is off.
     @NSManaged var allowanceRate: Int16
     @NSManaged var currencyCode: String?
@@ -137,6 +138,7 @@ final class Member: NSManagedObject, Identifiable {
     @NSManaged var bigPicture: Bool
     @NSManaged var household: Household?
     @NSManaged var assignedChores: NSSet?
+    @NSManaged var moods: NSSet?
     @NSManaged var redemptions: NSSet?
     @NSManaged var entries: NSSet?
 
@@ -511,4 +513,18 @@ final class Project: NSManagedObject, Identifiable {
     var currentPhase: Int? {
         chores.filter { $0.status != .approved }.map { Int($0.phase) }.min()
     }
+}
+
+/// One person's answer to "How's the family feeling today?", from 1 (rough) to 5 (great).
+/// Parents can see everyone's; kids see the family average and their own.
+@objc(MoodCheckIn)
+final class MoodCheckIn: NSManagedObject, Identifiable {
+    @NSManaged var id: UUID?
+    /// The day it's for (start of day).
+    @NSManaged var day: Date?
+    @NSManaged var rating: Int16
+    @NSManaged var note: String?
+    @NSManaged var createdAt: Date?
+    @NSManaged var household: Household?
+    @NSManaged var member: Member?
 }

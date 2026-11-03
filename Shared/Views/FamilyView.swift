@@ -68,6 +68,9 @@ struct FamilyView: View {
             }
 
             Section(me.isParent ? "Family settings" : "You") {
+                NavigationLink { FamilyMoodView(household: household, me: me) } label: {
+                    Label("Family mood", systemImage: "face.smiling")
+                }
                 NavigationLink { RecapView(household: household, me: me) } label: {
                     Label(me.isParent ? "Weekly recap" : "Your week", systemImage: "chart.bar")
                 }
