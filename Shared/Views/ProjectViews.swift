@@ -10,6 +10,8 @@ struct ProjectEditorView: View {
     @State private var chosen: String?
     @State private var kids: Set<Member> = []
     @State private var newTask = ""
+    /// Preset tiles grow with the text size.
+    @ScaledMetric private var tileSize: CGFloat = 96
     @State private var error: String?
 
     private var defaultDeadline: Date {
@@ -106,7 +108,7 @@ struct ProjectEditorView: View {
                 Text(emoji).font(.largeTitle)
                 Text(title).font(.caption.weight(.medium)).multilineTextAlignment(.center).lineLimit(2)
             }
-            .frame(width: 96, height: 96)
+            .frame(width: tileSize, height: tileSize)
             .background(on ? Theme.accent.opacity(0.18) : Color.secondary.opacity(0.1), in: RoundedRectangle(cornerRadius: 16))
             .overlay(RoundedRectangle(cornerRadius: 16).stroke(on ? Theme.accent : .clear, lineWidth: 2))
         }

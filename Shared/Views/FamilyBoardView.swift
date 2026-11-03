@@ -43,13 +43,15 @@ struct FamilyBoardView: View {
 
     private var pool: [Chore] { today(chores.filter(\.isUnclaimed)) }
 
-    private static let minColumnWidth: CGFloat = 250
+    /// Columns get wider as text gets bigger, so words don't wrap a letter at a time.
+    @ScaledMetric private var minColumnWidth: CGFloat = 250
 
     var body: some View {
         GeometryReader { proxy in
             // Columns share the width when they fit and scroll sideways when they don't.
             let count = CGFloat(household.kids.count + (pool.isEmpty ? 0 : 1))
-            let width = max(Self.minColumnWidth, (proxy.size.width - 32 - 16 * max(0, count - 1)) / max(1, count))
+            let width = max(min(minColumnWidth, proxy.size.width - 32),
+                            (proxy.size.width - 32 - 16 * max(0, count - 1)) / max(1, count))
             ScrollView(.vertical) {
                 ScrollView(.horizontal) {
                     board(columnWidth: width)
@@ -141,9 +143,13 @@ struct FamilyBoardView: View {
 
 private struct KidHeader: View {
     @ObservedObject var kid: Member
+    @Environment(\.dynamicTypeSize) private var typeSize
 
     var body: some View {
-        HStack(spacing: 10) {
+        let layout = typeSize.isAccessibilitySize
+            ? AnyLayout(VStackLayout(alignment: .leading, spacing: 6))
+            : AnyLayout(HStackLayout(spacing: 10))
+        layout {
             Avatar(member: kid, size: 44)
             VStack(alignment: .leading, spacing: 1) {
                 Text(kid.displayName).font(.title3.bold())
@@ -162,11 +168,16 @@ private struct KidHeader: View {
 private struct BoardCard: View {
     @ObservedObject var chore: Chore
     let onTap: () -> Void
+    @Environment(\.dynamicTypeSize) private var typeSize
 
     var body: some View {
         let done = chore.status != .todo
+        // At the largest text sizes the picture, title and points stack instead of squeezing.
+        let layout = typeSize.isAccessibilitySize
+            ? AnyLayout(VStackLayout(alignment: .leading, spacing: 6))
+            : AnyLayout(HStackLayout(spacing: 10))
         Button(action: onTap) {
-            HStack(spacing: 10) {
+            layout {
                 Group {
                     if let emoji = chore.emoji {
                         Text(emoji).font(.system(size: 30))
@@ -188,6 +199,7 @@ private struct BoardCard: View {
                 }
             }
             .padding(10)
+            .frame(maxWidth: .infinity, alignment: .leading)
             .background(done ? Color.green.opacity(0.08) : Color.secondary.opacity(0.08), in: RoundedRectangle(cornerRadius: 14))
             .contentShape(Rectangle())
         }

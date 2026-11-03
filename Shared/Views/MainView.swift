@@ -125,6 +125,9 @@ struct MainView: View {
                     .tag(section)
             }
             .navigationSplitViewColumnWidth(min: 180, ideal: 210)
+            // The sidebar can't widen, so its text stops growing at a size that still fits;
+            // the main content keeps scaling all the way.
+            .dynamicTypeSize(...DynamicTypeSize.accessibility1)
             .safeAreaInset(edge: .top) {
                 HStack(spacing: 8) {
                     Avatar(member: me, size: 32)
@@ -139,6 +142,7 @@ struct MainView: View {
                 }
                 .padding(.horizontal, 12)
                 .padding(.vertical, 8)
+                .dynamicTypeSize(...DynamicTypeSize.accessibility1)
             }
         } detail: {
             NavigationStack { content(selection ?? .chores) }
