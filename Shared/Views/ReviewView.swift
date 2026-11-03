@@ -9,6 +9,10 @@ struct ReviewView: View {
     @FetchRequest private var chores: FetchedResults<Chore>
     @FetchRequest private var requests: FetchedResults<Redemption>
     @State private var error: String?
+    /// A short cheer after each approval, and a count that buzzes the phone each time.
+    @State private var toast: String?
+    @State private var approvals = 0
+    @State private var confirmingAll = false
 
     init(household: Household, me: Member) {
         self.household = household
@@ -28,8 +32,19 @@ struct ReviewView: View {
             if !chores.isEmpty {
                 Section("Chores to confirm") {
                     ForEach(chores) { chore in
-                        NavigationLink(value: chore) {
-                            ChoreRow(chore: chore, showAssignee: true)
+                        HStack {
+                            NavigationLink(value: chore) {
+                                ChoreRow(chore: chore, showAssignee: true)
+                            }
+                            Button { approve(chore) } label: {
+                                Image(systemName: "checkmark")
+                                    .font(.headline.weight(.bold))
+                                    .foregroundStyle(.white)
+                                    .frame(width: 40, height: 40)
+                                    .background(Color.green, in: Circle())
+                            }
+                            .buttonStyle(.borderless)
+                            .accessibilityLabel(String(localized: "Approve \(chore.displayTitle)"))
                         }
                         .swipeActions(edge: .leading) {
                             Button("Approve") { approve(chore) }.tint(.green)
@@ -43,7 +58,10 @@ struct ReviewView: View {
             if !requests.isEmpty {
                 Section("Reward requests") {
                     ForEach(requests) { request in
-                        RedemptionRow(request: request, me: me, onError: { error = $0 })
+                        RedemptionRow(request: request, me: me, onError: { error = $0 }, onApproved: {
+                            approvals += 1
+                            show(String(localized: "\(request.displayEmoji) \(request.displayTitle) for \(request.member?.displayName ?? "")!"))
+                        })
                     }
                 }
             }
@@ -56,13 +74,65 @@ struct ReviewView: View {
                     description: Text("Finished chores and reward requests show up here for you to confirm."))
             }
         }
+        .overlay(alignment: .bottom) {
+            if let toast {
+                HStack(spacing: 10) {
+                    Goat(mood: .cheer, size: 44)
+                    Text(toast).font(.headline)
+                }
+                .padding(.vertical, 8)
+                .padding(.horizontal, 16)
+                .background(.regularMaterial, in: Capsule())
+                .padding(.bottom, 12)
+                .transition(.move(edge: .bottom).combined(with: .opacity))
+                .accessibilityElement(children: .combine)
+                .task(id: toast) {
+                    try? await Task.sleep(for: .seconds(2.5))
+                    withAnimation { self.toast = nil }
+                }
+            }
+        }
+        .sensoryFeedback(.success, trigger: approvals)
+        .toolbar {
+            if chores.count > 1 {
+                ToolbarItem(placement: .primaryAction) {
+                    Button("Approve all") { confirmingAll = true }
+                }
+            }
+        }
+        .confirmationDialog(String(localized: "Approve every chore here?"), isPresented: $confirmingAll, titleVisibility: .visible) {
+            Button("Approve all") { approveAll() }
+        }
         .navigationTitle("Review")
         .navigationDestination(for: Chore.self) { ChoreDetailView(chore: $0, me: me) }
         .errorAlert($error)
     }
 
     private func approve(_ chore: Chore) {
-        do { try service.approve(chore, by: me) } catch { self.error = error.localizedDescription }
+        let name = chore.assignee?.displayName ?? ""
+        do {
+            try withAnimation { try service.approve(chore, by: me) }
+            approvals += 1
+            show(chore.awardedPoints > 0 ? String(localized: "+\(Int(chore.awardedPoints)) for \(name)!")
+                                         : String(localized: "Nice work, \(name)!"))
+        } catch {
+            self.error = error.localizedDescription
+        }
+    }
+
+    private func approveAll() {
+        let all = Array(chores)
+        do {
+            try withAnimation { for chore in all { try service.approve(chore, by: me) } }
+            approvals += 1
+            show(String(localized: "All done. Nice work, everyone!"))
+        } catch {
+            self.error = error.localizedDescription
+        }
+    }
+
+    private func show(_ message: String) {
+        withAnimation(.spring) { toast = message }
     }
 }
 
@@ -70,6 +140,7 @@ struct RedemptionRow: View {
     @ObservedObject var request: Redemption
     let me: Member
     let onError: (String) -> Void
+    var onApproved: () -> Void = {}
     @EnvironmentObject private var service: HouseholdService
 
     var body: some View {
@@ -81,13 +152,33 @@ struct RedemptionRow: View {
                     .font(.subheadline).foregroundStyle(.secondary)
             }
             Spacer()
-            Button("Deny") { decide(false) }.buttonStyle(.bordered).tint(.red)
-            Button("Approve") { decide(true) }.buttonStyle(.borderedProminent).tint(.green)
+            // Round buttons, like the chores above, so they never wrap however long the reward's name.
+            Button { decide(false) } label: {
+                Image(systemName: "xmark")
+                    .font(.headline.weight(.bold))
+                    .foregroundStyle(.red)
+                    .frame(width: 40, height: 40)
+                    .background(Color.red.opacity(0.15), in: Circle())
+            }
+            .accessibilityLabel("Deny")
+            Button { decide(true) } label: {
+                Image(systemName: "checkmark")
+                    .font(.headline.weight(.bold))
+                    .foregroundStyle(.white)
+                    .frame(width: 40, height: 40)
+                    .background(Color.green, in: Circle())
+            }
+            .accessibilityLabel("Approve")
         }
         .buttonStyle(.borderless)
     }
 
     private func decide(_ approve: Bool) {
-        do { try service.decide(request, approve: approve, by: me) } catch { onError(error.localizedDescription) }
+        do {
+            try withAnimation { try service.decide(request, approve: approve, by: me) }
+            if approve { onApproved() }
+        } catch {
+            onError(error.localizedDescription)
+        }
     }
 }
