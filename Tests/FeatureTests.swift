@@ -15,6 +15,15 @@ final class FeatureTests: ServiceTestCase {
         XCTAssertEqual(other.featuresRaw, "board,mood")
     }
 
+    func testKidsAddedDuringSetupJoinTheFamily() throws {
+        let other = try service.createHousehold(name: "Other", yourName: "Dad", emoji: "🌻", userID: "u-2",
+                                                kids: [("Ava", "🦊"), ("  ", "🐼"), ("Ben", "🐼")])
+        let kids = other.memberList.filter { !$0.isParent }
+        XCTAssertEqual(kids.map(\.displayName).sorted(), ["Ava", "Ben"], "blank names are skipped")
+        XCTAssertEqual(kids.first { $0.displayName == "Ava" }?.emoji, "🦊")
+        XCTAssertEqual(other.memberList.filter(\.isParent).map(\.displayName), ["Dad"])
+    }
+
     func testParentsSwitchFeaturesOnAndOff() throws {
         try service.setFeature(.choiceMenus, on: true, for: household, by: parent)
         XCTAssertTrue(household.has(.choiceMenus))
