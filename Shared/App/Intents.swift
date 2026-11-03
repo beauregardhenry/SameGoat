@@ -11,7 +11,7 @@ enum IntentContext {
 
     static func require() async throws -> (household: Household, me: Member, service: HouseholdService) {
         guard let context = await current() else {
-            throw ServiceError.invalid(String(localized: "Open Happy Mama first to set up your household."))
+            throw ServiceError.invalid(String(localized: "Open Same Goat first to set up your household."))
         }
         return context
     }
@@ -95,7 +95,7 @@ struct CheckPointsIntent: AppIntent {
     }
 }
 
-struct HappyMamaShortcuts: AppShortcutsProvider {
+struct SameGoatShortcuts: AppShortcutsProvider {
     static var appShortcuts: [AppShortcut] {
         AppShortcut(
             intent: FinishChoreIntent(),

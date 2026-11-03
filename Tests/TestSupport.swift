@@ -1,6 +1,6 @@
 import XCTest
 import CoreData
-@testable import HappyMama
+@testable import SameGoat
 
 /// A household with one parent (Mama) and one kid (Sam) on an in-memory store.
 @MainActor

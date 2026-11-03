@@ -13,8 +13,8 @@ PROJECT_ROOT="${0:A:h:h}"
 OUT="$PROJECT_ROOT/docs/app-store/screenshots"
 IPHONE="${IPHONE:-iPhone 16 Pro Max}"
 IPAD="${IPAD:-iPad Pro 13-inch (M4)}"
-BUNDLE_ID=com.happymama.HappyMama
-APP="$PROJECT_ROOT/build/screenshots/Build/Products/Local-iphonesimulator/HappyMama.app"
+BUNDLE_ID=com.samegoat.SameGoat
+APP="$PROJECT_ROOT/build/screenshots/Build/Products/Local-iphonesimulator/SameGoat.app"
 
 # name  member  section
 SHOTS=(
@@ -26,10 +26,10 @@ SHOTS=(
 )
 
 cd "$PROJECT_ROOT"
-[[ -d HappyMama.xcodeproj ]] || xcodegen generate
+[[ -d SameGoat.xcodeproj ]] || xcodegen generate
 
 print "Building the Local app for the simulator."
-xcodebuild -project HappyMama.xcodeproj -scheme HappyMama-iOS-Local -configuration Local \
+xcodebuild -project SameGoat.xcodeproj -scheme SameGoat-iOS-Local -configuration Local \
     -destination 'generic/platform=iOS Simulator' -derivedDataPath build/screenshots \
     CODE_SIGNING_ALLOWED=NO build -quiet
 

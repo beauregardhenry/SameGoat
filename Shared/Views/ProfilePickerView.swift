@@ -37,7 +37,7 @@ struct ProfilePickerView: View {
             ScrollView {
                 VStack(spacing: 28) {
                     VStack(spacing: 6) {
-                        Text("Who's using Happy Mama?").font(.largeTitle.bold())
+                        Text("Who's using Same Goat?").font(.largeTitle.bold())
                         Text(household.displayName).foregroundStyle(.secondary)
                     }
                     .multilineTextAlignment(.center)

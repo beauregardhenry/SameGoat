@@ -1,5 +1,5 @@
 import XCTest
-@testable import HappyMama
+@testable import SameGoat
 
 /// A family with a year of history: the things that recount it on every screen must stay quick.
 @MainActor

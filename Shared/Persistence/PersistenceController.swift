@@ -5,7 +5,7 @@ import os
 enum AppConfig {
     /// Set in Info.plist as `iCloud.<bundle id>`.
     static var containerID: String {
-        (Bundle.main.object(forInfoDictionaryKey: "CloudKitContainerID") as? String) ?? "iCloud.com.happymama.HappyMama"
+        (Bundle.main.object(forInfoDictionaryKey: "CloudKitContainerID") as? String) ?? "iCloud.com.samegoat.SameGoat"
     }
 }
 
@@ -23,18 +23,18 @@ final class PersistenceController {
     private(set) var sharedStore: NSPersistentStore?
     /// Set when the on-disk stores couldn't be opened; the UI shows it instead of crashing.
     private(set) var loadError: Error?
-    private let log = Logger(subsystem: "com.happymama", category: "persistence")
+    private let log = Logger(subsystem: "com.samegoat", category: "persistence")
 
     var viewContext: NSManagedObjectContext { container.viewContext }
 
     init(mode: Mode) {
         self.mode = mode
-        let model = HappyMamaModel.shared
+        let model = SameGoatModel.shared
         switch mode {
         case .cloud:
-            container = NSPersistentCloudKitContainer(name: "HappyMama", managedObjectModel: model)
+            container = NSPersistentCloudKitContainer(name: "SameGoat", managedObjectModel: model)
         case .local, .inMemory:
-            container = NSPersistentContainer(name: "HappyMama", managedObjectModel: model)
+            container = NSPersistentContainer(name: "SameGoat", managedObjectModel: model)
         }
 
         let dir = NSPersistentContainer.defaultDirectoryURL()
@@ -55,11 +55,11 @@ final class PersistenceController {
         switch mode {
         case .cloud:
             container.persistentStoreDescriptions = [
-                description(file: "HappyMama-private.sqlite", scope: .private),
-                description(file: "HappyMama-shared.sqlite", scope: .shared),
+                description(file: "SameGoat-private.sqlite", scope: .private),
+                description(file: "SameGoat-shared.sqlite", scope: .shared),
             ]
         case .local:
-            container.persistentStoreDescriptions = [description(file: "HappyMama-local.sqlite", scope: nil)]
+            container.persistentStoreDescriptions = [description(file: "SameGoat-local.sqlite", scope: nil)]
         case .inMemory:
             let d = NSPersistentStoreDescription()
             d.type = NSInMemoryStoreType

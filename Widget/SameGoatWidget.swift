@@ -2,7 +2,7 @@ import WidgetKit
 import SwiftUI
 
 @main
-struct HappyMamaWidgets: WidgetBundle {
+struct SameGoatWidgets: WidgetBundle {
     var body: some Widget {
         TodayWidget()
     }

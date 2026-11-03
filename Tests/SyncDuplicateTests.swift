@@ -1,6 +1,6 @@
 import XCTest
 import CoreData
-@testable import HappyMama
+@testable import SameGoat
 
 /// Two parents acting on the same chore or request from different devices before
 /// either syncs. Each device records its own entry; these tests add the copy the

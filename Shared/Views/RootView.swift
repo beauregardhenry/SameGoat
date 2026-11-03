@@ -125,7 +125,7 @@ struct WelcomeView: View {
                 Section {
                     VStack(spacing: 8) {
                         Text("🏡").font(.system(size: 56)).accessibilityHidden(true)
-                        Text("Welcome to Happy Mama").font(.title2.bold())
+                        Text("Welcome to Same Goat").font(.title2.bold())
                         Text("Assign chores, check them off, and cheer everyone on with points.")
                             .multilineTextAlignment(.center)
                             .foregroundStyle(.secondary)
@@ -166,7 +166,7 @@ struct WelcomeView: View {
             }
             .formStyle(.grouped)
             .readableWidth()
-            .navigationTitle("Happy Mama")
+            .navigationTitle("Same Goat")
         }
         .errorAlert($error)
     }

@@ -1,4 +1,6 @@
-# Happy Mama
+# Same Goat
+
+*We're all in the same goat.*
 
 Household chore tracker for iPhone and iPad (iOS 17+, iPhone 14 and later) and Mac (macOS 14+, Intel and Apple silicon).
 Parents assign chores with point values; kids mark them done; points are awarded only when a parent approves.
@@ -6,11 +8,11 @@ Parents assign chores with point values; kids mark them done; points are awarded
 ## Build
     brew install xcodegen
     xcodegen generate
-    open HappyMama.xcodeproj
+    open SameGoat.xcodeproj
 
-* **Try it without iCloud:** pick the `HappyMama-iOS-Local` or `HappyMama-macOS-Local` scheme. Data stays on the device; Family > "Switch user" lets you act as anyone.
-* **Real build (iCloud sync + invites):** pick `HappyMama-iOS` / `HappyMama-macOS`, then in Signing & Capabilities set your Team and change the bundle ID in `project.yml` to one you own (the CloudKit container is `iCloud.<bundle id>`). Before shipping, deploy the CloudKit schema to Production in the CloudKit Console.
-* Tests: `xcodebuild -scheme HappyMama-macOS-Local -configuration Local -destination 'platform=macOS' CODE_SIGNING_ALLOWED=NO test`
+* **Try it without iCloud:** pick the `SameGoat-iOS-Local` or `SameGoat-macOS-Local` scheme. Data stays on the device; Family > "Switch user" lets you act as anyone.
+* **Real build (iCloud sync + invites):** pick `SameGoat-iOS` / `SameGoat-macOS`, then in Signing & Capabilities set your Team and change the bundle ID in `project.yml` to one you own (the CloudKit container is `iCloud.<bundle id>`). Before shipping, deploy the CloudKit schema to Production in the CloudKit Console.
+* Tests: `xcodebuild -scheme SameGoat-macOS-Local -configuration Local -destination 'platform=macOS' CODE_SIGNING_ALLOWED=NO test`
 
 ## How it works
 * Data: Core Data + CloudKit. The household is shared via `CKShare`; each person signs in with their own Apple ID and picks their profile.

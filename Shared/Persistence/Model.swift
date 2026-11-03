@@ -2,7 +2,7 @@ import CoreData
 
 /// The Core Data model, built in code so there is no .xcdatamodeld to keep in sync.
 /// Everything is optional or defaulted, as CloudKit mirroring requires.
-enum HappyMamaModel {
+enum SameGoatModel {
     static let shared: NSManagedObjectModel = build()
 
     private static func build() -> NSManagedObjectModel {

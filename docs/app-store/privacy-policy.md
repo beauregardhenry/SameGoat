@@ -1,8 +1,8 @@
-# Happy Mama privacy policy
+# Same Goat privacy policy
 
 _Last updated: November 2, 2026_
 
-Happy Mama is a chore chart for families. This policy explains what happens to the information
+Same Goat is a chore chart for families. This policy explains what happens to the information
 you put into it. The short version: it stays with your family.
 
 ## What the app stores
@@ -15,7 +15,7 @@ you put into it. The short version: it stays with your family.
 ## Where it's stored
 Everything is stored in your own iCloud account using Apple's CloudKit. A household you create
 lives in your private iCloud database; people you invite see it through iCloud sharing. The
-developer of Happy Mama has no access to this data and runs no servers of its own.
+developer of Same Goat has no access to this data and runs no servers of its own.
 
 A few settings stay only on each device, such as whether it's a shared family device and which
 notifications it has already shown. The home-screen widget reads a summary of today's chores
@@ -25,7 +25,7 @@ that the app saves on the same device.
 If your family uses mood check-ins, each person's daily face is visible to the parents in the
 household; kids see the family average and their own. "What we've noticed" and the mood booster
 ideas are worked out on your own devices from your own check-ins and chores. They are never sent
-to Happy Mama's developer, to an AI service, or to anyone else.
+to Same Goat's developer, to an AI service, or to anyone else.
 
 ## What the app doesn't do
 - No accounts, ads, analytics, or tracking
@@ -34,13 +34,13 @@ to Happy Mama's developer, to an AI service, or to anyone else.
 - No AI or other outside service sees your family's data
 
 ## Children
-Happy Mama is meant to be set up and managed by parents. Kids' information is only visible to
+Same Goat is meant to be set up and managed by parents. Kids' information is only visible to
 the members of their own household. A parent can remove a kid's profile, and everything
 belonging to it, under Family at any time.
 
 ## Deleting your data
 Remove people under Family, or delete the app and its data in iCloud through Settings → your
-name → iCloud → Manage Account Storage → Happy Mama. Leaving a shared household through the
+name → iCloud → Manage Account Storage → Same Goat. Leaving a shared household through the
 iCloud sharing options removes your access to it.
 
 ## Contact
