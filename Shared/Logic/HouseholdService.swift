@@ -30,8 +30,9 @@ final class HouseholdService: ObservableObject {
     // MARK: Household and members
 
     @discardableResult
+    /// Starts a household with you as its first parent, and any kids added during setup.
     func createHousehold(name: String, yourName: String, emoji: String, userID: String,
-                         features: Set<Feature> = []) throws -> Household {
+                         features: Set<Feature> = [], kids: [(name: String, emoji: String)] = []) throws -> Household {
         let name = name.trimmed, yourName = yourName.trimmed
         guard !name.isEmpty else { throw ServiceError.invalid(String(localized: "Give your household a name.")) }
         guard !yourName.isEmpty else { throw ServiceError.invalid(String(localized: "Enter your name.")) }
@@ -53,6 +54,9 @@ final class HouseholdService: ObservableObject {
         me.createdAt = Date()
         me.household = household
         try save()
+        for kid in kids where !kid.name.trimmed.isEmpty {
+            try addMember(name: kid.name, role: .kid, emoji: kid.emoji, to: household, by: me)
+        }
         return household
     }
 
