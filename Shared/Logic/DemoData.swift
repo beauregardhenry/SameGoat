@@ -97,6 +97,27 @@ extension HouseholdService {
         }
         try addChoiceMenu(options, pick: 2, for: [ben], in: household, by: mama)
 
+        // Six weeks of family mood check-ins, a bit happier on the weeks Mama made it to the gym
+        // three times, so Family Mood has a chart and something to notice. Today is left for you.
+        let everyone = household.memberList
+        for weeksAgo in 1...6 {
+            let gymWeek = weeksAgo % 2 == 0
+            for dayOfWeek in 0..<7 {
+                let date = day(-(weeksAgo * 7) + dayOfWeek)
+                for (index, member) in everyone.enumerated() {
+                    let wobble = (dayOfWeek + index) % 3 - 1
+                    try checkInMood(min(5, max(1, 3 + (gymWeek ? 1 : 0) + wobble)), by: member, now: date.addingTimeInterval(20 * 3600))
+                }
+                if gymWeek && dayOfWeek % 2 == 0 && dayOfWeek < 6 {
+                    var gym = ChoreDraft(title: "Go to the gym", dueDate: date)
+                    gym.emoji = "🏋️"
+                    let workout = try createChores(gym, assignees: [mama], in: household, by: mama)[0]
+                    try markComplete(workout, by: mama, note: nil, photo: nil)
+                    workout.completedAt = date.addingTimeInterval(8 * 3600)
+                }
+            }
+        }
+
         let iceCream = try saveReward(nil, title: "Ice cream trip", emoji: "🍦", cost: 4, isActive: true, in: household, by: mama)
         try saveReward(nil, title: "Extra screen time", emoji: "🎮", cost: 12, isActive: true, in: household, by: mama)
 

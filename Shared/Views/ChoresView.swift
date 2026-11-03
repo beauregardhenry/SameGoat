@@ -114,6 +114,9 @@ struct ChoresView: View {
                     .listRowBackground(Color.clear)
                     .listRowInsets(EdgeInsets())
             }
+            if FamilyMood.checkIn(by: me, on: Date()) == nil {
+                Section { MoodCheckInCard(me: me) }
+            }
             ForEach(household.activeProjects()) { project in
                 ProjectSection(project: project, household: household, me: me)
             }

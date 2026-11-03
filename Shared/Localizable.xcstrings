@@ -343,6 +343,16 @@
         }
       }
     },
+    "%@'s mood has been low this week, and they have the most to do (%lld min). Maybe lighten the load or plan something fun together.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "El ánimo de %1$@ ha estado bajo esta semana, y tiene lo que más que hacer (%2$lld min). Quizá aliviar la carga o planear algo divertido juntos."
+          }
+        }
+      }
+    },
     "%@, %@": {
       "shouldTranslate": false
     },
@@ -861,6 +871,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "%lld de %lld pasos"
+          }
+        }
+      }
+    },
+    "%lld of 5": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld de 5"
           }
         }
       }
@@ -1588,6 +1608,16 @@
         }
       }
     },
+    "After a few weeks of check-ins, patterns show up here, like which habits go with happier weeks.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tras unas semanas de registros, aquí aparecen patrones, como qué hábitos van con semanas más felices."
+          }
+        }
+      }
+    },
     "After the project": {
       "localizations": {
         "es": {
@@ -1788,6 +1818,16 @@
         }
       }
     },
+    "Art afternoon": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tarde de manualidades"
+          }
+        }
+      }
+    },
     "Ask a parent to add some rewards.": {
       "localizations": {
         "es": {
@@ -1974,6 +2014,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Embolsar cosas para donar"
+          }
+        }
+      }
+    },
+    "Bake something together": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hornear algo juntos"
           }
         }
       }
@@ -2208,6 +2258,16 @@
         }
       }
     },
+    "Call the grandparents": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Llamar a los abuelos"
+          }
+        }
+      }
+    },
     "Cancel": {
       "localizations": {
         "es": {
@@ -2254,6 +2314,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Ver puntos"
+          }
+        }
+      }
+    },
+    "Check in for a few days to see the family's mood here.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Registra unos días para ver aquí el ánimo de la familia."
           }
         }
       }
@@ -2644,6 +2714,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "Fechas"
+          }
+        }
+      }
+    },
+    "Day": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Día"
+          }
+        }
+      }
+    },
+    "Days with “%@” averaged %@ for family mood, other days %@.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Los días con «%1$@» el ánimo familiar fue de %2$@ de media; otros días, %3$@."
           }
         }
       }
@@ -3348,6 +3438,26 @@
         }
       }
     },
+    "Family Mood": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ánimo familiar"
+          }
+        }
+      }
+    },
+    "Family game night": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Noche de juegos en familia"
+          }
+        }
+      }
+    },
     "Family job": {
       "localizations": {
         "es": {
@@ -3358,12 +3468,52 @@
         }
       }
     },
+    "Family mood": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ánimo familiar"
+          }
+        }
+      }
+    },
+    "Family mood over the last two weeks": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ánimo familiar de las últimas dos semanas"
+          }
+        }
+      }
+    },
+    "Family mood was %@ the last times you did this": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "El ánimo familiar fue de %@ las últimas veces que lo hicieron"
+          }
+        }
+      }
+    },
     "Family settings": {
       "localizations": {
         "es": {
           "stringUnit": {
             "state": "translated",
             "value": "Ajustes de la familia"
+          }
+        }
+      }
+    },
+    "Family walk": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Paseo en familia"
           }
         }
       }
@@ -3968,6 +4118,16 @@
         }
       }
     },
+    "How's the family feeling today?": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "¿Cómo se siente la familia hoy?"
+          }
+        }
+      }
+    },
     "I couldn't find that chore.": {
       "localizations": {
         "es": {
@@ -4088,6 +4248,26 @@
         }
       }
     },
+    "Kitchen dance party": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fiesta de baile en la cocina"
+          }
+        }
+      }
+    },
+    "Last two weeks": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Últimas dos semanas"
+          }
+        }
+      }
+    },
     "Laundry can only get clean if it reaches the hamper.": {
       "localizations": {
         "es": {
@@ -4168,6 +4348,16 @@
         }
       }
     },
+    "Like one? Ask a grown-up!": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "¿Te gusta alguna? ¡Pídeselo a un adulto!"
+          }
+        }
+      }
+    },
     "Little ones (3–5)": {
       "localizations": {
         "es": {
@@ -4234,6 +4424,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Poca energía está bien. Esto es lo fácil."
+          }
+        }
+      }
+    },
+    "Make breakfast together": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Preparar el desayuno juntos"
           }
         }
       }
@@ -4318,6 +4518,26 @@
         }
       }
     },
+    "Mood": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ánimo"
+          }
+        }
+      }
+    },
+    "Mood boosters": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Para levantar el ánimo"
+          }
+        }
+      }
+    },
     "More": {
       "localizations": {
         "es": {
@@ -4344,6 +4564,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Rutina de la mañana"
+          }
+        }
+      }
+    },
+    "Movie night with popcorn": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Noche de película con palomitas"
           }
         }
       }
@@ -4608,6 +4838,16 @@
         }
       }
     },
+    "No check-in yet": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aún sin registro"
+          }
+        }
+      }
+    },
     "No chores yet": {
       "localizations": {
         "es": {
@@ -4814,6 +5054,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "De vacaciones hasta el %@. Las tareas están en pausa."
+          }
+        }
+      }
+    },
+    "On weeks %@ did “%@” %lld+ times, the family's mood averaged %@, compared with %@ other weeks.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Las semanas en que %1$@ hizo «%2$@» %3$lld+ veces, el ánimo familiar fue de %4$@ de media, frente a %5$@ otras semanas."
           }
         }
       }
@@ -5208,6 +5458,16 @@
         }
       }
     },
+    "Pick a face from 1 to 5.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Elige una cara del 1 al 5."
+          }
+        }
+      }
+    },
     "Pick at least one chore.": {
       "localizations": {
         "es": {
@@ -5284,6 +5544,46 @@
           "stringUnit": {
             "state": "translated",
             "value": "Elige tu perfil"
+          }
+        }
+      }
+    },
+    "Picnic": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pícnic"
+          }
+        }
+      }
+    },
+    "Plan it": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Planearlo"
+          }
+        }
+      }
+    },
+    "Planned": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Planeado"
+          }
+        }
+      }
+    },
+    "Planning one puts it on today's list so the kids can see it's coming.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Al planear una, aparece en la lista de hoy y los niños ven que viene."
           }
         }
       }
@@ -5538,6 +5838,16 @@
         }
       }
     },
+    "Puzzle time": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rato de rompecabezas"
+          }
+        }
+      }
+    },
     "Rake the leaves": {
       "localizations": {
         "es": {
@@ -5554,6 +5864,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Lee toda la receta antes de empezar."
+          }
+        }
+      }
+    },
+    "Read together": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Leer juntos"
           }
         }
       }
@@ -6508,6 +6828,36 @@
         }
       }
     },
+    "Tap another face to change it.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Toca otra cara para cambiarla."
+          }
+        }
+      }
+    },
+    "Tap another face to change it. See how everyone's doing under Family → Family mood.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Toca otra cara para cambiarla. Mira cómo están todos en Familia → Ánimo familiar."
+          }
+        }
+      }
+    },
+    "Tap another face to change it. Your grown-ups can see how you feel.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Toca otra cara para cambiarla. Tus adultos pueden ver cómo te sientes."
+          }
+        }
+      }
+    },
     "Tap the star on a reward to save for it.": {
       "localizations": {
         "es": {
@@ -6534,6 +6884,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Pruebas"
+          }
+        }
+      }
+    },
+    "Thanks for checking in!": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "¡Gracias por contarnos!"
           }
         }
       }
@@ -6708,6 +7068,16 @@
         }
       }
     },
+    "These show what tends to happen together, not what causes what. Worked out on your devices; nothing leaves your family.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Muestran lo que suele pasar a la vez, no qué causa qué. Se calcula en tus dispositivos; nada sale de tu familia."
+          }
+        }
+      }
+    },
     "They": {
       "localizations": {
         "es": {
@@ -6858,6 +7228,16 @@
         }
       }
     },
+    "This week: %@": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Esta semana: %@"
+          }
+        }
+      }
+    },
     "Tick off every step first.": {
       "localizations": {
         "es": {
@@ -6914,6 +7294,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Momento del día"
+          }
+        }
+      }
+    },
+    "Time together lifts everyone's mood.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "El tiempo juntos levanta el ánimo de todos."
           }
         }
       }
@@ -7044,6 +7434,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Date un gusto"
+          }
+        }
+      }
+    },
+    "Trip to the park": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ir al parque"
           }
         }
       }
@@ -7498,6 +7898,16 @@
         }
       }
     },
+    "What we've noticed": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lo que hemos notado"
+          }
+        }
+      }
+    },
     "What's Left": {
       "localizations": {
         "es": {
@@ -7694,6 +8104,16 @@
                 }
               }
             }
+          }
+        }
+      }
+    },
+    "Worth a look": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vale la pena mirar"
           }
         }
       }
@@ -7998,6 +8418,16 @@
         }
       }
     },
+    "You this week": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tú esta semana"
+          }
+        }
+      }
+    },
     "You'll get your points for “%@” right away.": {
       "localizations": {
         "es": {
@@ -8064,6 +8494,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Tu semana"
+          }
+        }
+      }
+    },
+    "Your average": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tu media"
           }
         }
       }

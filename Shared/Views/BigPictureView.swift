@@ -24,6 +24,11 @@ struct BigPictureView: View {
         ScrollView {
             VStack(alignment: .leading, spacing: 20) {
                 BalanceCard(member: me)
+                if FamilyMood.checkIn(by: me, on: Date()) == nil {
+                    MoodCheckInCard(me: me)
+                        .padding()
+                        .background(.background, in: RoundedRectangle(cornerRadius: 20))
+                }
                 if toDo.isEmpty {
                     VStack(spacing: 8) {
                         Text("🎉").font(.system(size: 72))
