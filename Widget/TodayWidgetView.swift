@@ -71,7 +71,7 @@ private struct KidWidgetView: View {
                                 Text(time).font(.caption2).foregroundStyle(.secondary)
                             }
                             Spacer(minLength: 4)
-                            Text("\(chore.points)").font(.caption.weight(.semibold)).foregroundStyle(Color.happy)
+                            Text("\(chore.points)").font(.caption.weight(.semibold)).foregroundStyle(Color.points)
                         }
                     }
                     if today.count > 3 {
@@ -90,16 +90,16 @@ private struct KidWidgetView: View {
             HStack {
                 Text(kid.emoji).font(.title2)
                 Spacer()
-                if kid.streak > 0 { Text("🔥\(kid.streak)").font(.caption.weight(.bold)).foregroundStyle(.orange) }
+                if kid.streak > 0 { Text("🔥\(kid.streak)").font(.caption.weight(.bold)).foregroundStyle(Color.reward) }
             }
             Spacer(minLength: 0)
             Text("\(kid.points)")
                 .font(.system(size: 34, weight: .heavy, design: .rounded))
-                .foregroundStyle(Color.happy)
+                .foregroundStyle(Color.points)
                 .minimumScaleFactor(0.6)
             Text("points").font(.caption).foregroundStyle(.secondary)
             if let progress = kid.goalProgress {
-                ProgressView(value: progress).tint(progress >= 1 ? Color.green : Color.happy)
+                ProgressView(value: progress).tint(progress >= 1 ? Color.green : Color.reward)
             } else {
                 Text(today.isEmpty ? "All done today!" : "\(today.count) to do today")
                     .font(.caption.weight(.medium))
@@ -135,7 +135,7 @@ private struct ParentWidgetView: View {
                     Text(snapshot.householdName).font(.caption.weight(.semibold)).foregroundStyle(.secondary)
                     Spacer()
                     Text(reviewText).font(.caption.weight(.semibold))
-                        .foregroundStyle(snapshot.waitingForReview > 0 ? Color.happy : .secondary)
+                        .foregroundStyle(snapshot.waitingForReview > 0 ? Color.brand : .secondary)
                 }
                 ForEach(snapshot.kids.prefix(4), id: \.name) { kid in
                     HStack {
@@ -144,18 +144,18 @@ private struct ParentWidgetView: View {
                         if kid.streak > 0 { Text("🔥\(kid.streak)").font(.caption) }
                         Spacer()
                         Text(leftText(kid)).font(.caption).foregroundStyle(.secondary)
-                        Text("\(kid.points) pts").font(.caption.weight(.semibold)).foregroundStyle(Color.happy)
+                        Text("\(kid.points) pts").font(.caption.weight(.semibold)).foregroundStyle(Color.points)
                     }
                 }
                 Spacer(minLength: 0)
             }
         default:
             VStack(alignment: .leading, spacing: 4) {
-                Image(systemName: "checkmark.seal.fill").font(.title2).foregroundStyle(Color.happy)
+                Image(systemName: "checkmark.seal.fill").font(.title2).foregroundStyle(Color.brand)
                 Spacer(minLength: 0)
                 Text("\(snapshot.waitingForReview)")
                     .font(.system(size: 34, weight: .heavy, design: .rounded))
-                    .foregroundStyle(Color.happy)
+                    .foregroundStyle(Color.brand)
                 Text(snapshot.waitingForReview == 1 ? "chore to review" : "chores to review")
                     .font(.caption).foregroundStyle(.secondary)
                 Text(snapshot.householdName).font(.caption2).foregroundStyle(.secondary).lineLimit(1)

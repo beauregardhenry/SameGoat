@@ -3,7 +3,12 @@ import ImageIO
 import UniformTypeIdentifiers
 
 enum Theme {
-    static let accent = Color(red: 0.91, green: 0.35, blue: 0.32)
+    /// Same Goat teal: buttons, selection and anything the family taps. Lighter in dark mode.
+    static let accent = Color("AccentColor")
+    /// Points, wherever they're counted.
+    static let coral = Color("Coral")
+    /// Rewards, goals, badges and streaks.
+    static let gold = Color("Gold")
 
     static let palette: [Color] = [
         Color(red: 0.91, green: 0.35, blue: 0.32),
@@ -36,6 +41,52 @@ struct Avatar: View {
     }
 }
 
+/// The Same Goat goat in one of its moods, for celebrations and empty screens.
+enum GoatMood: String {
+    case cheer, party, sleep, curious
+    var imageName: String { "Goat" + rawValue.prefix(1).uppercased() + rawValue.dropFirst() }
+}
+
+struct Goat: View {
+    let mood: GoatMood
+    var size: CGFloat = 120
+
+    var body: some View {
+        Image(mood.imageName)
+            .resizable()
+            .scaledToFit()
+            .frame(width: size)
+            .accessibilityHidden(true)
+    }
+}
+
+/// An empty screen with the goat in place of a symbol.
+struct GoatEmptyView<Actions: View>: View {
+    let title: LocalizedStringKey
+    let mood: GoatMood
+    let description: Text
+    @ViewBuilder var actions: () -> Actions
+
+    var body: some View {
+        ContentUnavailableView {
+            VStack(spacing: 12) {
+                Goat(mood: mood)
+                Text(title).font(.title2.bold())
+            }
+        } description: {
+            description
+        } actions: {
+            actions()
+        }
+    }
+}
+
+extension GoatEmptyView where Actions == EmptyView {
+    init(title: LocalizedStringKey, mood: GoatMood, description: Text) {
+        self.init(title: title, mood: mood, description: description, actions: { EmptyView() })
+    }
+}
+
 struct PointsBadge: View {
     let points: Int
     var body: some View {
@@ -43,8 +94,8 @@ struct PointsBadge: View {
             .font(.caption.weight(.semibold))
             .padding(.horizontal, 8)
             .padding(.vertical, 3)
-            .background(Theme.accent.opacity(0.15), in: Capsule())
-            .foregroundStyle(Theme.accent)
+            .background(Theme.coral.opacity(0.15), in: Capsule())
+            .foregroundStyle(Theme.coral)
             .accessibilityLabel("\(points) points")
     }
 }

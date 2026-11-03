@@ -32,8 +32,8 @@ struct SpoonsView: View {
             }
             .overlay {
                 if plan.mustDo.isEmpty && plan.fits.isEmpty && plan.later.isEmpty {
-                    ContentUnavailableView("Nothing to do!", systemImage: "sparkles",
-                                           description: Text("Rest up. You've earned it."))
+                    GoatEmptyView(title: "Nothing to do!", mood: .sleep,
+                                  description: Text("Rest up. You've earned it."))
                 }
             }
             .navigationTitle("Energy")

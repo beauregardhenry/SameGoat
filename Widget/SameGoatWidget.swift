@@ -38,7 +38,8 @@ struct TodayWidget: Widget {
     var body: some WidgetConfiguration {
         StaticConfiguration(kind: WidgetSnapshot.kind, provider: TodayProvider()) { entry in
             TodayWidgetView(entry: entry)
-                .containerBackground(for: .widget) { Color.happy.opacity(0.08) }
+                .fontDesign(.rounded)
+                .containerBackground(for: .widget) { Color.brand.opacity(0.08) }
         }
         .configurationDisplayName("Today")
         .description("Today's chores and points, or what's waiting for a parent to review.")
@@ -66,6 +67,11 @@ extension WidgetSnapshot {
 }
 
 extension Color {
-    /// The app's coral (Theme.accent), which the widget can't import from the app.
-    static let happy = Color(red: 0.91, green: 0.35, blue: 0.32)
+    // The app's Theme colors, from the widget's own asset catalog since it can't import the app.
+    /// Same Goat teal.
+    static let brand = Color("AccentColor")
+    /// Points.
+    static let points = Color("Coral")
+    /// Goals and streaks.
+    static let reward = Color("Gold")
 }

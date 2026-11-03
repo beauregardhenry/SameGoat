@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="360" height="364" viewBox="0 -12 180 182">
+  <rect x="26" y="34" width="7" height="7" rx="1.5" fill="#E8604C" transform="rotate(20 29 37)"/>
+  <rect x="148" y="30" width="7" height="7" rx="1.5" fill="#4FB3A9" transform="rotate(-25 151 33)"/>
+  <circle cx="40" cy="70" r="4" fill="#F5B82E"/><circle cx="146" cy="70" r="4" fill="#E8604C"/>
+  <rect x="134" y="12" width="6" height="6" rx="1.5" fill="#F5B82E" transform="rotate(40 137 15)"/>
+  <g transform="translate(90,74) scale(0.82) rotate(0)">
+    <path d="M-20 -36 Q-30 -60 -46 -62" stroke="#8C5A1E" stroke-width="9" fill="none" stroke-linecap="round"/>
+    <path d="M20 -36 Q30 -60 46 -62" stroke="#8C5A1E" stroke-width="9" fill="none" stroke-linecap="round"/>
+    <ellipse cx="-40" cy="-10" rx="21" ry="10" transform="rotate(34 -40 -10)" fill="#FFFFFF" stroke="#5A3A1A" stroke-width="2.5" stroke-linejoin="round"/>
+    <ellipse cx="40" cy="-10" rx="21" ry="10" transform="rotate(8 40 -10)" fill="#FFFFFF" stroke="#5A3A1A" stroke-width="2.5" stroke-linejoin="round"/>
+    <path d="M-30 -20 Q-32 -42 0 -42 Q32 -42 30 -20 L24 22 Q18 40 0 40 Q-18 40 -24 22 Z" fill="#FFFFFF" stroke="#5A3A1A" stroke-width="2.5" stroke-linejoin="round"/>
+    <circle cx="-21" cy="6" r="5.5" fill="#F8C1B6"/><circle cx="21" cy="6" r="5.5" fill="#F8C1B6"/>
+    <ellipse cx="0" cy="16" rx="17" ry="10" fill="#F6D9CF"/>
+    <circle cx="-6" cy="13" r="2.5" fill="#8A3B2E"/><circle cx="6" cy="13" r="2.5" fill="#8A3B2E"/>
+    <path d="M-8 24 Q0 36 8 24 Z" fill="#8A3B2E"/>
+    <circle cx="-13" cy="-5" r="6" fill="#2B2B2B"/><circle cx="13" cy="-5" r="6" fill="#2B2B2B"/>
+    <circle cx="-11" cy="-7" r="2" fill="#FFFFFF"/><circle cx="15" cy="-7" r="2" fill="#FFFFFF"/>
+    <g transform="rotate(-14 0 -40)">
+      <path d="M-16 -40 L0 -84 L16 -40 Z" fill="#F5B82E" stroke="#5A3A1A" stroke-width="2.5" stroke-linejoin="round"/>
+      <path d="M-11 -54 L11 -54 M-6 -68 L6 -68" stroke="#E8604C" stroke-width="4" stroke-linecap="round"/>
+      <circle cx="0" cy="-86" r="6" fill="#4FB3A9" stroke="#5A3A1A" stroke-width="2.5" stroke-linejoin="round"/>
+    </g>
+  </g>
+  <path d="M26 101 Q90 115 154 101 L136 138 Q90 146 44 138 Z" fill="#E8604C" stroke="#C9483A" stroke-width="2.5" stroke-linejoin="round"/>
+  <path d="M24 100 Q90 115 156 100" stroke="#C9483A" stroke-width="6" fill="none" stroke-linecap="round"/>
+  <path d="M38 118 Q90 130 142 118" stroke="#FFFFFF" stroke-width="5" fill="none" stroke-linecap="round"/>
+  <path d="M30 158 q10 -7 20 0 t20 0 t20 0 t20 0 t20 0 t20 0" stroke="#4FB3A9" stroke-width="4.5" fill="none" stroke-linecap="round"/>
+</svg>

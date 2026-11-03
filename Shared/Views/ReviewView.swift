@@ -50,9 +50,9 @@ struct ReviewView: View {
         }
         .overlay {
             if chores.isEmpty && requests.isEmpty {
-                ContentUnavailableView(
-                    "All caught up",
-                    systemImage: "checkmark.seal",
+                GoatEmptyView(
+                    title: "All caught up",
+                    mood: .cheer,
                     description: Text("Finished chores and reward requests show up here for you to confirm."))
             }
         }
