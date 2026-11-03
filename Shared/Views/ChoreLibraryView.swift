@@ -48,7 +48,9 @@ struct ChoreLibraryView: View {
                     if kids.count > 1 && !letThemChoose {
                         Toggle("Take turns on repeating chores", isOn: $takeTurns)
                     }
-                    Toggle("Let them choose", isOn: $letThemChoose)
+                    if household.has(.choiceMenus) {
+                        Toggle("Let them choose", isOn: $letThemChoose)
+                    }
                     if letThemChoose {
                         Stepper(value: $pickCount, in: 1...max(1, picked.count - 1)) {
                             Text("They pick \(pickCount) of \(picked.count)")

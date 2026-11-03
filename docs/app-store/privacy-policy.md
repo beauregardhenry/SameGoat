@@ -1,6 +1,6 @@
 # Happy Mama privacy policy
 
-_Last updated: October 28, 2026_
+_Last updated: November 2, 2026_
 
 Happy Mama is a chore chart for families. This policy explains what happens to the information
 you put into it. The short version: it stays with your family.
@@ -8,8 +8,9 @@ you put into it. The short version: it stays with your family.
 ## What the app stores
 - Names and emoji avatars for the people in your household
 - Chores, notes, due dates, and photos kids attach when they finish a chore
-- Points, rewards and reward requests
-- Your household's parent code
+- Points, rewards, reward requests, and pocket-money payouts if you turn on allowance mode
+- Projects, family mood check-ins (a 1–5 face each day) and any note added to one
+- Your household's settings, such as the parent code and which features you use
 
 ## Where it's stored
 Everything is stored in your own iCloud account using Apple's CloudKit. A household you create
@@ -20,10 +21,17 @@ A few settings stay only on each device, such as whether it's a shared family de
 notifications it has already shown. The home-screen widget reads a summary of today's chores
 that the app saves on the same device.
 
+## Family mood
+If your family uses mood check-ins, each person's daily face is visible to the parents in the
+household; kids see the family average and their own. "What we've noticed" and the mood booster
+ideas are worked out on your own devices from your own check-ins and chores. They are never sent
+to Happy Mama's developer, to an AI service, or to anyone else.
+
 ## What the app doesn't do
 - No accounts, ads, analytics, or tracking
 - No selling or sharing of data with anyone
 - No data collection by the developer
+- No AI or other outside service sees your family's data
 
 ## Children
 Happy Mama is meant to be set up and managed by parents. Kids' information is only visible to

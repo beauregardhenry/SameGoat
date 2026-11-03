@@ -222,3 +222,48 @@ struct EffortSettingsView: View {
         .errorAlert($error)
     }
 }
+
+/// Parents switch the optional parts of the app on and off, so it only shows what the family uses.
+struct FeaturesView: View {
+    @ObservedObject var household: Household
+    let me: Member
+    @EnvironmentObject private var service: HouseholdService
+    @State private var error: String?
+
+    var body: some View {
+        Form {
+            Section {
+                ForEach(Feature.allCases) { feature in
+                    Toggle(isOn: Binding(
+                        get: { household.has(feature) },
+                        set: { on in
+                            do { try service.setFeature(feature, on: on, for: household, by: me) }
+                            catch { self.error = error.localizedDescription }
+                        })) {
+                        FeatureLabel(feature: feature)
+                    }
+                }
+            } footer: {
+                Text("Turn on only what your family wants; everything else stays out of the way. Allowance mode has its own switch under Family.")
+            }
+        }
+        .formStyle(.grouped)
+        .navigationTitle("Features")
+        .errorAlert($error)
+    }
+}
+
+struct FeatureLabel: View {
+    let feature: Feature
+
+    var body: some View {
+        Label {
+            VStack(alignment: .leading, spacing: 2) {
+                Text(feature.title)
+                Text(feature.detail).font(.caption).foregroundStyle(.secondary)
+            }
+        } icon: {
+            Image(systemName: feature.icon)
+        }
+    }
+}

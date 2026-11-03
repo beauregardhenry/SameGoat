@@ -95,6 +95,7 @@ final class SpoonsTests: ServiceTestCase {
     }
 
     func testResetPassPushesOneChoreToTomorrowOnceADay() throws {
+        try service.setFeature(.energy, on: true, for: household, by: parent)
         let first = try chore("Bed", due: day(0))
         let second = try chore("Room", due: day(0))
         try service.useResetPass(on: first, by: kid)
@@ -108,6 +109,9 @@ final class SpoonsTests: ServiceTestCase {
     }
 
     func testResetPassRules() throws {
+        let off = try chore("Off", due: day(0))
+        assertThrowsServiceError(try service.useResetPass(on: off, by: kid))   // energy isn't switched on
+        try service.setFeature(.energy, on: true, for: household, by: parent)
         let later = try chore("Later", due: day(3))
         assertThrowsServiceError(try service.useResetPass(on: later, by: kid))
         let undated = try chore("Whenever", due: nil)

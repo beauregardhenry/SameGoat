@@ -81,9 +81,11 @@ struct ChoreEditorView: View {
                 Text("Not set").tag(Difficulty?.none)
                 ForEach(Difficulty.allCases) { Text($0.title).tag(Difficulty?.some($0)) }
             }
-            Picker("Energy", selection: $draft.spoons) {
-                Text("Go by difficulty").tag(Int?.none)
-                ForEach(Spoons.range, id: \.self) { Text(String(repeating: "🥄", count: $0)).tag(Int?.some($0)) }
+            if household.has(.energy) {
+                Picker("Energy", selection: $draft.spoons) {
+                    Text("Go by difficulty").tag(Int?.none)
+                    ForEach(Spoons.range, id: \.self) { Text(String(repeating: "🥄", count: $0)).tag(Int?.some($0)) }
+                }
             }
             Picker("Problem-solving", selection: $draft.skill) {
                 Text("Not set").tag(Int?.none)

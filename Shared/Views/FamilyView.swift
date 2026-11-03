@@ -68,13 +68,22 @@ struct FamilyView: View {
             }
 
             Section(me.isParent ? "Family settings" : "You") {
-                NavigationLink { FamilyMoodView(household: household, me: me) } label: {
-                    Label("Family mood", systemImage: "face.smiling")
+                if household.has(.mood) {
+                    NavigationLink { FamilyMoodView(household: household, me: me) } label: {
+                        Label("Family mood", systemImage: "face.smiling")
+                    }
                 }
                 NavigationLink { RecapView(household: household, me: me) } label: {
                     Label(me.isParent ? "Weekly recap" : "Your week", systemImage: "chart.bar")
                 }
                 if me.isParent {
+                    NavigationLink { FeaturesView(household: household, me: me) } label: {
+                        LabeledContent {
+                            Text("\(household.features.count) of \(Feature.allCases.count) on")
+                        } label: {
+                            Label("Features", systemImage: "switch.2")
+                        }
+                    }
                     NavigationLink { EffortSettingsView(household: household, me: me) } label: {
                         LabeledContent {
                             Text("\(household.effortRate) per 5 min")

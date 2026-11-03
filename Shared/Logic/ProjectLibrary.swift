@@ -117,6 +117,7 @@ extension HouseholdService {
         project.phaseNames = draft.phases
         project.createdAt = Date()
         project.household = household
+        household.features.insert(.projects)
 
         var load = Dictionary(uniqueKeysWithValues: kids.map { ($0.objectID, 0) })
         // Biggest jobs first, so the shares even out.

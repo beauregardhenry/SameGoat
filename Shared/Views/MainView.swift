@@ -53,7 +53,8 @@ struct MainView: View {
     }
 
     private var sections: [AppSection] {
-        me.isParent ? [.chores, .review, .board, .rewards, .family] : [.chores, .rewards, .family]
+        let board: [AppSection] = household.has(.board) ? [.board] : []
+        return me.isParent ? [.chores, .review] + board + [.rewards, .family] : [.chores, .rewards, .family]
     }
     private var reviewCount: Int { pendingChores.count + pendingRedemptions.count }
 

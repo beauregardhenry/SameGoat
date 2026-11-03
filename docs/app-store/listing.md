@@ -19,34 +19,43 @@ App Store Connect when ready.)
 4+. No user-generated content leaves the family, no web access, no ads, no purchases.
 
 ## Promotional text (170)
-Kids check off chores, parents approve with a tap, and points add up to rewards the whole family agrees on. Now with streaks, savings goals and widgets.
+Chores, points and rewards that make kids want to help, plus projects for "guests are coming", a family board for the kitchen tablet, and a daily family mood check-in.
 
 ## Description (4000)
-Happy Mama turns everyday chores into something kids actually want to finish.
+Happy Mama turns everyday chores into something kids actually want to finish, and makes helping out feel like a family thing, not a battle.
 
-Parents assign chores and set what each is worth. Kids mark them done, add a note or a photo, and a parent confirms. Points only count once a grown-up says so, so there's no arguing about whether the room is really clean.
+Parents assign chores and set what each is worth, or let the app suggest fair points from how long it takes and how hard it is. Kids mark them done, add a note or a photo, and a parent confirms. Points only count once a grown-up says so.
 
 EARN AND SAVE
-• Points add up to rewards you choose together: movie night, ice cream, extra screen time.
+• Points add up to rewards you choose together, or real pocket money in allowance mode.
 • Kids pick a reward to save for and watch the progress bar fill.
-• Streaks reward doing something every day.
+• Streaks, badges and celebrations make finishing feel great.
 
 LESS NAGGING FOR PARENTS
 • Approve or send back a chore straight from the notification.
-• Repeating chores come back on their own, daily, weekly or monthly.
-• Kids can take turns, so the trash moves to the next kid each week.
+• Repeating chores, routines with checklists, chores kids take turns on, and "up for grabs" chores anyone can claim.
+• Every chore can say how it helps the family and give a tip, so you don't have to repeat yourself.
 • Start in seconds with ready-made chore ideas for ages 3 to 10+.
 
+BIG JOBS, TOGETHER
+• Projects like "Guests are coming", the garage or the yard: chores in the right order, shared out fairly, with regular chores on hold until it's done.
+• Grown-ups' chores show up too, so kids see that everyone pitches in.
+
+FITS REAL LIFE
+• "How much energy?" suggests what fits right now, and kids get one reset pass a day.
+• Let kids choose from a menu of chores; big-picture tiles for little ones who can't read yet.
+• Vacation pause, due times, extra credit and a family board for the kitchen tablet.
+• A daily family mood check-in, with gentle ideas for lifting everyone's spirits.
+
 MADE FOR THE WHOLE FAMILY
-• Everyone uses their own iPhone or iPad, synced through iCloud.
-• Or set up one shared device, like a kitchen iPad: each person taps their face, and parent profiles are protected by a code.
-• Home Screen and Lock Screen widgets show today's chores and points at a glance.
+• Everyone uses their own iPhone, iPad or Mac, synced through iCloud, or share one device with a profile picker.
+• Home Screen, Lock Screen and Mac widgets, Siri and Shortcuts, in English and Spanish.
 
 PRIVATE BY DESIGN
-Your family's chores, points and photos live in your own iCloud account and are shared only with the people you invite. There are no ads, no tracking and no accounts to create.
+Your family's chores, points, photos and mood check-ins live in your own iCloud account and are shared only with the people you invite. There are no ads, no tracking, no AI services and no accounts to create.
 
 ## Keywords (100, comma-separated, no spaces after commas)
-chores,chore chart,allowance,kids,family,rewards,points,tasks,routine,responsibility,parenting
+chores,chore chart,allowance,kids,family,rewards,routine,mood,projects,responsibility,parenting
 
 ## Support URL
 https://github.com/beauregardhenry/happymama/issues

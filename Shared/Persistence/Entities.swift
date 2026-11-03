@@ -19,6 +19,42 @@ enum ChoreStatus: String {
     }
 }
 
+/// The parts of the app a family can switch on when they want them, so a new family starts simple.
+enum Feature: String, CaseIterable, Identifiable {
+    case projects, board, energy, choiceMenus, mood
+    var id: String { rawValue }
+
+    var title: String {
+        switch self {
+        case .projects: String(localized: "Projects")
+        case .board: String(localized: "Family board")
+        case .energy: String(localized: "Energy and reset pass")
+        case .choiceMenus: String(localized: "Choice menus")
+        case .mood: String(localized: "Family mood")
+        }
+    }
+
+    var detail: String {
+        switch self {
+        case .projects: String(localized: "Big one-off jobs like \"Guests are coming\", with regular chores on hold until they're done.")
+        case .board: String(localized: "Everyone's chores side by side, for a tablet in the kitchen.")
+        case .energy: String(localized: "Match chores to how much energy you have, and give kids one reset pass a day.")
+        case .choiceMenus: String(localized: "Let kids choose which chores to do from a menu.")
+        case .mood: String(localized: "A daily family mood check-in, with ideas for lifting everyone's spirits.")
+        }
+    }
+
+    var icon: String {
+        switch self {
+        case .projects: "hammer"
+        case .board: "square.grid.3x2"
+        case .energy: "battery.50percent"
+        case .choiceMenus: "hand.point.up.left"
+        case .mood: "face.smiling"
+        }
+    }
+}
+
 /// When in the day a chore belongs, so a kid's list reads like their day.
 enum TimeOfDay: String, CaseIterable, Identifiable {
     case morning, afternoon, evening
@@ -72,13 +108,22 @@ final class Household: NSManagedObject, Identifiable {
     @NSManaged var pausedUntil: Date?
     /// Points suggested for every 5 minutes of a chore, before difficulty.
     @NSManaged var effortRate: Int16
+    /// The optional features this family uses, comma-separated; nil means the basics only.
+    @NSManaged var featuresRaw: String?
+
+    var features: Set<Feature> {
+        get { Set((featuresRaw ?? "").split(separator: ",").compactMap { Feature(rawValue: String($0)) }) }
+        set { featuresRaw = newValue.isEmpty ? "" : newValue.map(\.rawValue).sorted().joined(separator: ",") }
+    }
+    func has(_ feature: Feature) -> Bool { features.contains(feature) }
 
     var displayName: String { name ?? String(localized: "Our Household") }
     var allowanceOn: Bool { allowanceRate > 0 }
 
     /// Projects still underway, soonest due first.
     func activeProjects(now: Date = Date(), calendar: Calendar = .current) -> [Project] {
-        ((projects as? Set<Project>) ?? [])
+        guard has(.projects) else { return [] }
+        return ((projects as? Set<Project>) ?? [])
             .filter { $0.isActive(now: now, calendar: calendar) }
             .sorted { ($0.dueDate ?? .distantFuture) < ($1.dueDate ?? .distantFuture) }
     }

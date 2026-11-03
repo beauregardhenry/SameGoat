@@ -75,13 +75,17 @@ struct ChoresView: View {
         .navigationTitle(me.isParent ? "Chores" : "My Chores")
         .navigationDestination(for: Chore.self) { ChoreDetailView(chore: $0, me: me) }
         .toolbar {
-            ToolbarItem(placement: .secondaryAction) {
-                Button { showingSpoons = true } label: { Label("How much energy?", systemImage: "battery.50percent") }
+            if household.has(.energy) {
+                ToolbarItem(placement: .secondaryAction) {
+                    Button { showingSpoons = true } label: { Label("How much energy?", systemImage: "battery.50percent") }
+                }
             }
-            if me.isParent {
+            if me.isParent && household.has(.projects) {
                 ToolbarItem(placement: .primaryAction) {
                     Button { showingProject = true } label: { Label("New Project", systemImage: "hammer") }
                 }
+            }
+            if me.isParent {
                 ToolbarItem(placement: .primaryAction) {
                     Button { showingLibrary = true } label: { Label("Chore Ideas", systemImage: "lightbulb") }
                 }
@@ -114,7 +118,7 @@ struct ChoresView: View {
                     .listRowBackground(Color.clear)
                     .listRowInsets(EdgeInsets())
             }
-            if FamilyMood.checkIn(by: me, on: Date()) == nil {
+            if household.has(.mood) && FamilyMood.checkIn(by: me, on: Date()) == nil {
                 Section { MoodCheckInCard(me: me) }
             }
             ForEach(household.activeProjects()) { project in
