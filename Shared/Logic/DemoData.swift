@@ -6,7 +6,8 @@ extension HouseholdService {
     /// chores in every state, so each screen can be seen without setting up by hand.
     @discardableResult
     func loadDemoHousehold(userID: String) throws -> Household {
-        let household = try createHousehold(name: "The Hendersons", yourName: "Mama", emoji: Theme.parentEmojis[0], userID: userID)
+        let household = try createHousehold(name: "The Hendersons", yourName: "Mama", emoji: Theme.parentEmojis[0], userID: userID,
+                                            features: Set(Feature.allCases))
         guard let mama = household.memberList.first else { throw ServiceError.invalid(String(localized: "Demo household has no parent.")) }
 
         let papa = try addMember(name: "Papa", role: .parent, emoji: Theme.parentEmojis[1], to: household, by: mama)

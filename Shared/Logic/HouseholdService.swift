@@ -30,7 +30,8 @@ final class HouseholdService: ObservableObject {
     // MARK: Household and members
 
     @discardableResult
-    func createHousehold(name: String, yourName: String, emoji: String, userID: String) throws -> Household {
+    func createHousehold(name: String, yourName: String, emoji: String, userID: String,
+                         features: Set<Feature> = []) throws -> Household {
         let name = name.trimmed, yourName = yourName.trimmed
         guard !name.isEmpty else { throw ServiceError.invalid(String(localized: "Give your household a name.")) }
         guard !yourName.isEmpty else { throw ServiceError.invalid(String(localized: "Enter your name.")) }
@@ -40,6 +41,7 @@ final class HouseholdService: ObservableObject {
         household.name = name
         household.createdAt = Date()
         household.parentCode = String(format: "%06d", Int.random(in: 0...999_999))
+        household.features = features
 
         let me = try insert(Member.self, into: household)
         me.id = UUID()
@@ -128,6 +130,15 @@ final class HouseholdService: ObservableObject {
             throw ServiceError.invalid(String(localized: "Use 4 to 8 digits."))
         }
         household.parentCode = code
+        try save()
+    }
+
+    /// Turns one of the optional features on or off for the whole family.
+    func setFeature(_ feature: Feature, on: Bool, for household: Household, by me: Member) throws {
+        try requireParent(me)
+        var features = household.features
+        if on { features.insert(feature) } else { features.remove(feature) }
+        household.features = features
         try save()
     }
 
@@ -369,6 +380,9 @@ final class HouseholdService: ObservableObject {
         guard let tomorrow = calendar.date(byAdding: .day, value: 1, to: today),
               let due = chore.dueDate, due < tomorrow else {
             throw ServiceError.invalid(String(localized: "The reset pass is for chores due today."))
+        }
+        guard me.household?.has(.energy) == true else {
+            throw ServiceError.invalid(String(localized: "Turn on Energy and reset pass under Family → Features first."))
         }
         if let used = me.resetUsedOn, calendar.isDate(used, inSameDayAs: now) {
             throw ServiceError.invalid(String(localized: "You've used today's reset pass. You've got this!"))

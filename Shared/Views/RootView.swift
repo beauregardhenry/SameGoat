@@ -116,6 +116,7 @@ struct WelcomeView: View {
     @State private var householdName = ""
     @State private var yourName = ""
     @State private var emoji = Theme.parentEmojis[0]
+    @State private var features: Set<Feature> = []
     @State private var error: String?
 
     var body: some View {
@@ -140,6 +141,19 @@ struct WelcomeView: View {
                         .buttonStyle(.borderedProminent)
                         .disabled(householdName.trimmed.isEmpty || yourName.trimmed.isEmpty)
                 }
+                Section {
+                    ForEach(Feature.allCases) { feature in
+                        Toggle(isOn: Binding(
+                            get: { features.contains(feature) },
+                            set: { on in if on { features.insert(feature) } else { features.remove(feature) } })) {
+                            FeatureLabel(feature: feature)
+                        }
+                    }
+                } header: {
+                    Text("Extras (optional)")
+                } footer: {
+                    Text("Start simple: chores, points and rewards are always on. You can change these anytime under Family → Features.")
+                }
                 #if LOCAL_ONLY
                 Section("Testing") {
                     Button("Load demo family") { loadDemo() }
@@ -159,7 +173,7 @@ struct WelcomeView: View {
 
     private func create() {
         do {
-            try service.createHousehold(name: householdName, yourName: yourName, emoji: emoji, userID: userID)
+            try service.createHousehold(name: householdName, yourName: yourName, emoji: emoji, userID: userID, features: features)
         } catch {
             self.error = error.localizedDescription
         }

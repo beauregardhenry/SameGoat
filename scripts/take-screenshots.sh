@@ -20,9 +20,9 @@ APP="$PROJECT_ROOT/build/screenshots/Build/Products/Local-iphonesimulator/HappyM
 SHOTS=(
     "1-kid-chores Ava chores"
     "2-kid-rewards Ava rewards"
-    "3-parent-review Mama review"
+    "3-family-board Mama board"
     "4-parent-chores Mama chores"
-    "5-family Mama family"
+    "5-parent-review Mama review"
 )
 
 cd "$PROJECT_ROOT"

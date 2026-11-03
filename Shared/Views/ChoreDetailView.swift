@@ -130,12 +130,14 @@ struct ChoreDetailView: View {
                     StarRow(title: String(localized: "Time"), icon: "stopwatch", stars: stars.time)
                     StarRow(title: String(localized: "Difficulty"), icon: "dumbbell", stars: stars.difficulty)
                     StarRow(title: String(localized: "Problem-solving"), icon: "puzzlepiece", stars: stars.thinking)
-                    LabeledContent {
-                        Text(String(repeating: "🥄", count: chore.spoons))
-                    } label: {
-                        Label("Energy", systemImage: "battery.50percent")
+                    if chore.household?.has(.energy) == true {
+                        LabeledContent {
+                            Text(String(repeating: "🥄", count: chore.spoons))
+                        } label: {
+                            Label("Energy", systemImage: "battery.50percent")
+                        }
+                        .accessibilityLabel("Energy: \(chore.spoons) spoons")
                     }
-                    .accessibilityLabel("Energy: \(chore.spoons) spoons")
                 }
                 if let level {
                     Label {
@@ -288,7 +290,7 @@ struct ChoreDetailView: View {
                     Button("Change my mind") { perform { try service.unpick(chore, by: me) } }
                         .frame(maxWidth: .infinity)
                 }
-                if !me.isParent && isAssignee && canUseResetPass {
+                if !me.isParent && isAssignee && canUseResetPass && chore.household?.has(.energy) == true {
                     Button("Not today: use my reset pass") { perform { try service.useResetPass(on: chore, by: me) } }
                         .frame(maxWidth: .infinity)
                 }
