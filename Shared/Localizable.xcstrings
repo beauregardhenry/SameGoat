@@ -4058,16 +4058,6 @@
         }
       }
     },
-    "Same Goat": {
-      "localizations": {
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Same Goat"
-          }
-        }
-      }
-    },
     "Hard": {
       "localizations": {
         "es": {
@@ -6318,6 +6308,16 @@
         }
       }
     },
+    "Same Goat": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Same Goat"
+          }
+        }
+      }
+    },
     "Save": {
       "localizations": {
         "es": {
@@ -7954,6 +7954,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Riega hasta que empiece a salir por abajo."
+          }
+        }
+      }
+    },
+    "We're all in the same goat.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Todos estamos en la misma cabra."
           }
         }
       }
