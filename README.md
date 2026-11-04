@@ -11,7 +11,7 @@ Parents assign chores with point values; kids mark them done; points are awarded
     open SameGoat.xcodeproj
 
 * **Try it without iCloud:** pick the `SameGoat-iOS-Local` or `SameGoat-macOS-Local` scheme. Data stays on the device; Family > "Switch user" lets you act as anyone.
-* **Real build (iCloud sync + invites):** pick `SameGoat-iOS` / `SameGoat-macOS`, then in Signing & Capabilities set your Team and change the bundle ID in `project.yml` to one you own (the CloudKit container is `iCloud.<bundle id>`). Before shipping, deploy the CloudKit schema to Production in the CloudKit Console.
+* **Real build (iCloud sync + invites):** pick `SameGoat-iOS` / `SameGoat-macOS`, signed with the team in `project.yml` (`DEVELOPMENT_TEAM`) and the bundle ID `com.samegoat.SameGoat` (the CloudKit container is `iCloud.<bundle id>`). To use your own team, change both. Before shipping, deploy the CloudKit schema to Production in the CloudKit Console.
 * Tests: `xcodebuild -scheme SameGoat-macOS-Local -configuration Local -destination 'platform=macOS' CODE_SIGNING_ALLOWED=NO test`
 
 ## How it works
