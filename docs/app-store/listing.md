@@ -60,10 +60,18 @@ Your family's chores, points, photos and mood check-ins live in your own iCloud 
 chores,chore chart,allowance,kids,family,rewards,routine,mood,projects,responsibility,parenting
 
 ## Support URL
-https://github.com/beauregardhenry/happymama/issues
+https://github.com/beauregardhenry/SameGoat/issues
 
 ## Privacy policy URL
-Publish docs/app-store/privacy-policy.md (for example with GitHub Pages) and use that address.
+https://beauregardhenry.github.io/SameGoat/privacy/
+
+It's served from the `gh-pages` branch, which `scripts/build-site.py` builds from
+docs/app-store/privacy-policy.md. To update it, edit the policy, then rebuild the site into a
+checkout of `gh-pages` and push. (When samegoat.app is registered, point it at the same pages and
+use https://samegoat.app/privacy/ instead.)
+
+## Marketing URL (optional)
+https://beauregardhenry.github.io/SameGoat/
 
 ## App Privacy ("nutrition label")
 Data Not Collected. Household data is stored in the user's iCloud (CloudKit private and shared

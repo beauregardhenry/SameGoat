@@ -44,4 +44,4 @@ name → iCloud → Manage Account Storage → Same Goat. Leaving a shared house
 iCloud sharing options removes your access to it.
 
 ## Contact
-Questions: open an issue at https://github.com/beauregardhenry/happymama/issues.
+Questions: open an issue at https://github.com/beauregardhenry/SameGoat/issues.
