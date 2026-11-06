@@ -12,6 +12,9 @@ struct SameGoatApp: App {
     private let env = AppEnvironment.shared
 
     init() {
+        #if DEBUG && !LOCAL_ONLY
+        SchemaInitializer.runIfRequested()
+        #endif
         env.start()
     }
 
