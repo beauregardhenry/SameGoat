@@ -24,7 +24,7 @@ enum SchemaInitializer {
         let code: Int32
         do {
             let types = try initialize()
-            report("SCHEMA OK: CloudKit has \(types.count) record types: \(types.joined(separator: ", "))")
+            report("SCHEMA OK: created the schema for \(types.count) record types: \(types.joined(separator: ", ")). Check Schema > Record Types in the CloudKit Console.")
             code = 0
         } catch {
             report("SCHEMA FAILED: \(error)")
