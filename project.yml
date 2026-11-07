@@ -22,6 +22,10 @@ settings:
     LOCALIZATION_PREFERS_STRING_CATALOGS: YES
     # The Apple developer team that signs the app. Local builds turn signing off, so they ignore it.
     DEVELOPMENT_TEAM: 8K5724Q6WR
+    # Let Xcode create and refresh profiles for every app target. Without this the Mac targets
+    # are signed manually and fail with "requires a provisioning profile". The Local config
+    # and the test target switch signing off or to manual below.
+    CODE_SIGN_STYLE: Automatic
   configs:
     Local:
       # "Local" builds skip CloudKit entirely so the app runs without a paid
