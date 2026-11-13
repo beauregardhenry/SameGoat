@@ -10,7 +10,13 @@ import UserNotifications
 @MainActor
 final class Notifier: NSObject, UNUserNotificationCenterDelegate {
     private let center = UNUserNotificationCenter.current()
-    private let defaults = UserDefaults.standard
+    private let defaults: UserDefaults
+
+    /// Tests pass their own defaults so what each person has already been told stays out of the real ones.
+    init(defaults: UserDefaults = .standard) {
+        self.defaults = defaults
+        super.init()
+    }
 
     /// Runs a button tapped on a notification. Set by `AppEnvironment`, which knows who is signed in.
     var onAction: (@MainActor (Action, UUID, String?) async -> Void)?
@@ -237,24 +243,27 @@ final class Notifier: NSObject, UNUserNotificationCenterDelegate {
         isFirstRun ? [] : current.filter { !seen.contains($0.key) }
     }
 
-    private func deliverNewEvents(household: Household, me: Member) {
+    /// Works out which events are new to this person and remembers that they have now seen them all.
+    /// `total` is everything currently waiting on them, which is what a parent's badge counts.
+    func claimNewEvents(household: Household, me: Member) -> (fresh: [Event], total: Int) {
         let seenKey = "notified.\(me.id?.uuidString ?? "")"
         var seen = Set(defaults.stringArray(forKey: seenKey) ?? [])
         let current = events(household: household, me: me)
         let isFirstRun = defaults.stringArray(forKey: seenKey) == nil
 
-        for event in Notifier.eventsToDeliver(current: current, seen: seen, isFirstRun: isFirstRun) {
-            center.add(UNNotificationRequest(identifier: event.key, content: event.content, trigger: nil))
-        }
+        let fresh = Notifier.eventsToDeliver(current: current, seen: seen, isFirstRun: isFirstRun)
         seen.formUnion(current.map(\.key))
         defaults.set(Array(seen), forKey: seenKey)
+        return (fresh, current.count)
+    }
 
-        if me.isParent {
-            let pending = current.count
-            Task { try? await center.setBadgeCount(pending) }
-        } else {
-            Task { try? await center.setBadgeCount(0) }
+    private func deliverNewEvents(household: Household, me: Member) {
+        let (fresh, total) = claimNewEvents(household: household, me: me)
+        for event in fresh {
+            center.add(UNNotificationRequest(identifier: event.key, content: event.content, trigger: nil))
         }
+        let badge = me.isParent ? total : 0
+        Task { try? await center.setBadgeCount(badge) }
     }
 
     struct Reminder: Equatable {
@@ -302,10 +311,15 @@ final class Notifier: NSObject, UNUserNotificationCenterDelegate {
             center.removePendingNotificationRequests(withIdentifiers: [Self.weeklyRecapID])
             return
         }
-        let recap = Event(key: Self.weeklyRecapID, title: String(localized: "How did the week go?"),
+        center.add(Self.weeklyRecapRequest)
+    }
+
+    /// The repeating Sunday-evening request itself.
+    static var weeklyRecapRequest: UNNotificationRequest {
+        let recap = Event(key: weeklyRecapID, title: String(localized: "How did the week go?"),
                           body: String(localized: "See everyone's points and chores in the weekly recap.")).content
         let trigger = UNCalendarNotificationTrigger(dateMatching: WeeklyRecap.reminderTime, repeats: true)
-        center.add(UNNotificationRequest(identifier: Self.weeklyRecapID, content: recap, trigger: trigger))
+        return UNNotificationRequest(identifier: weeklyRecapID, content: recap, trigger: trigger)
     }
 
     private func scheduleDueReminders(household: Household, me: Member) async {
