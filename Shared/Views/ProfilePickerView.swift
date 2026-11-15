@@ -9,6 +9,7 @@ struct ProfilePickerView: View {
     @State private var pendingParent: Member?
     @State private var code = ""
     @State private var error: String?
+    @State private var resetting = false
     #if os(iOS)
     @Environment(\.horizontalSizeClass) private var sizeClass
     #endif
@@ -71,10 +72,12 @@ struct ProfilePickerView: View {
                 .textContentType(.oneTimeCode)
                 #endif
             Button("Continue") { if let parent = pendingParent { submit(parent) } }
+            Button("Forgot the code?") { code = ""; resetting = true }
             Button("Cancel", role: .cancel) { code = "" }
         } message: {
             Text("Enter the parent code. Any parent can find or change it under Family.")
         }
+        .sheet(isPresented: $resetting) { ResetParentCodeView(household: household) }
         .errorAlert($error)
     }
 

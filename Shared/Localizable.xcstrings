@@ -2656,6 +2656,16 @@
         }
       }
     },
+    "Choose a new code" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elige un código nuevo"
+          }
+        }
+      }
+    },
     "Choose at least two kids to take turns." : {
       "localizations" : {
         "es" : {
@@ -2882,6 +2892,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Recoger la mesa"
+          }
+        }
+      }
+    },
+    "Close" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cerrar"
           }
         }
       }
@@ -4162,6 +4182,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Para un viaje o una semana de enfermedad. Las tareas de esos días no se atrasan ni envían recordatorios, las que se repiten saltan a después de la pausa y nadie pierde su racha."
+          }
+        }
+      }
+    },
+    "Forgot the code?" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¿Olvidaste el código?"
           }
         }
       }
@@ -5646,6 +5676,26 @@
         }
       }
     },
+    "Only the person who created the family can reset the parent code." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Solo quien creó la familia puede restablecer el código de adultos."
+          }
+        }
+      }
+    },
+    "Only the person who created the family can reset the parent code. Ask them to read it to you under Family, or to reset it here on their own device." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Solo quien creó la familia puede restablecer el código de adultos. Pídele que te lo diga en Familia, o que lo restablezca aquí en su propio dispositivo."
+          }
+        }
+      }
+    },
     "Only the person who created the household can send invitations." : {
 
     },
@@ -6609,6 +6659,16 @@
         }
       }
     },
+    "Reset the Same Goat parent code" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Restablecer el código de adultos de Same Goat"
+          }
+        }
+      }
+    },
     "Rest up. You've earned it." : {
       "localizations" : {
         "es" : {
@@ -6739,6 +6799,16 @@
         }
       }
     },
+    "Save new code" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Guardar código nuevo"
+          }
+        }
+      }
+    },
     "Saving for %@ %@" : {
       "localizations" : {
         "es" : {
@@ -6845,6 +6915,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Devuelta"
+          }
+        }
+      }
+    },
+    "Set a passcode on this device first, then try again." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Primero configura un código en este dispositivo y vuelve a intentarlo."
           }
         }
       }
@@ -7462,6 +7542,16 @@
         }
       }
     },
+    "That didn't unlock the device. Try again." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se pudo desbloquear el dispositivo. Inténtalo de nuevo."
+          }
+        }
+      }
+    },
     "That parent code isn't right." : {
       "localizations" : {
         "es" : {
@@ -7578,6 +7668,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "El pase de descanso es para tareas de hoy."
+          }
+        }
+      }
+    },
+    "The two codes don't match." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Los dos códigos no coinciden."
           }
         }
       }
@@ -7922,6 +8022,16 @@
         }
       }
     },
+    "To make sure it's you, unlock this device first. Then you can choose a new parent code." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Para confirmar que eres tú, desbloquea primero este dispositivo. Después podrás elegir un código de adultos nuevo."
+          }
+        }
+      }
+    },
     "Today" : {
       "localizations" : {
         "es" : {
@@ -8102,12 +8212,32 @@
         }
       }
     },
+    "Type it again" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Escríbelo otra vez"
+          }
+        }
+      }
+    },
     "Unfinished project chores are removed. Points already earned stay." : {
       "localizations" : {
         "es" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Se quitan las tareas del proyecto sin terminar. Los puntos ya ganados se quedan."
+          }
+        }
+      }
+    },
+    "Unlock to continue" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Desbloquear para continuar"
           }
         }
       }
@@ -8188,6 +8318,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Usa entre 1 y 600 minutos."
+          }
+        }
+      }
+    },
+    "Use the new code to open a parent profile." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Usa el código nuevo para abrir un perfil de adulto."
           }
         }
       }
@@ -9138,6 +9278,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tu nombre"
+          }
+        }
+      }
+    },
+    "Your parent code is changed." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tu código de adultos ha cambiado."
           }
         }
       }
