@@ -104,12 +104,27 @@ extension HouseholdService {
     /// when joining and on a shared family device.
     func setParentCode(_ code: String, for household: Household, by me: Member) throws {
         try requireParent(me)
+        household.parentCode = try Self.validParentCode(code)
+        try save()
+    }
+
+    /// For a parent who has forgotten the code and can't open a parent profile to look it up.
+    /// Only the person who created the family can do this: their iCloud account holds the
+    /// household, which an invited parent's never does. The screen also makes them unlock the device first.
+    func resetParentCode(to code: String, for household: Household) throws {
+        guard persistence.isOwner(of: household) else {
+            throw ServiceError.notAllowed(String(localized: "Only the person who created the family can reset the parent code."))
+        }
+        household.parentCode = try Self.validParentCode(code)
+        try save()
+    }
+
+    static func validParentCode(_ code: String) throws -> String {
         let code = code.trimmed
         guard (4...8).contains(code.count), code.allSatisfy({ $0.isASCII && $0.isNumber }) else {
             throw ServiceError.invalid(String(localized: "Use 4 to 8 digits."))
         }
-        household.parentCode = code
-        try save()
+        return code
     }
 
     /// Turns one of the optional features on or off for the whole family.

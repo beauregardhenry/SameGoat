@@ -120,6 +120,7 @@ struct ClaimProfileView: View {
     @State private var newName = ""
     @State private var newEmoji = Theme.kidEmojis[0]
     @State private var error: String?
+    @State private var resetting = false
 
     init(household: Household, userID: String) {
         self.household = household
@@ -175,10 +176,12 @@ struct ClaimProfileView: View {
                 if let member = pendingParent { claim(member, code: code) }
                 code = ""
             }
+            Button("Forgot the code?") { code = ""; resetting = true }
             Button("Cancel", role: .cancel) { code = "" }
         } message: {
             Text("Parent profiles are protected. Ask a parent for the code under Family.")
         }
+        .sheet(isPresented: $resetting) { ResetParentCodeView(household: household) }
         .errorAlert($error)
     }
 
