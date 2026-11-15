@@ -38,3 +38,46 @@ final class ParentCodeResetTests: ServiceTestCase {
         assertThrowsServiceError(try service.setParentCode("12", for: household, by: parent))
     }
 }
+
+private struct FakeDevice: DeviceUnlocking {
+    var hasPasscode = true
+    var unlocks = true
+    func canUnlock() -> Bool { hasPasscode }
+    func unlock(reason: String) async -> Bool { unlocks }
+}
+
+/// The unlock step in front of the reset, with a stand-in for the system prompt.
+final class DeviceOwnerTests: XCTestCase {
+    func testAnUnlockedDeviceLetsYouThrough() async throws {
+        try await DeviceOwner.verify(reason: "Reset", using: FakeDevice(), allowWithoutPasscode: false)
+    }
+
+    func testAFailedUnlockStopsYou() async {
+        do {
+            try await DeviceOwner.verify(reason: "Reset", using: FakeDevice(unlocks: false), allowWithoutPasscode: false)
+            XCTFail("should have refused")
+        } catch let error as ServiceError {
+            XCTAssertTrue(error.localizedDescription.contains("unlock"))
+        } catch {
+            XCTFail("unexpected \(error)")
+        }
+    }
+
+    func testADeviceWithoutAPasscodeIsRefusedUnlessItIsASimulator() async throws {
+        do {
+            try await DeviceOwner.verify(reason: "Reset", using: FakeDevice(hasPasscode: false), allowWithoutPasscode: false)
+            XCTFail("should have refused")
+        } catch let error as ServiceError {
+            XCTAssertTrue(error.localizedDescription.contains("passcode"))
+        }
+        try await DeviceOwner.verify(reason: "Reset", using: FakeDevice(hasPasscode: false), allowWithoutPasscode: true)
+    }
+}
+
+final class SystemUnlockTests: XCTestCase {
+    /// Only asks whether a passcode or biometrics exist; it never shows the unlock prompt.
+    func testTheSystemCheckAnswersWithoutPrompting() {
+        _ = SystemUnlock().canUnlock()
+        XCTAssertFalse(DeviceOwner.isSimulator, "unit tests run on the Mac, which has no simulator exemption")
+    }
+}

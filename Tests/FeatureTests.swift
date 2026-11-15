@@ -56,3 +56,18 @@ final class FeatureTests: ServiceTestCase {
         }
     }
 }
+
+/// Labels the screens read straight from the model: none should come back empty.
+final class LabelTests: XCTestCase {
+    func testChoreLibraryAgesAreLabelled() {
+        XCTAssertEqual(ChoreLibrary.Age.allCases.map(\.id), ["little", "kids", "tweens"])
+        for age in ChoreLibrary.Age.allCases { XCTAssertFalse(age.title.isEmpty) }
+    }
+
+    func testChoreLevelsAreLabelledAndHaveIcons() {
+        for level in [ChoreLevel.new, .learning, .pro] {
+            XCTAssertFalse(level.title.isEmpty)
+            XCTAssertFalse(level.icon.isEmpty)
+        }
+    }
+}
