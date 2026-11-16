@@ -22,15 +22,15 @@
 	<key>CFBundlePackageType</key>
 	<string>XPC!</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.0</string>
+	<string>$(MARKETING_VERSION)</string>
 	<key>CFBundleVersion</key>
-	<string>1</string>
-	<key>SameGoatAppGroup</key>
-	<string>$(TeamIdentifierPrefix)group.com.samegoat.SameGoat</string>
+	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>NSExtension</key>
 	<dict>
 		<key>NSExtensionPointIdentifier</key>
 		<string>com.apple.widgetkit-extension</string>
 	</dict>
+	<key>SameGoatAppGroup</key>
+	<string>$(TeamIdentifierPrefix)group.com.samegoat.SameGoat</string>
 </dict>
 </plist>
