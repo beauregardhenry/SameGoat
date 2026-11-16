@@ -111,6 +111,18 @@ extension HouseholdService {
         try save()
     }
 
+    /// Clears the to-do list: every chore nobody has done yet, for everyone. Repeating chores stop repeating.
+    /// Chores waiting for review, finished chores (so points, streaks and badges stay) and project
+    /// chores (a project has its own way to end) are left alone. Returns how many were removed.
+    @discardableResult
+    func clearOpenChores(in household: Household, by me: Member) throws -> Int {
+        try requireParent(me)
+        let open = ((household.chores as? Set<Chore>) ?? []).filter { $0.status == .todo && $0.projectID == nil }
+        for chore in open { context.delete(chore) }
+        try save()
+        return open.count
+    }
+
     /// A kid says they're done. Nothing is awarded until a parent confirms.
 
     func endOfWeek(containing date: Date) -> Date {
