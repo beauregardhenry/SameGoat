@@ -17,6 +17,26 @@
         }
       }
     },
+    "Drag a person to change the order." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Arrastra a una persona para cambiar el orden."
+          }
+        }
+      }
+    },
+    "Touch and hold a person, then drag to change the order." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mantén pulsada a una persona y arrástrala para cambiar el orden."
+          }
+        }
+      }
+    },
     "— %@" : {
       "shouldTranslate" : false
     },

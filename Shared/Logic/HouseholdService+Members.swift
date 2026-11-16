@@ -62,6 +62,16 @@ extension HouseholdService {
         try save()
     }
 
+    /// Saves the order a parent dragged the family into. Everyone sees the same order.
+    func reorderMembers(_ ordered: [Member], by me: Member) throws {
+        try requireParent(me)
+        for (index, member) in ordered.enumerated() {
+            let position = Int16(index + 1)
+            if member.sortOrder != position { member.sortOrder = position }
+        }
+        try save()
+    }
+
     /// Big picture tiles instead of a list, for kids who can't read much yet.
     func setBigPicture(_ on: Bool, for kid: Member, by me: Member) throws {
         try requireParent(me)
@@ -165,6 +175,9 @@ extension HouseholdService {
         member.role = role
         member.emoji = emoji
         member.colorIndex = Int16(household.memberList.count % Theme.palette.count)
+        // Once the family has been put in order, a new person goes at the end of it.
+        let last = household.memberList.map(\.sortOrder).max() ?? 0
+        member.sortOrder = last > 0 ? last + 1 : 0
         member.appleUserID = userID
         member.createdAt = Date()
         member.household = household

@@ -29,6 +29,7 @@ enum SameGoatModel {
             attr("goalRewardID", .UUIDAttributeType),
             attr("resetUsedOn", .dateAttributeType),
             attr("bigPicture", .booleanAttributeType, false),
+            attr("sortOrder", .integer16AttributeType, 0),
         ])
         let chore = entity(Chore.self, [
             attr("id", .UUIDAttributeType),
