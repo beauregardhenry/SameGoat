@@ -32,6 +32,8 @@ enum Theme {
 
     static let kidEmojis = ["🦊", "🐼", "🐯", "🦁", "🐸", "🐵", "🐰", "🐻", "🦄", "🐙", "🐢", "🦉"]
     static let parentEmojis = ["🌻", "🌷", "🍀", "⭐️", "🌈", "☕️"]
+    /// What a parent can pick from: the icons parents have always had, then everything kids can pick.
+    static let parentChoices = parentEmojis + kidEmojis
     static let rewardEmojis = ["🎬", "🍦", "🎮", "📱", "🍕", "🎁", "🛍️", "⚽️"]
     static let choreEmojis = ["🛏️", "🧸", "🍽️", "🧺", "🗑️", "🐶", "🐱", "🪴", "🧹", "🧽", "🦷", "🎒", "📚", "🚿", "👕", "🧦", "🍳", "🚗"]
 }

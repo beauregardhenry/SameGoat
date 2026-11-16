@@ -87,7 +87,7 @@ struct WelcomeView: View {
             Section {
                 TextField("Household name", text: $householdName)
                 TextField("Your name", text: $yourName)
-                EmojiPicker(selection: $emoji, options: Theme.parentEmojis)
+                EmojiPicker(selection: $emoji, options: Theme.parentChoices)
             }
         }
     }

@@ -89,22 +89,31 @@ struct EmojiPicker: View {
     let options: [String]
 
     var body: some View {
-        ScrollView(.horizontal, showsIndicators: false) {
-            HStack(spacing: 8) {
-                ForEach(options, id: \.self) { emoji in
-                    Button { selection = emoji } label: {
-                        Text(emoji)
-                            .font(.title2)
-                            .frame(width: 44, height: 44)
-                            .background(selection == emoji ? Theme.accent.opacity(0.25) : Color.secondary.opacity(0.12), in: Circle())
-                            .overlay(Circle().stroke(selection == emoji ? Theme.accent : .clear, lineWidth: 2))
+        ScrollViewReader { proxy in
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: 8) {
+                    ForEach(options, id: \.self) { emoji in
+                        Button { selection = emoji } label: {
+                            Text(emoji)
+                                .font(.title2)
+                                .frame(width: 44, height: 44)
+                                .background(selection == emoji ? Theme.accent.opacity(0.25) : Color.secondary.opacity(0.12), in: Circle())
+                                .overlay(Circle().stroke(selection == emoji ? Theme.accent : .clear, lineWidth: 2))
+                        }
+                        .buttonStyle(.plain)
+                        .accessibilityLabel(emoji)
+                        .accessibilityAddTraits(selection == emoji ? .isSelected : [])
+                        .id(emoji)
                     }
-                    .buttonStyle(.plain)
-                    .accessibilityLabel(emoji)
-                    .accessibilityAddTraits(selection == emoji ? .isSelected : [])
                 }
+                .padding(.vertical, 2)
             }
-            .padding(.vertical, 2)
+            // With a long list the chosen icon can start off screen; bring it into view.
+            .task(id: options) {
+                // Wait for the new row of icons to be laid out before scrolling to one of them.
+                await Task.yield()
+                proxy.scrollTo(selection, anchor: .center)
+            }
         }
     }
 }
