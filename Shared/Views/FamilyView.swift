@@ -349,7 +349,7 @@ struct MemberEditorView: View {
                     .pickerStyle(.segmented)
                 }
                 Section("Avatar") {
-                    EmojiPicker(selection: $emoji, options: role == .parent ? Theme.parentEmojis : Theme.kidEmojis)
+                    EmojiPicker(selection: $emoji, options: role == .parent ? Theme.parentChoices : Theme.kidEmojis)
                 }
                 if role == .kid {
                     Section {
