@@ -159,10 +159,7 @@ final class Household: NSManagedObject, Identifiable {
     /// Every chore in the family, in no particular order.
     var choreSet: Set<Chore> { (chores as? Set<Chore>) ?? [] }
     var memberList: [Member] {
-        ((members as? Set<Member>) ?? []).sorted {
-            if $0.isParent != $1.isParent { return $0.isParent }
-            return $0.displayName.localizedCaseInsensitiveCompare($1.displayName) == .orderedAscending
-        }
+        ((members as? Set<Member>) ?? []).sorted(by: Member.inFamilyOrder)
     }
     var kids: [Member] { memberList.filter { !$0.isParent } }
     var parents: [Member] { memberList.filter { $0.isParent } }
@@ -183,6 +180,8 @@ final class Member: NSManagedObject, Identifiable {
     @NSManaged var resetUsedOn: Date?
     /// Shows this kid big picture tiles instead of a list, for little ones.
     @NSManaged var bigPicture: Bool
+    /// Where a parent dragged this person to in the family list. Zero until someone reorders.
+    @NSManaged var sortOrder: Int16
     @NSManaged var household: Household?
     @NSManaged var assignedChores: NSSet?
     @NSManaged var moods: NSSet?
@@ -576,4 +575,14 @@ final class MoodCheckIn: NSManagedObject, Identifiable {
     @NSManaged var createdAt: Date?
     @NSManaged var household: Household?
     @NSManaged var member: Member?
+}
+
+extension Member {
+    /// The order the family is shown in: the order a parent chose by dragging, and until
+    /// then parents first, then by name.
+    static func inFamilyOrder(_ a: Member, _ b: Member) -> Bool {
+        if a.sortOrder != b.sortOrder { return a.sortOrder < b.sortOrder }
+        if a.isParent != b.isParent { return a.isParent }
+        return a.displayName.localizedCaseInsensitiveCompare(b.displayName) == .orderedAscending
+    }
 }

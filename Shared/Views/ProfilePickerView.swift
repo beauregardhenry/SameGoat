@@ -21,8 +21,8 @@ struct ProfilePickerView: View {
             predicate: NSPredicate(format: "household == %@", household))
     }
 
-    private var kids: [Member] { members.filter { !$0.isParent } }
-    private var parents: [Member] { members.filter(\.isParent) }
+    private var kids: [Member] { members.filter { !$0.isParent }.sorted(by: Member.inFamilyOrder) }
+    private var parents: [Member] { members.filter(\.isParent).sorted(by: Member.inFamilyOrder) }
     /// A centered row of tiles: up to four across on a big screen, two on a phone.
     private func columns(for count: Int) -> [GridItem] {
         #if os(iOS)

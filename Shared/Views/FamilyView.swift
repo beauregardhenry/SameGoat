@@ -26,17 +26,31 @@ struct FamilyView: View {
     }
 
     private var sortedMembers: [Member] {
-        members.sorted {
-            if $0.isParent != $1.isParent { return $0.isParent }
-            return $0.displayName.localizedCaseInsensitiveCompare($1.displayName) == .orderedAscending
-        }
+        members.sorted(by: Member.inFamilyOrder)
+    }
+
+    private func move(from source: IndexSet, to destination: Int) {
+        var ordered = sortedMembers
+        ordered.move(fromOffsets: source, toOffset: destination)
+        do { try service.reorderMembers(ordered, by: me) } catch { self.error = error.localizedDescription }
     }
 
     var body: some View {
         List {
-            Section("People") {
+            Section {
                 ForEach(sortedMembers) { member in
                     NavigationLink(value: member) { MemberRow(member: member, isMe: member == me) }
+                }
+                .onMove(perform: me.isParent ? move : nil)
+            } header: {
+                Text("People")
+            } footer: {
+                if me.isParent, members.count > 1 {
+                    #if os(iOS)
+                    Text("Touch and hold a person, then drag to change the order.")
+                    #else
+                    Text("Drag a person to change the order.")
+                    #endif
                 }
             }
 
