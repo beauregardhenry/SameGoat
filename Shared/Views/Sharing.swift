@@ -22,7 +22,7 @@ struct InviteButton: View {
         .disabled(working)
         #if os(iOS)
         .sheet(item: $payload) { payload in
-            CloudSharingView(payload: payload, title: "Join \(household.displayName) on Same Goat")
+            CloudSharingView(payload: payload, title: PersistenceController.invitationTitle(for: household))
                 .ignoresSafeArea()
         }
         #endif

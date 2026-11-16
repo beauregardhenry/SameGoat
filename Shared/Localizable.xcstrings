@@ -4646,6 +4646,16 @@
         }
       }
     },
+    "Join %@ on Same Goat" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Únete a %@ en Same Goat"
+          }
+        }
+      }
+    },
     "Join as a Kid" : {
       "localizations" : {
         "es" : {
