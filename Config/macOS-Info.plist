@@ -22,20 +22,20 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.0</string>
+	<string>$(MARKETING_VERSION)</string>
 	<key>CFBundleVersion</key>
-	<string>1</string>
+	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>CKSharingSupported</key>
 	<true/>
 	<key>CloudKitContainerID</key>
 	<string>iCloud.$(PRODUCT_BUNDLE_IDENTIFIER)</string>
-	<key>SameGoatAppGroup</key>
-	<string>$(TeamIdentifierPrefix)group.com.samegoat.SameGoat</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 	<key>LSApplicationCategoryType</key>
 	<string>public.app-category.lifestyle</string>
 	<key>LSMinimumSystemVersion</key>
 	<string>14.0</string>
+	<key>SameGoatAppGroup</key>
+	<string>$(TeamIdentifierPrefix)group.com.samegoat.SameGoat</string>
 </dict>
 </plist>

@@ -56,6 +56,8 @@ targets:
       path: Config/iOS-Info.plist
       properties:
         CFBundleDisplayName: Same Goat
+        CFBundleShortVersionString: $(MARKETING_VERSION)
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
         CFBundleLocalizations: [en, es]
         UILaunchScreen: {}
         UISupportedInterfaceOrientations:
@@ -109,6 +111,8 @@ targets:
       path: Config/Widget-Info.plist
       properties:
         CFBundleDisplayName: Same Goat
+        CFBundleShortVersionString: $(MARKETING_VERSION)
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
         CFBundleLocalizations: [en, es]
         NSExtension:
           NSExtensionPointIdentifier: com.apple.widgetkit-extension
@@ -142,6 +146,8 @@ targets:
       path: Config/macOS-Info.plist
       properties:
         CFBundleDisplayName: Same Goat
+        CFBundleShortVersionString: $(MARKETING_VERSION)
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
         CFBundleLocalizations: [en, es]
         LSMinimumSystemVersion: "14.0"
         LSApplicationCategoryType: public.app-category.lifestyle
@@ -188,6 +194,8 @@ targets:
       path: Config/Widget-macOS-Info.plist
       properties:
         CFBundleDisplayName: Same Goat
+        CFBundleShortVersionString: $(MARKETING_VERSION)
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
         CFBundleLocalizations: [en, es]
         SameGoatAppGroup: $(TeamIdentifierPrefix)group.com.samegoat.SameGoat
         NSExtension:
