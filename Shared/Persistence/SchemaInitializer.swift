@@ -1,3 +1,4 @@
+import CloudKit
 import CoreData
 import Foundation
 
@@ -6,7 +7,9 @@ import Foundation
 /// Development environment, so the schema can be deployed to Production complete.
 ///
 /// CloudKit normally builds its schema lazily as records are written, so a field nobody has used
-/// yet is missing, and Production can't add it on the fly. Launch a Debug build with
+/// yet is missing, and Production can't add it on the fly. The same goes for `cloudkit.share`, the
+/// record type behind every invitation: it only appears once a share has been saved, and without
+/// it in Production "Invite Someone" fails. Launch a Debug build with
 /// `-initializeCloudKitSchema` (for example `xcrun devicectl device process launch --console ...`)
 /// and the app runs this, reports the outcome on standard error and exits.
 ///
@@ -53,7 +56,35 @@ enum SchemaInitializer {
         if let loadError { throw loadError }
 
         try container.initializeCloudKitSchema(options: [])
-        return model.entities.compactMap(\.name).map { "CD_" + $0 }.sorted()
+        try createShareRecordType()
+        return (model.entities.compactMap(\.name).map { "CD_" + $0 } + [CKRecord.SystemType.share]).sorted()
+    }
+
+    /// Saves a share in a throwaway zone, which makes CloudKit create the `cloudkit.share`
+    /// record type, then deletes the zone again.
+    private static func createShareRecordType() throws {
+        let database = CKContainer(identifier: AppConfig.containerID).privateCloudDatabase
+        let zone = CKRecordZone(zoneName: "SchemaInit-\(UUID().uuidString)")
+        let outcome = Outcome()
+        let done = DispatchSemaphore(value: 0)
+        Task.detached {
+            do {
+                _ = try await database.modifyRecordZones(saving: [zone], deleting: [])
+                let share = CKShare(recordZoneID: zone.zoneID)
+                let saved = try await database.modifyRecords(saving: [share], deleting: [])
+                for result in saved.saveResults.values { _ = try result.get() }
+            } catch {
+                outcome.error = error
+            }
+            _ = try? await database.modifyRecordZones(saving: [], deleting: [zone.zoneID])
+            done.signal()
+        }
+        done.wait()
+        if let error = outcome.error { throw error }
+    }
+
+    private final class Outcome: @unchecked Sendable {
+        var error: Error?
     }
 
     private static func report(_ message: String) {
