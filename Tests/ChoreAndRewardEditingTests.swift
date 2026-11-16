@@ -248,4 +248,39 @@ final class ClearChoreListTests: ServiceTestCase {
         assertThrowsServiceError(try service.clearOpenChores(in: household, by: kid))
         XCTAssertEqual(try chores().count, 1, "a kid can't clear the list")
     }
+
+    func testErasingAllChoresLeavesACleanSlateButKeepsPointsAndPeople() throws {
+        let tomorrow = try XCTUnwrap(calendar.date(byAdding: .day, value: 1, to: Date()))
+        _ = try assign(title: "Dishes")
+        let waiting = try assign(title: "Waiting")
+        try service.markComplete(waiting, by: kid, note: nil, photo: nil)
+        let finished = try assign(title: "Finished", points: 7)
+        try service.markComplete(finished, by: kid, note: nil, photo: nil)
+        try service.approve(finished, by: parent)
+        _ = try service.startProject(.init(preset: ProjectLibrary.presets[0], dueDate: tomorrow), sharedWith: [],
+                                     in: household, by: parent)
+        let reward = try service.saveReward(nil, title: "Treat", emoji: "🍬", cost: 3, isActive: true, in: household, by: parent)
+        let total = try chores().count
+        XCTAssertGreaterThan(total, 3)
+
+        XCTAssertEqual(try service.eraseAllChores(in: household, by: parent), total)
+
+        XCTAssertEqual(try chores().count, 0)
+        XCTAssertEqual(try service.context.fetch(NSFetchRequest<Project>(entityName: "Project")).count, 0)
+        XCTAssertTrue(household.activeProjects(calendar: calendar).isEmpty, "nothing is left holding regular chores back")
+        XCTAssertEqual(kid.balance, 7, "points already earned stay")
+        XCTAssertEqual(household.memberList.count, 2)
+        XCTAssertFalse(reward.isDeleted)
+
+        _ = try assign(title: "Fresh start")
+        XCTAssertEqual(try chores().count, 1, "and new chores can be added straight away")
+    }
+
+    func testOnlyParentsCanEraseAllChores() throws {
+        _ = try assign()
+        assertThrowsServiceError(try service.eraseAllChores(in: household, by: kid))
+        XCTAssertEqual(try chores().count, 1)
+        XCTAssertEqual(try service.eraseAllChores(in: household, by: parent), 1)
+        XCTAssertEqual(try service.eraseAllChores(in: household, by: parent), 0, "erasing an empty list is fine")
+    }
 }

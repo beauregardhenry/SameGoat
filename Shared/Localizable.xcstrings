@@ -2916,6 +2916,26 @@
         }
       }
     },
+    "Clear To-Do Chores" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Quitar las tareas pendientes"
+          }
+        }
+      }
+    },
+    "Clear To-Do Chores removes what's still to do and keeps finished chores, streaks and projects. Erase All Chores removes every chore and project, finished ones too, so streaks and badges start over. Points stay either way." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "«Quitar las tareas pendientes» quita lo que falta por hacer y conserva las tareas terminadas, las rachas y los proyectos. «Borrar todas las tareas» quita todas las tareas y proyectos, también las terminadas, así que las rachas y las insignias empiezan de nuevo. Los puntos se quedan en ambos casos."
+          }
+        }
+      }
+    },
     "Close" : {
       "localizations" : {
         "es" : {
@@ -3642,6 +3662,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Escribe tu nombre."
+          }
+        }
+      }
+    },
+    "Erase All Chores" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Borrar todas las tareas"
           }
         }
       }
@@ -7858,16 +7888,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Esta ya está elegida."
-          }
-        }
-      }
-    },
-    "This removes every chore still to do, for everyone, and repeating chores stop repeating. Chores waiting for review, finished chores, points and projects stay." : {
-      "localizations" : {
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Esto quita todas las tareas pendientes, para todos, y las tareas que se repiten dejan de repetirse. Las tareas por revisar, las terminadas, los puntos y los proyectos se quedan."
           }
         }
       }

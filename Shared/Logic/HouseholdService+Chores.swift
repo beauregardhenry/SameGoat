@@ -123,6 +123,19 @@ extension HouseholdService {
         return open.count
     }
 
+    /// A clean slate for chores: every chore goes, whatever state it's in, along with every project.
+    /// Meant for a family still trying things out. Finished chores go too, so streaks and badges
+    /// start over; points already earned, rewards and members stay. Returns how many chores were removed.
+    @discardableResult
+    func eraseAllChores(in household: Household, by me: Member) throws -> Int {
+        try requireParent(me)
+        let chores = (household.chores as? Set<Chore>) ?? []
+        for chore in chores { context.delete(chore) }
+        for project in (household.projects as? Set<Project>) ?? [] { context.delete(project) }
+        try save()
+        return chores.count
+    }
+
     /// A kid says they're done. Nothing is awarded until a parent confirms.
 
     func endOfWeek(containing date: Date) -> Date {
