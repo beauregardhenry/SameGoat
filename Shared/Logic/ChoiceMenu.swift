@@ -6,7 +6,7 @@ enum ChoiceMenu {
     /// The options in the same menu as `chore`, picked or not, still to do or done.
     static func options(like chore: Chore) -> [Chore] {
         guard let id = chore.menuID else { return [] }
-        return ((chore.household?.chores as? Set<Chore>) ?? [])
+        return (chore.household?.choreSet ?? [])
             .filter { $0.menuID == id }
             .sorted { $0.displayTitle < $1.displayTitle }
     }
@@ -17,7 +17,7 @@ enum ChoiceMenu {
 
     /// True when a kid's last three picks were all the easiest option left.
     static func prefersEasy(_ kid: Member) -> Bool {
-        let picks = ((kid.assignedChores as? Set<Chore>) ?? [])
+        let picks = kid.assignedChoreSet
             .filter { $0.menuID != nil && $0.menuPicked }
             .sorted { ($0.createdAt ?? .distantPast) > ($1.createdAt ?? .distantPast) }
             .prefix(3)
@@ -38,7 +38,7 @@ extension HouseholdService {
     @discardableResult
     func addChoiceMenu(_ templates: [ChoreLibrary.Template], pick: Int, for kids: [Member],
                        in household: Household, by me: Member) throws -> [Chore] {
-        guard me.isParent else { throw ServiceError.notAllowed(String(localized: "Only parents can do that.")) }
+        try requireParent(me)
         guard templates.count >= 2 else { throw ServiceError.invalid(String(localized: "Pick at least two chores to choose from.")) }
         guard (1..<templates.count).contains(pick) else {
             throw ServiceError.invalid(String(localized: "Let them choose fewer than all of them."))

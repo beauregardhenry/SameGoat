@@ -36,7 +36,7 @@ enum ChoreLevel: Equatable {
     static func timesDone(_ chore: Chore) -> Int {
         guard let kid = chore.assignee else { return 0 }
         let name = chore.displayTitle
-        return ((kid.assignedChores as? Set<Chore>) ?? []).filter {
+        return kid.assignedChoreSet.filter {
             $0 !== chore && $0.status == .approved
                 && $0.displayTitle.compare(name, options: [.caseInsensitive, .diacriticInsensitive]) == .orderedSame
         }.count

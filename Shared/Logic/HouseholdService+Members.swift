@@ -77,15 +77,15 @@ extension HouseholdService {
             throw ServiceError.invalid(String(localized: "A household needs at least one parent."))
         }
         // An up-for-grabs chore this kid had claimed goes back in the pool.
-        for chore in (member.assignedChores as? Set<Chore>) ?? [] where chore.upForGrabs && chore.status == .todo {
+        for chore in member.assignedChoreSet where chore.upForGrabs && chore.status == .todo {
             chore.assignee = nil
         }
         // A chore kids take turns on passes to whoever is next instead of leaving with this kid.
-        for chore in (member.assignedChores as? Set<Chore>) ?? [] where chore.takesTurns && chore.status == .todo {
+        for chore in member.assignedChoreSet where chore.takesTurns && chore.status == .todo {
             guard let next = chore.nextAssignee, next != member else { continue }
             chore.assignee = next
         }
-        for chore in (member.household?.chores as? Set<Chore>) ?? [] where chore.rotationIDs.contains(where: { $0 == member.id }) {
+        for chore in member.household?.choreSet ?? [] where chore.rotationIDs.contains(where: { $0 == member.id }) {
             chore.rotationIDs.removeAll { $0 == member.id }
         }
         context.delete(member)

@@ -79,7 +79,7 @@ enum Effort {
     /// for balancing who gets the next one.
     static func openMinutes(for kid: Member, now: Date = Date(), calendar: Calendar = .current) -> Int {
         let weekOut = calendar.date(byAdding: .day, value: 7, to: calendar.startOfDay(for: now)) ?? now
-        return ((kid.assignedChores as? Set<Chore>) ?? [])
+        return kid.assignedChoreSet
             .filter { $0.status == .todo && ($0.dueDate ?? .distantPast) < weekOut }
             .reduce(0) { $0 + ($1.minutes ?? 0) }
     }

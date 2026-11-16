@@ -7,8 +7,8 @@ enum AssistantReplies {
     /// The chores this person could say they've finished: their own open ones, soonest due first.
     static func openChores(for me: Member) -> [Chore] {
         guard !me.isParent else { return [] }
-        let pool = ((me.household?.chores as? Set<Chore>) ?? []).filter(\.isUnclaimed)
-        return (((me.assignedChores as? Set<Chore>) ?? []).union(pool))
+        let pool = (me.household?.choreSet ?? []).filter(\.isUnclaimed)
+        return (me.assignedChoreSet.union(pool))
             .filter { $0.status == .todo }
             .sorted { ($0.dueAt() ?? .distantFuture, $0.displayTitle) < ($1.dueAt() ?? .distantFuture, $1.displayTitle) }
     }
@@ -24,7 +24,7 @@ enum AssistantReplies {
 
     /// Marks the chore done and says what happens next.
     static func finish(_ choreID: UUID, household: Household, me: Member, service: HouseholdService) throws -> String {
-        guard let chore = ((household.chores as? Set<Chore>) ?? []).first(where: { $0.id == choreID }) else {
+        guard let chore = household.choreSet.first(where: { $0.id == choreID }) else {
             throw ServiceError.invalid(String(localized: "I couldn't find that chore."))
         }
         try service.markComplete(chore, by: me, note: nil, photo: nil)
@@ -38,7 +38,7 @@ enum AssistantReplies {
     /// Whole sentences per case, with plurals from the String Catalog, so they translate.
     static func summary(household: Household, me: Member, now: Date = Date(), calendar: Calendar = .current) -> String {
         if me.isParent {
-            let chores = ((household.chores as? Set<Chore>) ?? []).filter { $0.status == .pendingReview }.count
+            let chores = household.choreSet.filter { $0.status == .pendingReview }.count
             let requests = ((household.redemptions as? Set<Redemption>) ?? []).filter { $0.status == .requested }.count
             switch (chores, requests) {
             case (0, 0): return String(localized: "You're all caught up. Nothing is waiting for review.")

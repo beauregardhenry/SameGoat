@@ -96,7 +96,7 @@ extension HouseholdService {
     /// fewest minutes so far, so the work comes out even.
     @discardableResult
     func startProject(_ draft: ProjectDraft, sharedWith kids: [Member], in household: Household, by me: Member) throws -> Project {
-        guard me.isParent else { throw ServiceError.notAllowed(String(localized: "Only parents can do that.")) }
+        try requireParent(me)
         let title = draft.title.trimmed
         guard !title.isEmpty else { throw ServiceError.invalid(String(localized: "Give the project a name.")) }
         guard !draft.tasks.isEmpty else { throw ServiceError.invalid(String(localized: "Add at least one chore to the project.")) }
@@ -144,7 +144,7 @@ extension HouseholdService {
 
     /// Calls a project off: its unfinished chores go, finished ones (and their points) stay.
     func endProject(_ project: Project, by me: Member) throws {
-        guard me.isParent else { throw ServiceError.notAllowed(String(localized: "Only parents can do that.")) }
+        try requireParent(me)
         for chore in project.chores where chore.status != .approved {
             context.delete(chore)
         }

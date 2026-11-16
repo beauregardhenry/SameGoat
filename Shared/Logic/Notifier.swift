@@ -95,7 +95,7 @@ final class Notifier: NSObject, UNUserNotificationCenterDelegate {
                         service: HouseholdService) throws {
         switch action {
         case .approveChore, .sendBack:
-            guard let chore = ((household.chores as? Set<Chore>) ?? []).first(where: { $0.id == id }) else {
+            guard let chore = household.choreSet.first(where: { $0.id == id }) else {
                 throw ServiceError.invalid(String(localized: "That chore is gone."))
             }
             if action == .approveChore {
@@ -157,7 +157,7 @@ final class Notifier: NSObject, UNUserNotificationCenterDelegate {
     }
 
     func events(household: Household, me: Member) -> [Event] {
-        let chores = (household.chores as? Set<Chore>) ?? []
+        let chores = household.choreSet
         let redemptions = (household.redemptions as? Set<Redemption>) ?? []
         var result: [Event] = []
 
@@ -278,7 +278,7 @@ final class Notifier: NSObject, UNUserNotificationCenterDelegate {
     static func dueReminders(household: Household, me: Member, now: Date = Date(),
                              calendar: Calendar = .current) -> [Reminder] {
         guard !me.isParent else { return [] }
-        let chores = ((household.chores as? Set<Chore>) ?? []).filter {
+        let chores = household.choreSet.filter {
             $0.assignee?.id == me.id && $0.status == .todo
         }
         return chores.compactMap { chore in

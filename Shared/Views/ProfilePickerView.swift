@@ -66,11 +66,7 @@ struct ProfilePickerView: View {
         // An alert rather than a sheet: it stays small on iPad, where a sheet fills half the screen.
         .alert(pendingParent.map { "Hi, \($0.displayName)" } ?? "",
                isPresented: Binding(get: { pendingParent != nil }, set: { if !$0 { pendingParent = nil } })) {
-            SecureField("Parent code", text: $code)
-                #if os(iOS)
-                .keyboardType(.numberPad)
-                .textContentType(.oneTimeCode)
-                #endif
+            SecureField("Parent code", text: $code).parentCodeEntry()
             Button("Continue") { if let parent = pendingParent { submit(parent) } }
             Button("Forgot the code?") { code = ""; resetting = true }
             Button("Cancel", role: .cancel) { code = "" }

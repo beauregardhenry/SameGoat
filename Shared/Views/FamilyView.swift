@@ -152,11 +152,7 @@ struct FamilyView: View {
         }
         .sheet(isPresented: $showingAdd) { MemberEditorView(household: household, me: me, member: nil) }
         .alert("New parent code", isPresented: $editingCode) {
-            SecureField("4 to 8 digits", text: $newCode)
-                #if os(iOS)
-                .keyboardType(.numberPad)
-                .textContentType(.oneTimeCode)
-                #endif
+            SecureField("4 to 8 digits", text: $newCode).parentCodeEntry()
             Button("Save") { saveCode() }
             Button("Cancel", role: .cancel) {}
         } message: {

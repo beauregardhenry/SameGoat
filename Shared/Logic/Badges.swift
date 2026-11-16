@@ -12,7 +12,7 @@ struct Badge: Identifiable, Equatable {
 
 enum Badges {
     static func all(for kid: Member, now: Date = Date(), calendar: Calendar = .current) -> [Badge] {
-        let chores = ((kid.assignedChores as? Set<Chore>) ?? []).filter { $0.status == .approved }.count
+        let chores = kid.assignedChoreSet.filter { $0.status == .approved }.count
         let earned = kid.entryList.filter { $0.amount > 0 }.reduce(0) { $0 + Int($1.amount) }
         let redeemed = ((kid.redemptions as? Set<Redemption>) ?? []).contains { $0.status == .approved }
         let best = bestStreak(for: kid, calendar: calendar)
@@ -30,7 +30,7 @@ enum Badges {
 
     /// The longest run of consecutive days with a chore turned in, ever.
     static func bestStreak(for kid: Member, calendar: Calendar = .current) -> Int {
-        let days = Set(((kid.assignedChores as? Set<Chore>) ?? []).compactMap { chore -> Date? in
+        let days = Set(kid.assignedChoreSet.compactMap { chore -> Date? in
             guard chore.status != .todo, let done = chore.completedAt else { return nil }
             return calendar.startOfDay(for: done)
         }).sorted()
