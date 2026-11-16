@@ -93,15 +93,35 @@ final class PersistenceController {
     // MARK: Sharing
 
     /// Returns the household's `CKShare`, creating it the first time.
+    ///
+    /// The share carries a title, because that is what the invitation message and the
+    /// system's sharing screens show. Without one they say only that an item was shared.
     func share(_ household: Household) async throws -> (CKShare, CKContainer) {
         guard let cloud = container as? NSPersistentCloudKitContainer else {
             throw ServiceError.invalid(String(localized: "Inviting people needs iCloud, which isn't available in this build."))
         }
+        let title = Self.invitationTitle(for: household)
+        let ckContainer = CKContainer(identifier: AppConfig.containerID)
+        let share: CKShare
         if let existing = try cloud.fetchShares(matching: [household.objectID])[household.objectID] {
-            return (existing, CKContainer(identifier: AppConfig.containerID))
+            share = existing
+        } else {
+            share = try await cloud.share([household], to: nil).1
         }
-        let (_, share, ckContainer) = try await cloud.share([household], to: nil)
-        return (share, ckContainer)
+        guard Self.applyInvitationTitle(title, to: share), let privateStore else { return (share, ckContainer) }
+        return (try await cloud.persistUpdatedShare(share, in: privateStore), ckContainer)
+    }
+
+    static func invitationTitle(for household: Household) -> String {
+        String(localized: "Join \(household.displayName) on Same Goat")
+    }
+
+    /// Sets the share's title. Returns false when it already had that title, so nothing needs saving.
+    @discardableResult
+    static func applyInvitationTitle(_ title: String, to share: CKShare) -> Bool {
+        guard share[CKShare.SystemFieldKey.title] as? String != title else { return false }
+        share[CKShare.SystemFieldKey.title] = title
+        return true
     }
 
     /// Called when the user taps an invitation link.

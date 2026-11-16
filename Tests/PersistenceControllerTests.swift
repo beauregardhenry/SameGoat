@@ -1,4 +1,5 @@
 import XCTest
+import CloudKit
 import CoreData
 @testable import SameGoat
 
@@ -63,5 +64,17 @@ final class PersistenceControllerTests: XCTestCase {
         } catch let error as ServiceError {
             XCTAssertTrue(error.localizedDescription.contains("iCloud"))
         }
+    }
+
+    func testTheInvitationIsTitledWithTheFamilysName() throws {
+        let service = HouseholdService(persistence: PersistenceController(mode: .inMemory))
+        let household = try service.createHousehold(name: "The Goats", yourName: "Mama", emoji: "🌻", userID: "u")
+        let title = PersistenceController.invitationTitle(for: household)
+        XCTAssertTrue(title.contains("The Goats"))
+
+        let share = CKShare(recordZoneID: CKRecordZone.ID(zoneName: "test"))
+        XCTAssertTrue(PersistenceController.applyInvitationTitle(title, to: share), "a new share has no title yet")
+        XCTAssertEqual(share[CKShare.SystemFieldKey.title] as? String, title)
+        XCTAssertFalse(PersistenceController.applyInvitationTitle(title, to: share), "an unchanged title needs no save")
     }
 }
