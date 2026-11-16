@@ -49,7 +49,7 @@ struct ChoresView: View {
             .sorted { ($0.first?.assignee?.displayName ?? "") < ($1.first?.assignee?.displayName ?? "") }
     }
     /// Whether there's anything for "Clear Chore List" to remove.
-    private var hasClearableChores: Bool { chores.contains { $0.status == .todo && $0.projectID == nil } }
+    private var hasClearableChores: Bool { !chores.isEmpty || !((household.projects as? Set<Project>) ?? []).isEmpty }
     private var onHold: Bool { household.overridingProject() != nil }
     private var todo: [Chore] { onHold ? [] : dueSorted(open.filter { !$0.isUnclaimed && !$0.extraCredit }) }
     private var extra: [Chore] { onHold ? [] : dueSorted(open.filter { !$0.isUnclaimed && $0.extraCredit }) }
@@ -115,11 +115,14 @@ struct ChoresView: View {
             }
         }
         .confirmationDialog("Clear the chore list?", isPresented: $confirmingClear, titleVisibility: .visible) {
-            Button("Clear Chore List", role: .destructive) {
+            Button("Clear To-Do Chores", role: .destructive) {
                 do { try service.clearOpenChores(in: household, by: me) } catch { self.error = error.localizedDescription }
             }
+            Button("Erase All Chores", role: .destructive) {
+                do { try service.eraseAllChores(in: household, by: me) } catch { self.error = error.localizedDescription }
+            }
         } message: {
-            Text("This removes every chore still to do, for everyone, and repeating chores stop repeating. Chores waiting for review, finished chores, points and projects stay.")
+            Text("Clear To-Do Chores removes what's still to do and keeps finished chores, streaks and projects. Erase All Chores removes every chore and project, finished ones too, so streaks and badges start over. Points stay either way.")
         }
         .sheet(isPresented: $showingNew) {
             ChoreEditorView(household: household, me: me, chore: nil)
