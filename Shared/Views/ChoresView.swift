@@ -10,6 +10,7 @@ struct ChoresView: View {
     @State private var showingLibrary = false
     @State private var showingProject = false
     @State private var showingSpoons = false
+    @State private var confirmingClear = false
     /// Counts chores a kid finishes from their list, to buzz the phone each time.
     @State private var finishedHere = 0
     @State private var error: String?
@@ -47,6 +48,8 @@ struct ChoresView: View {
             .values.map { $0.sorted { $0.displayTitle < $1.displayTitle } }
             .sorted { ($0.first?.assignee?.displayName ?? "") < ($1.first?.assignee?.displayName ?? "") }
     }
+    /// Whether there's anything for "Clear Chore List" to remove.
+    private var hasClearableChores: Bool { chores.contains { $0.status == .todo && $0.projectID == nil } }
     private var onHold: Bool { household.overridingProject() != nil }
     private var todo: [Chore] { onHold ? [] : dueSorted(open.filter { !$0.isUnclaimed && !$0.extraCredit }) }
     private var extra: [Chore] { onHold ? [] : dueSorted(open.filter { !$0.isUnclaimed && $0.extraCredit }) }
@@ -97,6 +100,11 @@ struct ChoresView: View {
                     Button { showingProject = true } label: { Label("New Project", systemImage: "hammer") }
                 }
             }
+            if me.isParent && hasClearableChores {
+                ToolbarItem(placement: .secondaryAction) {
+                    Button(role: .destructive) { confirmingClear = true } label: { Label("Clear Chore List", systemImage: "trash") }
+                }
+            }
             if me.isParent {
                 ToolbarItem(placement: .primaryAction) {
                     Button { showingLibrary = true } label: { Label("Chore Ideas", systemImage: "lightbulb") }
@@ -105,6 +113,13 @@ struct ChoresView: View {
                     Button { showingNew = true } label: { Label("New Chore", systemImage: "plus") }
                 }
             }
+        }
+        .confirmationDialog("Clear the chore list?", isPresented: $confirmingClear, titleVisibility: .visible) {
+            Button("Clear Chore List", role: .destructive) {
+                do { try service.clearOpenChores(in: household, by: me) } catch { self.error = error.localizedDescription }
+            }
+        } message: {
+            Text("This removes every chore still to do, for everyone, and repeating chores stop repeating. Chores waiting for review, finished chores, points and projects stay.")
         }
         .sheet(isPresented: $showingNew) {
             ChoreEditorView(household: household, me: me, chore: nil)

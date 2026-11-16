@@ -2856,6 +2856,16 @@
         }
       }
     },
+    "Clear Chore List" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vaciar la lista de tareas"
+          }
+        }
+      }
+    },
     "Clear floors mean nobody trips and toys don't get lost." : {
       "localizations" : {
         "es" : {
@@ -2872,6 +2882,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ordenar tu armario"
+          }
+        }
+      }
+    },
+    "Clear the chore list?" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¿Vaciar la lista de tareas?"
           }
         }
       }
@@ -7838,6 +7858,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Esta ya está elegida."
+          }
+        }
+      }
+    },
+    "This removes every chore still to do, for everyone, and repeating chores stop repeating. Chores waiting for review, finished chores, points and projects stay." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Esto quita todas las tareas pendientes, para todos, y las tareas que se repiten dejan de repetirse. Las tareas por revisar, las terminadas, los puntos y los proyectos se quedan."
           }
         }
       }

@@ -1,4 +1,5 @@
 import XCTest
+import CoreData
 @testable import SameGoat
 
 @MainActor
@@ -198,5 +199,53 @@ final class ChoreAndRewardEditingTests: ServiceTestCase {
         XCTAssertEqual(kid.reserved, 0)
         XCTAssertEqual(kid.available, 10)
         assertThrowsServiceError(try service.decide(request, approve: true, by: parent))
+    }
+}
+
+@MainActor
+final class ClearChoreListTests: ServiceTestCase {
+    private func chores() throws -> [Chore] {
+        try service.context.fetch(NSFetchRequest<Chore>(entityName: "Chore"))
+    }
+
+    func testClearingRemovesOnlyWhatIsStillToDo() throws {
+        let tomorrow = try XCTUnwrap(calendar.date(byAdding: .day, value: 1, to: Date()))
+        let open1 = try assign(title: "Dishes")
+        let open2 = try assign(title: "Laundry", due: tomorrow, recurrence: .init(kind: .daily))
+        let waiting = try assign(title: "Waiting")
+        try service.markComplete(waiting, by: kid, note: nil, photo: nil)
+        let finished = try assign(title: "Finished", points: 7)
+        try service.markComplete(finished, by: kid, note: nil, photo: nil)
+        try service.approve(finished, by: parent)
+        _ = try service.startProject(.init(preset: ProjectLibrary.presets[0], dueDate: tomorrow), sharedWith: [],
+                                     in: household, by: parent)
+        let projectChores = try chores().filter { $0.projectID != nil }
+        XCTAssertFalse(projectChores.isEmpty)
+        let pointsBefore = kid.balance
+
+        let removed = try service.clearOpenChores(in: household, by: parent)
+
+        XCTAssertEqual(removed, 2 + projectChores.filter { $0.status == .todo && $0.projectID == nil }.count)
+        let left = Set(try chores().map(\.objectID))
+        XCTAssertFalse(left.contains(open1.objectID))
+        XCTAssertFalse(left.contains(open2.objectID))
+        XCTAssertTrue(left.contains(waiting.objectID), "a chore waiting for review keeps the kid's work")
+        XCTAssertTrue(left.contains(finished.objectID), "finished chores keep streaks and history")
+        XCTAssertTrue(projectChores.allSatisfy { left.contains($0.objectID) }, "projects have their own way to end")
+        XCTAssertEqual(kid.balance, pointsBefore, "points are untouched")
+    }
+
+    func testRepeatingChoresStopRepeatingOnceCleared() throws {
+        let daily = try assign(title: "Feed the cat", due: Date(), recurrence: .init(kind: .daily))
+        try service.clearOpenChores(in: household, by: parent)
+        XCTAssertFalse(try chores().contains { $0.objectID == daily.objectID })
+        XCTAssertEqual(try chores().count, 0, "nothing is left to come back")
+    }
+
+    func testClearingAnEmptyListIsFineAndOnlyParentsCanDoIt() throws {
+        XCTAssertEqual(try service.clearOpenChores(in: household, by: parent), 0)
+        _ = try assign()
+        assertThrowsServiceError(try service.clearOpenChores(in: household, by: kid))
+        XCTAssertEqual(try chores().count, 1, "a kid can't clear the list")
     }
 }
