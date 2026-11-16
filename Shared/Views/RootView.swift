@@ -167,11 +167,7 @@ struct ClaimProfileView: View {
             .navigationTitle("Who are you?")
         }
         .alert("Parent code", isPresented: Binding(get: { pendingParent != nil }, set: { if !$0 { pendingParent = nil } })) {
-            SecureField("Parent code", text: $code)
-                #if os(iOS)
-                .keyboardType(.numberPad)
-                .textContentType(.oneTimeCode)
-                #endif
+            SecureField("Parent code", text: $code).parentCodeEntry()
             Button("Continue") {
                 if let member = pendingParent { claim(member, code: code) }
                 code = ""

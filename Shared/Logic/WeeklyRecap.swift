@@ -42,7 +42,7 @@ enum WeeklyRecap {
                 pointsByWeek[weekStart(for: date, calendar: calendar), default: 0] += Int(entry.amount)
             }
             let history = starts.map { Week(start: $0, points: pointsByWeek[$0] ?? 0) }
-            let done = ((kid.assignedChores as? Set<Chore>) ?? []).filter {
+            let done = kid.assignedChoreSet.filter {
                 guard $0.status == .approved, let completed = $0.completedAt, completed >= thisWeek else { return false }
                 return weekStart(for: completed, calendar: calendar) == thisWeek
             }

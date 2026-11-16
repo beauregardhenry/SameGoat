@@ -33,7 +33,7 @@ enum MoodInsights {
 
     /// Finished chores in the window, grouped by who did them and what they were called.
     private static func finished(_ household: Household, since: Date) -> [String: [Chore]] {
-        Dictionary(grouping: ((household.chores as? Set<Chore>) ?? []).filter {
+        Dictionary(grouping: household.choreSet.filter {
             $0.status == .approved && ($0.completedAt ?? .distantPast) >= since && $0.assignee != nil
         }) { "\($0.assignee?.id?.uuidString ?? "")|\($0.displayTitle.lowercased())" }
     }
@@ -124,7 +124,7 @@ enum MoodInsights {
         let rough = !recent.isEmpty && recent.reduce(0, +) / Double(recent.count) < 3
         let daily = FamilyMood.dailyAverages(in: household, calendar: calendar)
         let titles = Set(boosters.map(\.title))
-        let done = ((household.chores as? Set<Chore>) ?? []).filter { $0.status == .approved && titles.contains($0.displayTitle) }
+        let done = household.choreSet.filter { $0.status == .approved && titles.contains($0.displayTitle) }
         let scored = boosters.map { booster -> (Booster, Double?) in
             let days = done.filter { $0.displayTitle == booster.title }
                 .compactMap { $0.completedAt.map { calendar.startOfDay(for: $0) } }

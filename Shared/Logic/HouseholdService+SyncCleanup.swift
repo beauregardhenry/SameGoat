@@ -16,7 +16,7 @@ extension HouseholdService {
             context.delete(entry)
         }
 
-        let copies = ((household.chores as? Set<Chore>) ?? []).filter { $0.sourceChoreID != nil }
+        let copies = household.choreSet.filter { $0.sourceChoreID != nil }
         for group in Dictionary(grouping: copies, by: \.sourceChoreID).values where group.count > 1 {
             // Keep the copy the kid has made the most progress on.
             let keeper = group.max { a, b in

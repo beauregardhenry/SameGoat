@@ -117,7 +117,7 @@ extension HouseholdService {
     @discardableResult
     func clearOpenChores(in household: Household, by me: Member) throws -> Int {
         try requireParent(me)
-        let open = ((household.chores as? Set<Chore>) ?? []).filter { $0.status == .todo && $0.projectID == nil }
+        let open = household.choreSet.filter { $0.status == .todo && $0.projectID == nil }
         for chore in open { context.delete(chore) }
         try save()
         return open.count
@@ -129,7 +129,7 @@ extension HouseholdService {
     @discardableResult
     func eraseAllChores(in household: Household, by me: Member) throws -> Int {
         try requireParent(me)
-        let chores = (household.chores as? Set<Chore>) ?? []
+        let chores = household.choreSet
         for chore in chores { context.delete(chore) }
         for project in (household.projects as? Set<Project>) ?? [] { context.delete(project) }
         try save()

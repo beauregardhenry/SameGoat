@@ -7,7 +7,7 @@ extension WidgetSnapshot {
     /// The widget's view of the household for `me`: their own chores if they're a kid,
     /// or every kid's progress and the review queue if they're a parent.
     init(household: Household, me: Member, now: Date = Date(), calendar: Calendar = .current) {
-        let chores = (household.chores as? Set<Chore>) ?? []
+        let chores = household.choreSet
         let kids = me.isParent ? household.kids : [me]
         self.init(
             householdName: household.displayName,

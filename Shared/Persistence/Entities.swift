@@ -156,6 +156,8 @@ final class Household: NSManagedObject, Identifiable {
     func moneyText(for points: Int, locale: Locale = .current) -> String? {
         money(for: points)?.formatted(.currency(code: currencyCode ?? "USD").locale(locale))
     }
+    /// Every chore in the family, in no particular order.
+    var choreSet: Set<Chore> { (chores as? Set<Chore>) ?? [] }
     var memberList: [Member] {
         ((members as? Set<Member>) ?? []).sorted {
             if $0.isParent != $1.isParent { return $0.isParent }
@@ -198,6 +200,8 @@ final class Member: NSManagedObject, Identifiable {
 
     /// Newest first. Two parents acting on the same chore or request from different
     /// devices can each record an entry before they sync, so only one per source counts.
+    /// Every chore assigned to this person, in no particular order.
+    var assignedChoreSet: Set<Chore> { (assignedChores as? Set<Chore>) ?? [] }
     var entryList: [PointEntry] {
         PointEntry.unique((entries as? Set<PointEntry>) ?? [])
             .sorted { ($0.date ?? .distantPast) > ($1.date ?? .distantPast) }
@@ -226,7 +230,7 @@ final class Member: NSManagedObject, Identifiable {
     /// Days in a row on which this kid turned in a chore that wasn't sent back, ending
     /// today or yesterday. Yesterday still counts so the streak doesn't read 0 every morning.
     func streak(now: Date = Date(), calendar: Calendar = .current) -> Int {
-        let days = Set(((assignedChores as? Set<Chore>) ?? []).compactMap { chore -> Date? in
+        let days = Set(assignedChoreSet.compactMap { chore -> Date? in
             guard chore.status != .todo, let done = chore.completedAt else { return nil }
             return calendar.startOfDay(for: done)
         })
@@ -531,7 +535,7 @@ final class Project: NSManagedObject, Identifiable {
 
     var chores: [Chore] {
         guard let id else { return [] }
-        return ((household?.chores as? Set<Chore>) ?? [])
+        return (household?.choreSet ?? [])
             .filter { $0.projectID == id }
             .sorted { ($0.phase, $0.displayTitle) < ($1.phase, $1.displayTitle) }
     }

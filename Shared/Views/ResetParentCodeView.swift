@@ -35,16 +35,8 @@ struct ResetParentCodeView: View {
                     }
                 } else {
                     Section("Choose a new code") {
-                        SecureField("4 to 8 digits", text: $code)
-                            #if os(iOS)
-                            .keyboardType(.numberPad)
-                            .textContentType(.oneTimeCode)
-                            #endif
-                        SecureField("Type it again", text: $confirmation)
-                            #if os(iOS)
-                            .keyboardType(.numberPad)
-                            .textContentType(.oneTimeCode)
-                            #endif
+                        SecureField("4 to 8 digits", text: $code).parentCodeEntry()
+                        SecureField("Type it again", text: $confirmation).parentCodeEntry()
                         Button("Save new code") { save() }
                             .disabled(code.isEmpty || confirmation.isEmpty)
                     }

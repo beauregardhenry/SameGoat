@@ -57,7 +57,7 @@ struct ChoresView: View {
     /// What the grown-ups are doing today, so kids see that everyone helps.
     private var grownUps: [Chore] {
         let tomorrow = Calendar.current.date(byAdding: .day, value: 1, to: Calendar.current.startOfDay(for: Date())) ?? Date()
-        return ((household.chores as? Set<Chore>) ?? [])
+        return household.choreSet
             .filter { $0.assignee?.isParent == true && $0.status == .todo && ($0.dueDate ?? .distantPast) < tomorrow }
             .sorted { ($0.assignee?.displayName ?? "", $0.displayTitle) < ($1.assignee?.displayName ?? "", $1.displayTitle) }
     }
